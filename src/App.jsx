@@ -12,7 +12,6 @@ function App() {
     if (root) {
       root.style.width = '100%';
       root.style.margin = '0';
-      root.style.padding = '0';
       root.style.boxSizing = 'border-box';
     }
 
@@ -107,7 +106,6 @@ function App() {
       className="App"
       style={{
         width: '100%',
-        maxWidth: '1200px',
         margin: '0 auto',
         padding: '0',
       }}
@@ -121,7 +119,8 @@ function App() {
             style={{
               width: '100%',
               marginBottom: '10px',
-              border: '1px solid #ccc',
+              // border: '1px solid #ccc',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add shadow
               borderRadius: '5px',
               overflow: 'hidden',
               boxSizing: 'border-box',
@@ -131,7 +130,7 @@ function App() {
               className="project-header"
               style={{
                 cursor: 'pointer',
-                background: '#f5f5f5',
+                background: '#ffffff',
                 padding: '15px',
                 display: 'flex',
                 alignItems: 'center',
@@ -148,7 +147,7 @@ function App() {
               >
                 {expandedProjects[project].expanded ? '▲' : '▼'}
               </span>
-              <h2 style={{ margin: 0, textAlign: 'left', flex: 1 }}>{project}</h2>
+              <p style={{ margin: 0, textAlign: 'left', flex: 1 }}>{project}</p>
               <span style={{ fontSize: '0.9em', color: '#555', marginLeft: '15px' }}>
                 {formatDate(created)}
               </span>
