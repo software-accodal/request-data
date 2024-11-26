@@ -18,7 +18,7 @@ function App() {
       return
     }
 
-    missive.on("change:conversations",console.log)
+    missive.on("change:conversations",alert)
   },[missive])
 
   useEffect(() => {
