@@ -19,7 +19,7 @@ function App() {
       return
     }
 
-    missive.on("change:conversations",(ids)=>setSample(ids?.toString()))
+    missive.on("change:conversations",(ids)=>setSample(ids?.toString()),{},true)
   },[missive])
 
 
@@ -125,6 +125,7 @@ function App() {
         width: '100%',
         margin: '0 auto',
         padding: '0',
+        color: '#000000'
       }}
     >
       <h1 style={{ textAlign: 'left', marginBottom: '20px' }}>Requests ({sample})</h1>
