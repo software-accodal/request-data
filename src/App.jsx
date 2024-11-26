@@ -6,6 +6,7 @@ function App() {
   const [groupedContent, setGroupedContent] = useState({});
   const [expandedProjects, setExpandedProjects] = useState({});
   const [missive, setMissive] = useState();
+  const [sample, setSample] = useState();
 
   useEffect(()=>{
     if(!missive){
@@ -18,8 +19,9 @@ function App() {
       return
     }
 
-    missive.on("change:conversations",alert)
+    missive.on("change:conversations",(ids)=>setSample(ids?.toString()))
   },[missive])
+
 
   useEffect(() => {
     // Ensure root div is full width
@@ -125,7 +127,7 @@ function App() {
         padding: '0',
       }}
     >
-      <h1 style={{ textAlign: 'left', marginBottom: '20px' }}>Requests</h1>
+      <h1 style={{ textAlign: 'left', marginBottom: '20px' }}>Requests ({sample})</h1>
       {Object.keys(groupedContent).length > 0 ? (
         Object.entries(groupedContent).map(([project, { finalReferences, created }]) => (
           <div
