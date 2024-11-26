@@ -19,7 +19,7 @@ function App() {
       return
     }
 
-    missive.on("change:conversations",(ids)=>setSample(ids?.toString()),{},true)
+    missive.on("change:conversations",(ids)=>setSample(ids?.toString()),{retroactive:true})
   },[missive])
 
 
