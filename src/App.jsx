@@ -5,6 +5,21 @@ function App() {
   const [airtableRecords, setAirtableRecords] = useState([]);
   const [groupedContent, setGroupedContent] = useState({});
   const [expandedProjects, setExpandedProjects] = useState({});
+  const [missive, setMissive] = useState();
+
+  useEffect(()=>{
+    if(!missive){
+      setMissive(window.Missive)
+    }
+  })
+
+  useEffect(()=>{
+    if(!missive){
+      return
+    }
+
+    missive.on("change:conversations",console.log)
+  },[missive])
 
   useEffect(() => {
     // Ensure root div is full width
