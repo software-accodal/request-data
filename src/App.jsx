@@ -128,22 +128,62 @@ function App() {
       {conversations.length > 0 && (
         <div>
           <h2 style={{ marginBottom: '10px' }}>Conversations</h2>
-            {conversations.map((conv) => (
-              <div
-                key={conv.id}
-                style={{
-                  marginBottom: '10px',
-                  padding: '10px',
-                  border: '1px solid #ddd',
-                  borderRadius: '5px',
-                }}
-              >
-                <h3 style={{ margin: 0 }}>{conv.subject}</h3>
-                <p style={{ margin: '5px 0', color: '#555' }}>
-                  {conv.latest_message?.from_field?.address || conv.latest_message?.from_field?.name || 'Unknown Sender'}
-                </p>
-              </div>
-          ))}
+          {conversations.map((conv) => (
+  <div
+    key={conv.id}
+    style={{
+      marginBottom: '10px',
+      padding: '10px',
+      border: '1px solid #ddd',
+      borderRadius: '5px',
+    }}
+  >
+    {/* Display conversation subject */}
+    <h3 style={{ margin: 0 }}>{conv.subject}</h3>
+
+    {/* Display latest message sender */}
+    <p style={{ margin: '5px 0', color: '#555' }}>
+      {conv.latest_message?.from_field?.address ||
+        conv.latest_message?.from_field?.name ||
+        'Unknown Sender'}
+    </p>
+
+    {/* Display each message in the conversation */}
+    <div style={{ marginTop: '10px' }}>
+      <h4 style={{ margin: '10px 0' }}>Messages:</h4>
+      {conv.messages.length > 0 ? (
+        conv.messages.map((msg) => (
+          <div
+            key={msg.id}
+            style={{
+              marginBottom: '10px',
+              padding: '10px',
+              border: '1px solid #ccc',
+              borderRadius: '5px',
+              background: '#f9f9f9',
+            }}
+          >
+            {/* Message subject */}
+            <h5 style={{ margin: '5px 0' }}>{msg.subject}</h5>
+            {/* Message preview */}
+            <p style={{ margin: '5px 0', fontStyle: 'italic', color: '#666' }}>
+              {msg.preview}
+            </p>
+            {/* Message delivered date */}
+            <p style={{ margin: '5px 0', fontSize: '12px', color: '#aaa' }}>
+              Delivered at: {new Date(msg.delivered_at * 1000).toLocaleString()}
+            </p>
+          </div>
+        ))
+      ) : (
+        <p style={{ margin: '5px 0', color: '#999' }}>
+          No messages available in this conversation.
+        </p>
+      )}
+    </div>
+  </div>
+))}
+
         </div>
       )}
       {Object.keys(groupedContent).length > 0 ? (
