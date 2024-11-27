@@ -147,18 +147,19 @@ function App() {
       }}
     >
       {/* Display conversation subject */}
-      <h3 style={{ margin: 0 }}>{conv.subject}</h3>
+        <h3 style={{ margin: '10px 0' }}>Subject:</h3>
+        <p style={{ margin: 0 }}>{conv.subject}</p>
 
       {/* Display latest message sender */}
-      <p style={{ margin: '5px 0', color: '#555' }}>
+      {/* <p style={{ margin: '5px 0', color: '#555' }}>
         {conv.latest_message?.from_field?.address ||
           conv.latest_message?.from_field?.name ||
           'Unknown Sender'}
-      </p>
+      </p> */}
 
       {/* Display sender of the oldest email */}
       <div style={{ marginTop: '10px' }}>
-        <h4 style={{ margin: '10px 0' }}>Oldest Email Sender:</h4>
+        <h3 style={{ margin: '10px 0' }}>Sender:</h3>
         {oldestMessage ? (
           <p style={{ margin: '5px 0', color: '#333' }}>
             {oldestMessage.from_field?.address || 'Unknown Email Address'}
