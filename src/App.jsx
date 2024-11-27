@@ -139,7 +139,26 @@ function App() {
               }}
             >
               <h3 style={{ margin: 0 }}>{conv.subject}</h3>
-              <p style={{ margin: '5px 0', color: '#555' }}>{conv.snippet}</p>
+              <div style={{ marginTop: '10px' }}>
+                {conv.messages && conv.messages.length > 0 ? (
+                  conv.messages.map((message, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        marginBottom: '10px',
+                        padding: '10px',
+                        backgroundColor: '#f9f9f9',
+                        borderRadius: '5px',
+                      }}
+                    >
+                      <p style={{ margin: 0, fontWeight: 'bold' }}>{message.senderName}:</p>
+                      <p style={{ margin: 0 }}>{message.body}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p>No messages available</p>
+                )}
+              </div>
             </div>
           ))}
         </div>
