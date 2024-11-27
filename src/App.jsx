@@ -139,7 +139,7 @@ function App() {
               }}
             >
               <h3 style={{ margin: 0 }}>{conv.subject}</h3>
-              <p style={{ margin: '5px 0', color: '#555' }}>{conv.latest_message.id}</p>
+              <p style={{ margin: '5px 0', color: '#555' }}>{conv.latest_message.from_field}</p>
             </div>
           ))}
         </div>
