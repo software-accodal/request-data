@@ -128,19 +128,21 @@ function App() {
       {conversations.length > 0 && (
         <div>
           <h2 style={{ marginBottom: '10px' }}>Conversations</h2>
-          {conversations.map((conv) => (
-            <div
-              key={conv.id}
-              style={{
-                marginBottom: '10px',
-                padding: '10px',
-                border: '1px solid #ddd',
-                borderRadius: '5px',
-              }}
-            >
-              <h3 style={{ margin: 0 }}>{conv.subject}</h3>
-              <p style={{ margin: '5px 0', color: '#555' }}>{conv.latest_message.from_field}</p>
-            </div>
+            {conversations.map((conv) => (
+              <div
+                key={conv.id}
+                style={{
+                  marginBottom: '10px',
+                  padding: '10px',
+                  border: '1px solid #ddd',
+                  borderRadius: '5px',
+                }}
+              >
+                <h3 style={{ margin: 0 }}>{conv.subject}</h3>
+                <p style={{ margin: '5px 0', color: '#555' }}>
+                  {conv.latest_message?.from_field?.name || conv.latest_message?.from_field?.address || 'Unknown Sender'}
+                </p>
+              </div>
           ))}
         </div>
       )}
