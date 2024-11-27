@@ -6,37 +6,43 @@ function App() {
   const [groupedContent, setGroupedContent] = useState({});
   const [expandedProjects, setExpandedProjects] = useState({});
   const [missive, setMissive] = useState();
-  const [sample, setSample] = useState();
-
-  useEffect(()=>{
-    if(!missive){
-      setMissive(window.Missive)
-    }
-  })
-
-  useEffect(()=>{
-    if(!missive){
-      return
-    }
-
-    missive.on("change:conversations",(ids)=>setSample(ids?.toString()),{retroactive:true})
-  },[missive])
-
+  const [conversationIds, setConversationIds] = useState([]);
+  const [conversations, setConversations] = useState([]);
 
   useEffect(() => {
-    // Ensure root div is full width
-    const root = document.getElementById('root');
-    if (root) {
-      root.style.width = '100%';
-      root.style.margin = '0';
-      root.style.boxSizing = 'border-box';
+    if (!missive) {
+      setMissive(window.Missive);
     }
+  }, []);
 
+  useEffect(() => {
+    if (!missive) return;
+
+    // Listen for conversation changes
+    missive.on(
+      "change:conversations",
+      (ids) => setConversationIds(ids || []),
+      { retroactive: true }
+    );
+  }, [missive]);
+
+  useEffect(() => {
+    if (!missive || conversationIds.length === 0) return;
+
+    // Fetch conversation details when conversationIds change
+    missive
+      .fetchConversations(conversationIds)
+      .then((conversations) => setConversations(conversations))
+      .catch((error) => console.error('Error fetching conversations:', error));
+  }, [missive, conversationIds]);
+
+  useEffect(() => {
+    // Fetch Airtable records
     fetch('http://localhost:5000/api/airtable?baseId=app2MprPYlwfIdCCd&tableId=tblIbpqFg0KuNxOD4&viewId=viw4opnTUEdFPHIRz', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'token': 's3cretKey', // Injected token header
+        'token': 's3cretKey',
       },
     })
       .then((res) => {
@@ -77,9 +83,9 @@ function App() {
 
         // Initialize all projects as collapsed
         const initialState = Object.keys(grouped).reduce((acc, project) => {
-          acc[project] = { expanded: false, references: {} }; // Set all to collapsed
+          acc[project] = { expanded: false, references: {} };
           Object.keys(grouped[project].finalReferences).forEach((ref) => {
-            acc[project].references[ref] = false; // Collapsed for each reference
+            acc[project].references[ref] = false;
           });
           return acc;
         }, {});
@@ -96,7 +102,6 @@ function App() {
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
-  // Toggle project expand/collapse
   const toggleProject = (project) => {
     setExpandedProjects((prevState) => ({
       ...prevState,
@@ -104,7 +109,6 @@ function App() {
     }));
   };
 
-  // Toggle final reference expand/collapse
   const toggleReference = (project, reference) => {
     setExpandedProjects((prevState) => ({
       ...prevState,
@@ -119,33 +123,41 @@ function App() {
   };
 
   return (
-    <div
-      className="App"
-      style={{
-        width: '100%',
-        margin: '0 auto',
-        padding: '0',
-        color: '#000000'
-      }}
-    >
-      <h1 style={{ textAlign: 'left', marginBottom: '20px' }}>Requests ({sample})</h1>
+    <div className="App" style={{ width: '100%', margin: '0 auto', padding: '0', color: '#000000' }}>
+      <h1 style={{ textAlign: 'left', marginBottom: '20px' }}>Requests ({conversationIds.length})</h1>
+      {conversations.length > 0 && (
+        <div>
+          <h2 style={{ marginBottom: '10px' }}>Conversations</h2>
+          {conversations.map((conv) => (
+            <div
+              key={conv.id}
+              style={{
+                marginBottom: '10px',
+                padding: '10px',
+                border: '1px solid #ddd',
+                borderRadius: '5px',
+              }}
+            >
+              <h3 style={{ margin: 0 }}>{conv.subject}</h3>
+              <p style={{ margin: '5px 0', color: '#555' }}>{conv.snippet}</p>
+            </div>
+          ))}
+        </div>
+      )}
       {Object.keys(groupedContent).length > 0 ? (
         Object.entries(groupedContent).map(([project, { finalReferences, created }]) => (
           <div
             key={project}
-            className="project"
             style={{
               width: '100%',
               marginBottom: '10px',
-              // border: '1px solid #ccc',
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add shadow
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
               borderRadius: '5px',
               overflow: 'hidden',
               boxSizing: 'border-box',
             }}
           >
             <div
-              className="project-header"
               style={{
                 cursor: 'pointer',
                 background: '#ffffff',
@@ -156,13 +168,7 @@ function App() {
               }}
               onClick={() => toggleProject(project)}
             >
-              <span
-                style={{
-                  fontSize: '1em',
-                  marginRight: '10px',
-                  flexShrink: 0,
-                }}
-              >
+              <span style={{ fontSize: '1em', marginRight: '10px', flexShrink: 0 }}>
                 {expandedProjects[project].expanded ? '▲' : '▼'}
               </span>
               <p style={{ margin: 0, textAlign: 'left', flex: 1 }}>{project}</p>
@@ -171,37 +177,23 @@ function App() {
               </span>
             </div>
             {expandedProjects[project].expanded && (
-              <div
-                className="project-content"
-                style={{
-                  padding: '10px',
-                  backgroundColor: '#fff',
-                }}
-              >
+              <div style={{ padding: '10px', backgroundColor: '#fff' }}>
                 {Object.entries(finalReferences).map(([reference, { questions, status }]) => (
-                  <div key={reference} className="final-reference">
+                  <div key={reference} style={{ marginBottom: '5px' }}>
                     <div
-                      className="final-reference-header"
                       style={{
                         cursor: 'pointer',
                         padding: '10px',
                         border: '1px solid #ddd',
                         borderRadius: '5px',
-                        marginBottom: '5px',
                         background: '#ffffff',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        textAlign: 'left'
                       }}
                       onClick={() => toggleReference(project, reference)}
                     >
-                      <span
-                        style={{
-                          fontSize: '0.9em',
-                          marginRight: '10px',
-                        }}
-                      >
+                      <span style={{ fontSize: '0.9em', marginRight: '10px' }}>
                         {expandedProjects[project].references[reference] ? '▲' : '▼'}
                       </span>
                       <span style={{ flex: 1 }}>{reference}</span>
@@ -210,16 +202,7 @@ function App() {
                       </span>
                     </div>
                     {expandedProjects[project].references[reference] && (
-                      <div
-                        className="questions"
-                        style={{
-                          paddingLeft: '15px',
-                          paddingTop: '5px',
-                          paddingBottom: '5px',
-                          borderLeft: '2px solid #ddd',
-                          textAlign: 'left'
-                      }}
-                      >
+                      <div style={{ paddingLeft: '15px', paddingTop: '5px', paddingBottom: '5px', borderLeft: '2px solid #ddd' }}>
                         {questions.map((question, index) => (
                           <p key={index} style={{ margin: '5px 0' }}>
                             {question}
