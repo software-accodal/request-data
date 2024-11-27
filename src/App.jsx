@@ -151,7 +151,7 @@ function App() {
                         borderRadius: '5px',
                       }}
                     >
-                      <p style={{ margin: 0, fontWeight: 'bold' }}>{message.senderName}:</p>
+                      <p style={{ margin: 0, fontWeight: 'bold' }}>{message.from_field}:</p>
                       <p style={{ margin: 0 }}>{message.body}</p>
                     </div>
                   ))
