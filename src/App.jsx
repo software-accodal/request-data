@@ -140,7 +140,7 @@ function App() {
               >
                 <h3 style={{ margin: 0 }}>{conv.subject}</h3>
                 <p style={{ margin: '5px 0', color: '#555' }}>
-                  {conv.latest_message?.from_field?.name || conv.latest_message?.from_field?.address || 'Unknown Sender'}
+                  {conv.latest_message?.from_field?.address || conv.latest_message?.from_field?.name || 'Unknown Sender'}
                 </p>
               </div>
           ))}
