@@ -96,7 +96,7 @@ function App() {
           })}
         </div>
       )}
-      <h1 style={{ textAlign: 'left', marginBottom: '20px' }}>Requests</h1>
+      <h3 style={{ textAlign: 'left', marginBottom: '20px' }}>Requests</h3>
       <Requests email={clientEmail} />
     </div>
   );
