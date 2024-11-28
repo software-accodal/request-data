@@ -38,7 +38,7 @@ function App() {
 
   useEffect(() => {
     if (!oldestMessageEmail) return; // Ensure email exists
-  
+    console.log(oldestMessageEmail)
     const formula = `FIND("${oldestMessageEmail}", {Client Emails} & "")`;
   
     axios
@@ -137,7 +137,7 @@ function App() {
 
               useEffect(() => {
                 if (oldestMessage?.from_field?.address) {
-                  setOldestMessageEmail(oldestMessage.from_field.address);
+                  setOldestMessageEmail(oldestMessage.from_field?.address);
                 }
               }, [oldestMessage]);
 
