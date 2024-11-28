@@ -33,7 +33,6 @@ function App() {
       .catch((error) => console.error('Error fetching conversations:', error));
   }, [missive, conversationIds]);
 
-  // Update clientEmail based on the oldest message in the conversations
   useEffect(() => {
     if (conversations.length > 0) {
       const oldestMessage = conversations

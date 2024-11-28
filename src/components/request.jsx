@@ -9,7 +9,6 @@ function Requests({email}) {
     useEffect(() => {
       if (!email) return;
         const formula = email ? `FIND('${email}', {Client Emails} & "")`: null;
-    console.log(formula)
       
         axios
           .post(`https://accodal-api-rc8y.onrender.com/api/airtable/get-by-formula`, {
@@ -23,6 +22,7 @@ function Requests({email}) {
           })
           .then((response) => {
             const data = response.data;
+            console.log("data: >>", data)
             setAirtableRecords(data);
       
             const grouped = data.reduce((acc, record) => {
