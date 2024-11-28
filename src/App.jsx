@@ -49,12 +49,15 @@ function App() {
     }
   }, [conversations]);
 
+  // useEffect(()=>{
+  //   setClientEmail("isonaguilar16@gmail.com" || "Unknown Email Address");
+  // })
+
   return (
     <div className="App" style={{ width: '100%', margin: '0 auto', padding: '0', color: '#000000' }}>
-      <h1 style={{ textAlign: 'left', marginBottom: '20px' }}>Requests</h1>
       {conversations.length > 0 && (
         <div>
-          <h2 style={{ marginBottom: '10px' }}>Conversation</h2>
+          {/* <h2 style={{ marginBottom: '10px' }}>Conversation</h2> */}
           {conversations.map((conv) => {
             const oldestMessage = conv.messages.reduce(
               (oldest, current) =>
@@ -67,20 +70,19 @@ function App() {
                 key={conv.id}
                 style={{
                   marginBottom: '10px',
-                  padding: '10px',
-                  border: '1px solid #ddd',
-                  borderRadius: '5px',
+                  padding: '5px',
+                  borderBottom: '1px solid #ddd',
                 }}
               >
                 {/* Display conversation subject */}
-                <h3 style={{ margin: '10px 0' }}>Subject:</h3>
-                <p style={{ margin: 0 }}>{conv.subject}</p>
+                {/* <h3 style={{ margin: '10px 0' }}>Subject:</h3> */}
+                <p style={{ margin: 0 }}>Subject:{conv.subject}</p>
 
                 {/* Display sender of the oldest email */}
                 <div style={{ marginTop: '10px' }}>
-                  <h3 style={{ margin: '10px 0' }}>Sender:</h3>
+                  {/* <h3 style={{ margin: '10px 0' }}>Sender:</h3> */}
                   {oldestMessage ? (
-                    <p style={{ margin: '5px 0', color: '#333' }}>
+                    <p style={{ margin: '5px 0', color: '#333' }}>Sender:
                       {oldestMessage.from_field?.address || 'Unknown Email Address'}
                     </p>
                   ) : (
@@ -94,6 +96,7 @@ function App() {
           })}
         </div>
       )}
+      <h1 style={{ textAlign: 'left', marginBottom: '20px' }}>Requests</h1>
       <Requests email={clientEmail} />
     </div>
   );
