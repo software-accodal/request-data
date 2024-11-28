@@ -104,7 +104,7 @@ function Requests({ email }) {
       {loading ? (
         <p style={{ textAlign: 'center' }}>Loading requests...</p>
       ) : airtableRecords.length === 0 ? (
-        <p style={{ textAlign: 'center', color: '#888', fontSize: '1.2em' }}>
+        <p style={{ textAlign: 'center', color: '#888', fontSize: '1em' }}>
           No requests associated to this email
         </p>
       ) : (
