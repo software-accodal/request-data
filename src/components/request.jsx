@@ -92,84 +92,97 @@ function Requests({email}) {
 
       return (
         <div>
-        {Object.keys(groupedContent).length > 0 ? (
-            Object.entries(groupedContent).map(([project, { finalReferences, created }]) => (
-              <div
-                key={project}
-                style={{
-                  width: '100%',
-                  marginBottom: '10px',
-                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                  borderRadius: '5px',
-                  overflow: 'hidden',
-                  boxSizing: 'border-box',
-                }}
-              >
-                <div
-                  style={{
-                    cursor: 'pointer',
-                    background: '#ffffff',
-                    padding: '15px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                  onClick={() => toggleProject(project)}
-                >
-                  <span style={{ fontSize: '1em', marginRight: '10px', flexShrink: 0 }}>
-                    {expandedProjects[project].expanded ? '▲' : '▼'}
-                  </span>
-                  <p style={{ margin: 0, textAlign: 'left', flex: 1 }}>{project}</p>
-                  <span style={{ fontSize: '0.9em', color: '#555', marginLeft: '15px' }}>
-                    {formatDate(created)}
-                  </span>
-                </div>
-                {expandedProjects[project].expanded && (
-                  <div style={{ padding: '10px', backgroundColor: '#fff' }}>
-                    {Object.entries(finalReferences).map(([reference, { questions, status }]) => (
-                      <div key={reference} style={{ marginBottom: '5px' }}>
-                        <div
-                          style={{
-                            cursor: 'pointer',
-                            padding: '10px',
-                            border: '1px solid #ddd',
-                            borderRadius: '5px',
-                            background: '#ffffff',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                          }}
-                          onClick={() => toggleReference(project, reference)}
-                        >
-                          <span style={{ fontSize: '0.9em', marginRight: '10px' }}>
-                            {expandedProjects[project].references[reference] ? '▲' : '▼'}
-                          </span>
-                          <span style={{ flex: 1 }}>{reference}</span>
-                          <span style={{ fontSize: '0.9em', color: '#888', marginLeft: '10px' }}>
-                            {status || 'Unknown Status'}
-                          </span>
-                        </div>
-                        {expandedProjects[project].references[reference] && (
-                          <div style={{ paddingLeft: '15px', paddingTop: '5px', paddingBottom: '5px', borderLeft: '2px solid #ddd' }}>
-                            {questions.map((question, index) => (
-                              <p key={index} style={{ margin: '5px 0' }}>
-                                {question}
-                              </p>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))
+          {airtableRecords.length === 0 ? (
+            <p style={{ textAlign: 'center', color: '#888', fontSize: '1.2em' }}>
+              No requests associated to this email
+            </p>
           ) : (
-            <p style={{ textAlign: 'center' }}>Loading requests...</p>
-          )
-        }
+            Object.keys(groupedContent).length > 0 ? (
+              Object.entries(groupedContent).map(([project, { finalReferences, created }]) => (
+                <div
+                  key={project}
+                  style={{
+                    width: '100%',
+                    marginBottom: '10px',
+                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                    borderRadius: '5px',
+                    overflow: 'hidden',
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  <div
+                    style={{
+                      cursor: 'pointer',
+                      background: '#ffffff',
+                      padding: '15px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}
+                    onClick={() => toggleProject(project)}
+                  >
+                    <span style={{ fontSize: '1em', marginRight: '10px', flexShrink: 0 }}>
+                      {expandedProjects[project].expanded ? '▲' : '▼'}
+                    </span>
+                    <p style={{ margin: 0, textAlign: 'left', flex: 1 }}>{project}</p>
+                    <span style={{ fontSize: '0.9em', color: '#555', marginLeft: '15px' }}>
+                      {formatDate(created)}
+                    </span>
+                  </div>
+                  {expandedProjects[project].expanded && (
+                    <div style={{ padding: '10px', backgroundColor: '#fff' }}>
+                      {Object.entries(finalReferences).map(([reference, { questions, status }]) => (
+                        <div key={reference} style={{ marginBottom: '5px' }}>
+                          <div
+                            style={{
+                              cursor: 'pointer',
+                              padding: '10px',
+                              border: '1px solid #ddd',
+                              borderRadius: '5px',
+                              background: '#ffffff',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                            }}
+                            onClick={() => toggleReference(project, reference)}
+                          >
+                            <span style={{ fontSize: '0.9em', marginRight: '10px' }}>
+                              {expandedProjects[project].references[reference] ? '▲' : '▼'}
+                            </span>
+                            <span style={{ flex: 1 }}>{reference}</span>
+                            <span style={{ fontSize: '0.9em', color: '#888', marginLeft: '10px' }}>
+                              {status || 'Unknown Status'}
+                            </span>
+                          </div>
+                          {expandedProjects[project].references[reference] && (
+                            <div
+                              style={{
+                                paddingLeft: '15px',
+                                paddingTop: '5px',
+                                paddingBottom: '5px',
+                                borderLeft: '2px solid #ddd',
+                              }}
+                            >
+                              {questions.map((question, index) => (
+                                <p key={index} style={{ margin: '5px 0' }}>
+                                  {question}
+                                </p>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p style={{ textAlign: 'center' }}>Loading requests...</p>
+            )
+          )}
         </div>
-      )
+      );
+      
 
 } 
 export default Requests
