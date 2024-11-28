@@ -37,7 +37,7 @@ function App() {
   }, [missive, conversationIds]);
 
   useEffect(() => {
-    if (!oldestMessageEmail) return; // Ensure email exists
+    if (!oldestMessageEmail) return;
     console.log(oldestMessageEmail)
     const formula = `FIND("${oldestMessageEmail}", {Client Emails} & "")`;
   
@@ -134,13 +134,9 @@ function App() {
                   !oldest || current.delivered_at < oldest.delivered_at ? current : oldest,
                 null
               );
-
-              useEffect(() => {
-                if (oldestMessage?.from_field?.address) {
-                  setOldestMessageEmail(oldestMessage.from_field?.address);
-                }
-              }, [oldestMessage]);
-
+              
+              setOldestMessageEmail(oldestMessage.from_field?.address);
+            
               return (
                 <div
                   key={conv.id}
