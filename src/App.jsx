@@ -72,17 +72,18 @@ function App() {
                   marginBottom: '10px',
                   padding: '5px',
                   borderBottom: '1px solid #ddd',
+                  textAlign: 'left'
                 }}
               >
                 {/* Display conversation subject */}
                 {/* <h3 style={{ margin: '10px 0' }}>Subject:</h3> */}
-                <p style={{ margin: 0 }}>Subject:{conv.subject}</p>
+                <p style={{ margin: 0 }}>Subject: {conv.subject}</p>
 
                 {/* Display sender of the oldest email */}
                 <div style={{ marginTop: '10px' }}>
                   {/* <h3 style={{ margin: '10px 0' }}>Sender:</h3> */}
                   {oldestMessage ? (
-                    <p style={{ margin: '5px 0', color: '#333' }}>Sender:
+                    <p style={{ margin: '5px 0', color: '#333' }}>Sender: 
                       {oldestMessage.from_field?.address || 'Unknown Email Address'}
                     </p>
                   ) : (
