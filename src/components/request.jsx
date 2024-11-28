@@ -7,7 +7,9 @@ function Requests({email}) {
     const [expandedProjects, setExpandedProjects] = useState({});
     console.log(email)
     useEffect(() => {
-        const formula = `FIND('${email}', {Client Emails} & "")`;
+      if (!email) return;
+        const formula = email ? `FIND('${email}', {Client Emails} & "")`: null;
+    console.log(formula)
       
         axios
           .post(`https://accodal-api-rc8y.onrender.com/api/airtable/get-by-formula`, {
@@ -60,7 +62,7 @@ function Requests({email}) {
           .catch((error) => {
             console.error('Error fetching data:', error);
           });
-      }, []);
+      }, [email]);
     
       const formatDate = (dateString) => {
         if (!dateString) return '';
