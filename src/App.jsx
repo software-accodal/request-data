@@ -47,7 +47,7 @@ function App() {
                   !oldest || current.delivered_at < oldest.delivered_at ? current : oldest,
                 null
               );
-                           
+                setClientEmail(oldestMessage.from_field?.address);
               return (
                 <div
                 key={conv.id}
@@ -84,12 +84,13 @@ function App() {
                   </div>
                 </div>
               );
-            })}
+            })
+            }
 
 
         </div>
       )}
-      <Requests email={()=> setClientEmail(oldestMessage.from_field?.address)}/>
+      <Requests email={clientEmail}/>
     </div>
   );
 }

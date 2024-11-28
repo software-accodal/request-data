@@ -7,7 +7,7 @@ function Requests({email}) {
     const [expandedProjects, setExpandedProjects] = useState({});
     console.log(email)
     useEffect(() => {
-        const formula = `FIND(${email}, {Client Emails} & "")`;
+        const formula = `FIND('${email}', {Client Emails} & "")`;
       
         axios
           .post(`https://accodal-api-rc8y.onrender.com/api/airtable/get-by-formula`, {
