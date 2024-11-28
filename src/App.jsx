@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import './App.css';
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
   const [missive, setMissive] = useState();
   const [conversationIds, setConversationIds] = useState([]);
   const [conversations, setConversations] = useState([]);
+  const [oldestMessageEmail, setOldestMessageEmail] = useState("");
 
   useEffect(() => {
     if (!missive) {
@@ -28,7 +30,6 @@ function App() {
   useEffect(() => {
     if (!missive || conversationIds.length === 0) return;
 
-    // Fetch conversation details when conversationIds change
     missive
       .fetchConversations(conversationIds)
       .then((conversations) => setConversations(conversations))
@@ -36,37 +37,36 @@ function App() {
   }, [missive, conversationIds]);
 
   useEffect(() => {
-    // Fetch Airtable records
-    fetch('http://localhost:5000/api/airtable?baseId=app2MprPYlwfIdCCd&tableId=tblIbpqFg0KuNxOD4', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'token': 's3cretKey',
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return res.json();
+    if (!oldestMessageEmail) return; // Ensure email exists
+  
+    const formula = `FIND("${oldestMessageEmail}", {Client Emails} & "")`;
+  
+    axios
+      .post(`https://accodal-api-rc8y.onrender.com/api/airtable/get-by-formula`, {
+        appId: 'app2MprPYlwfIdCCd',
+        tableId: 'tblIbpqFg0KuNxOD4',
+        formula,
+      }, {
+        headers: {
+          token: 's3cretKey',
+        },
       })
-      .then((data) => {
-        const records = data.rows || [];
-        setAirtableRecords(records);
-
-        // Group Final References and Questions by Project
-        const grouped = records.reduce((acc, record) => {
+      .then((response) => {
+        const data = response.data;
+        setAirtableRecords(data);
+  
+        const grouped = data.reduce((acc, record) => {
           const project = record.fields['Project Name']?.[0] || 'Uncategorized';
           const finalReference = record.fields['Final Reference'];
           const question = record.fields['Question'];
           const status = record.fields['Status'];
           const created = record.fields['Created'] || '';
           const clientEmail = record.fields['Client Emails'] || '';
-
+  
           if (!acc[project]) {
             acc[project] = { finalReferences: {}, created };
           }
-
+  
           if (finalReference) {
             if (!acc[project].finalReferences[finalReference]) {
               acc[project].finalReferences[finalReference] = { questions: [], status };
@@ -75,13 +75,12 @@ function App() {
               acc[project].finalReferences[finalReference].questions.push(question);
             }
           }
-
+  
           return acc;
         }, {});
-
+  
         setGroupedContent(grouped);
-
-        // Initialize all projects as collapsed
+  
         const initialState = Object.keys(grouped).reduce((acc, project) => {
           acc[project] = { expanded: false, references: {} };
           Object.keys(grouped[project].finalReferences).forEach((ref) => {
@@ -94,7 +93,7 @@ function App() {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, []);
+  }, [oldestMessageEmail]);
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
@@ -135,6 +134,12 @@ function App() {
                   !oldest || current.delivered_at < oldest.delivered_at ? current : oldest,
                 null
               );
+
+              useEffect(() => {
+                if (oldestMessage?.from_field?.address) {
+                  setOldestMessageEmail(oldestMessage.from_field.address);
+                }
+              }, [oldestMessage]);
 
               return (
                 <div
