@@ -37,9 +37,9 @@ function App() {
       .catch((error) => console.error('Error fetching conversations:', error));
   }, [missive, conversationIds]);
 
-  const handleRequestData = (hasData) => {
-    setHasRequests(hasData);
-  };
+  // const handleRequestData = (hasData) => {
+  //   setHasRequests(hasData);
+  // };
 
   useEffect(() => {
     if (conversations.length > 0) {
@@ -118,7 +118,6 @@ function App() {
       
        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
       <h3 style={{ textAlign: 'left', marginBottom: '20px' }}>Requests</h3>
-      {/* {hasRequests && ( */}
         <button
               style={{
                 padding: "5px 10px",
@@ -143,9 +142,8 @@ function App() {
           >
               +
           </button>
-          {/* )} */}
         </div>
-      <Requests email={clientEmail} onRequestData={handleRequestData}/>
+      <Requests email={clientEmail} />
       {isModalOpen && (
         <div
           className='modal'
