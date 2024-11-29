@@ -142,7 +142,7 @@ function App() {
               +
           </button>)}
         </div>
-      <Requests email={clientEmail} />
+      <Requests email={clientEmail} onRequestData={handleRequestData}/>
       {isModalOpen && (
         <div
           className='modal'
