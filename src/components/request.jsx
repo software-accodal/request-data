@@ -5,12 +5,12 @@ function Requests({ email }) {
   const [airtableRecords, setAirtableRecords] = useState([]);
   const [groupedContent, setGroupedContent] = useState({});
   const [expandedProjects, setExpandedProjects] = useState({});
-  const [loading, setLoading] = useState(false); // New state for loading
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!email) return;
 
-    setLoading(true); // Start loading whenever email changes
+    setLoading(true); 
     const formula = `FIND('${email}', {Client Emails} & "")`;
 
     axios
@@ -69,7 +69,7 @@ function Requests({ email }) {
         console.error('Error fetching data:', error);
       })
       .finally(() => {
-        setLoading(false); // Stop loading after the data fetch completes
+        setLoading(false); 
       });
   }, [email]);
 

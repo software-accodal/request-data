@@ -7,6 +7,9 @@ function App() {
   const [conversationIds, setConversationIds] = useState([]);
   const [conversations, setConversations] = useState([]);
   const [clientEmail, setClientEmail] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [projects, setProjects] = useState("");
+  const [requestDetails, setRequestDetails] = useState("");
 
   useEffect(() => {
     if (!missive) {
@@ -53,6 +56,16 @@ function App() {
   //   setClientEmail("isonaguilar16@gmail.com" || "Unknown Email Address");
   // })
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const handleSubmit = () => {
+    console.log("Submitted Request:", { projects, requestDetails });
+    setProjects("");
+    setRequestDetails("");
+    closeModal();
+  };
+
   return (
     <div className="App" style={{ width: '100%', margin: '0 auto', padding: '0', color: '#000000' }}>
       {conversations.length > 0 && (
@@ -96,8 +109,124 @@ function App() {
           })}
         </div>
       )}
+       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
       <h3 style={{ textAlign: 'left', marginBottom: '20px' }}>Requests</h3>
+      <button
+          style={{
+            padding: "5px 10px",
+            fontSize: "16px",
+            cursor: "pointer",
+            borderRadius: "5px",
+            backgroundColor: "#007BFF",
+            color: "#FFF",
+            border: "none",
+          }}
+          title="Create Request"
+          onClick={openModal}
+        >
+          +
+        </button>
+        </div>
       <Requests email={clientEmail} />
+      {isModalOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#FFF",
+            padding: "20px",
+            borderRadius: "8px",
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+            zIndex: 1000,
+            width: "400px",
+          }}
+        >
+          <h4 style={{ marginBottom: "15px" }}>Create Request</h4>
+          <div style={{ marginBottom: "10px" }}>
+            <label htmlFor="projects" style={{ display: "block", marginBottom: "5px" }}>
+              Projects
+            </label>
+            <select
+              id="projects"
+              value={projects}
+              onChange={(e) => setProjects(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "8px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+              }}
+            >
+              <option value="" disabled>
+                Select a Project
+              </option>
+              <option value="Project1">Project1</option>
+              <option value="Project2">Project2</option>
+            </select>
+          </div>
+          <div style={{ marginBottom: "10px" }}>
+            <label htmlFor="requestDetails" style={{ display: "block", marginBottom: "5px" }}>
+              Request Details
+            </label>
+            <textarea
+              id="requestDetails"
+              value={requestDetails}
+              onChange={(e) => setRequestDetails(e.target.value)}
+              style={{
+                width: "100%",
+                height: "100px",
+                padding: "8px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+              }}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+            <button
+              style={{
+                padding: "5px 10px",
+                backgroundColor: "#6c757d",
+                color: "#FFF",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+              onClick={closeModal}
+            >
+              Cancel
+            </button>
+            <button
+              style={{
+                padding: "5px 10px",
+                backgroundColor: "#007BFF",
+                color: "#FFF",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+              onClick={handleSubmit}
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      )}
+      {isModalOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            zIndex: 999,
+          }}
+          onClick={closeModal}
+        />
+      )}
     </div>
   );
 }
