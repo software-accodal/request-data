@@ -41,25 +41,25 @@ function App() {
     setHasRequests(hasData);
   };
 
-  // useEffect(() => {
-  //   if (conversations.length > 0) {
-  //     const oldestMessage = conversations
-  //       .flatMap((conv) => conv.messages)
-  //       .reduce(
-  //         (oldest, current) =>
-  //           !oldest || current.delivered_at < oldest.delivered_at ? current : oldest,
-  //         null
-  //       );
+  useEffect(() => {
+    if (conversations.length > 0) {
+      const oldestMessage = conversations
+        .flatMap((conv) => conv.messages)
+        .reduce(
+          (oldest, current) =>
+            !oldest || current.delivered_at < oldest.delivered_at ? current : oldest,
+          null
+        );
 
-  //     if (oldestMessage) {
-  //       setClientEmail(oldestMessage.from_field?.address || "Unknown Email Address");
-  //     }
-  //   }
-  // }, [conversations]);
+      if (oldestMessage) {
+        setClientEmail(oldestMessage.from_field?.address || "Unknown Email Address");
+      }
+    }
+  }, [conversations]);
 
-  useEffect(()=>{
-    setClientEmail("isonaguilar16@gmail.com" || "Unknown Email Address");
-  })
+  // useEffect(()=>{
+  //   setClientEmail("isonaguilar16@gmail.com" || "Unknown Email Address");
+  // })
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
