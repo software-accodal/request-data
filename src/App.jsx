@@ -57,9 +57,9 @@ function App() {
     }
   }, [conversations]);
 
-  useEffect(()=>{
-    setClientEmail("isonaguilar16@gmail.com" || "Unknown Email Address");
-  })
+  // useEffect(()=>{
+  //   setClientEmail("isonaguilar16@gmail.com" || "Unknown Email Address");
+  // })
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
