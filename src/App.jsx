@@ -57,9 +57,9 @@ function App() {
     }
   }, [conversations]);
 
-  // useEffect(()=>{
-  //   setClientEmail("isonaguilar16@gmail.com" || "Unknown Email Address");
-  // })
+  useEffect(()=>{
+    setClientEmail("isonaguilar16@gmail.com" || "Unknown Email Address");
+  })
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -73,6 +73,7 @@ function App() {
 
   return (
     <div className="App" style={{ width: '100%', margin: '0 auto', padding: '0', color: '#000000' }}>
+      
       {conversations.length > 0 && (
         <div>
           {/* <h2 style={{ marginBottom: '10px' }}>Conversation</h2> */}
@@ -117,7 +118,8 @@ function App() {
       
        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
       <h3 style={{ textAlign: 'left', marginBottom: '20px' }}>Requests</h3>
-      {hasRequests && (<button
+      {/* {hasRequests && ( */}
+        <button
               style={{
                 padding: "5px 10px",
                 fontSize: "16px",
@@ -140,7 +142,8 @@ function App() {
               onClick={openModal}
           >
               +
-          </button>)}
+          </button>
+          {/* )} */}
         </div>
       <Requests email={clientEmail} onRequestData={handleRequestData}/>
       {isModalOpen && (
