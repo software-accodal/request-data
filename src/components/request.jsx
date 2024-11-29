@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function Requests({ email }) {
+function Requests({ email, onRequestData  }) {
   const [airtableRecords, setAirtableRecords] = useState([]);
   const [groupedContent, setGroupedContent] = useState({});
   const [expandedProjects, setExpandedProjects] = useState({});
@@ -64,6 +64,9 @@ function Requests({ email }) {
           return acc;
         }, {});
         setExpandedProjects(initialState);
+        if (onRequestData) {
+          onRequestData(data.length > 0);
+        }
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -71,7 +74,7 @@ function Requests({ email }) {
       .finally(() => {
         setLoading(false); 
       });
-  }, [email]);
+  }, [email, onRequestData]);
 
   const formatDate = (dateString) => {
     if (!dateString) return '';

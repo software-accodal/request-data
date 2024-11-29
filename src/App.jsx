@@ -10,6 +10,7 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projects, setProjects] = useState("");
   const [requestDetails, setRequestDetails] = useState("");
+  const [hasRequests, setHasRequests] = useState(false);
 
   useEffect(() => {
     if (!missive) {
@@ -36,25 +37,29 @@ function App() {
       .catch((error) => console.error('Error fetching conversations:', error));
   }, [missive, conversationIds]);
 
-  useEffect(() => {
-    if (conversations.length > 0) {
-      const oldestMessage = conversations
-        .flatMap((conv) => conv.messages)
-        .reduce(
-          (oldest, current) =>
-            !oldest || current.delivered_at < oldest.delivered_at ? current : oldest,
-          null
-        );
+  const handleRequestData = (hasData) => {
+    setHasRequests(hasData);
+  };
 
-      if (oldestMessage) {
-        setClientEmail(oldestMessage.from_field?.address || "Unknown Email Address");
-      }
-    }
-  }, [conversations]);
+  // useEffect(() => {
+  //   if (conversations.length > 0) {
+  //     const oldestMessage = conversations
+  //       .flatMap((conv) => conv.messages)
+  //       .reduce(
+  //         (oldest, current) =>
+  //           !oldest || current.delivered_at < oldest.delivered_at ? current : oldest,
+  //         null
+  //       );
 
-  // useEffect(()=>{
-  //   setClientEmail("isonaguilar16@gmail.com" || "Unknown Email Address");
-  // })
+  //     if (oldestMessage) {
+  //       setClientEmail(oldestMessage.from_field?.address || "Unknown Email Address");
+  //     }
+  //   }
+  // }, [conversations]);
+
+  useEffect(()=>{
+    setClientEmail("isonaguilar16@gmail.com" || "Unknown Email Address");
+  })
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -109,39 +114,38 @@ function App() {
           })}
         </div>
       )}
+      
        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
       <h3 style={{ textAlign: 'left', marginBottom: '20px' }}>Requests</h3>
-      <button
-          style={{
-            padding: "5px 10px",
-            fontSize: "16px",
-            cursor: "pointer",
-            borderRadius: "5px",
-            backgroundColor: "#007BFF",
-            color: "#FFF",
-            border: "none",
-          }}
-          title="Create Request"
-          onClick={openModal}
-        >
-          +
-        </button>
+      {hasRequests && (<button
+              style={{
+                padding: "5px 10px",
+                fontSize: "16px",
+                cursor: "pointer",
+                borderRadius: "5px",
+                backgroundColor: "#007BFF",
+                color: "#FFF",
+                border: "none",
+                outline: "none",
+                boxShadow: "0 0 0 0px rgba(0, 0, 0, 0)",
+                transition: "box-shadow 0.2s ease-in-out",
+              }}
+              onFocus={(e) => {
+                e.target.style.boxShadow = "0 0 3px 2px rgba(0, 123, 255, 0.5)";
+              }}
+              onBlur={(e) => {
+                e.target.style.boxShadow = "0 0 0 0px rgba(0, 0, 0, 0)";
+              }}
+              title="Create Request"
+              onClick={openModal}
+          >
+              +
+          </button>)}
         </div>
       <Requests email={clientEmail} />
       {isModalOpen && (
         <div
-          style={{
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: "#FFF",
-            padding: "20px",
-            borderRadius: "8px",
-            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-            zIndex: 1000,
-            width: "400px",
-          }}
+          className='modal'
         >
           <h4 style={{ marginBottom: "15px" }}>Create Request</h4>
           <div style={{ marginBottom: "10px" }}>
