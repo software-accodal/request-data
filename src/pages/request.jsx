@@ -129,7 +129,7 @@ function Requests({ email }) {
         <>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <h3 style={{ textAlign: 'left', marginBottom: '20px' }}>Requests</h3>
-          <button
+          {/* <button
             style={{
               padding: "5px 10px",
               fontSize: "16px",
@@ -152,7 +152,7 @@ function Requests({ email }) {
             onClick={openModal}
           >
             +
-          </button>
+          </button> */}
         </div>
         {
         Object.keys(groupedContent).length > 0 &&
