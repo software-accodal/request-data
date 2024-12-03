@@ -7,8 +7,7 @@ function Projects({ email }) {
   const [expandedProjects, setExpandedProjects] = useState({});
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [projects, setProjects] = useState("");
-  const [requestDetails, setRequestDetails] = useState("");
+  const [modalClosed, setModalClosed] = useState(false); // New state variable
 
   useEffect(() => {
     if (!email) return;
@@ -32,9 +31,15 @@ function Projects({ email }) {
       )
       .then((response) => {
         const data = response.data;
-        setAirtableRecords(data);
+        const sortedData = data.sort((a, b) => {
+          const dateA = new Date(a.fields['Created']);
+          const dateB = new Date(b.fields['Created']);
+          return dateB - dateA; // Newest first
+        });
+    
+        setAirtableRecords(sortedData);
 
-        const grouped = data.reduce((acc, record) => {
+        const grouped = sortedData.reduce((acc, record) => {
           const project = record.fields['Project Name'] || 'Uncategorized';
           const rfistatus = record.fields['RFI Status'];
           const preparer = record.fields['Preparer Name'];
@@ -56,7 +61,6 @@ function Projects({ email }) {
         }, {});
 
         setGroupedContent(grouped);
-        console.log(groupedContent)
 
         const initialState = Object.keys(grouped).reduce((acc, project) => {
           acc[project] = false;
@@ -70,10 +74,13 @@ function Projects({ email }) {
       .finally(() => {
         setLoading(false);
       });
-  }, [email]);
+  }, [email, modalClosed]);
 
   const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalClosed((prev) => !prev); // Toggle the modalClosed state
+  };
 
   const handleSubmit = () => {
     console.log("Submitted Project:", { projects, requestDetails });
@@ -106,7 +113,7 @@ function Projects({ email }) {
       ) : (
         <>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <h3 style={{ textAlign: 'left', marginBottom: '20px' }}>Projects</h3>
+            <h3 style={{ textAlign: 'left', marginBottom: '20px', color: '#555555' }}>Projects</h3>
             <button
                  style={{
                   padding: "5px 10px",
@@ -156,7 +163,7 @@ function Projects({ email }) {
                 }}
                 onClick={() => toggleProject(project)}
               >
-                <span style={{ fontSize: '1em', marginRight: '10px', flexShrink: 0 }}>
+                <span style={{ fontSize: '1em', marginRight: '10px', flexShrink: 0, color: '#555555' }}>
                   {expandedProjects[project] ? '▲' : '▼'}
                 </span>
                 <p style={{ margin: 0, textAlign: 'left', flex: 1 }}>{project}</p>
