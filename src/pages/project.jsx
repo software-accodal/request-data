@@ -72,6 +72,16 @@ function Projects({ email }) {
       });
   }, [email]);
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const handleSubmit = () => {
+    console.log("Submitted Request:", { projects, requestDetails });
+    setProjects("");
+    setRequestDetails("");
+    closeModal();
+  };
+
   const toggleProject = (project) => {
     setExpandedProjects((prevState) => ({
       ...prevState,
@@ -97,6 +107,30 @@ function Projects({ email }) {
         <>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <h3 style={{ textAlign: 'left', marginBottom: '20px' }}>Projects</h3>
+            <button
+            style={{
+              padding: "5px 10px",
+              fontSize: "16px",
+              cursor: "pointer",
+              borderRadius: "5px",
+              backgroundColor: "#007BFF",
+              color: "#FFF",
+              border: "none",
+              outline: "none",
+              boxShadow: "0 0 0 0px rgba(0, 0, 0, 0)",
+              transition: "box-shadow 0.2s ease-in-out",
+            }}
+            onFocus={(e) => {
+              e.target.style.boxShadow = "0 0 3px 2px rgba(0, 123, 255, 0.5)";
+            }}
+            onBlur={(e) => {
+              e.target.style.boxShadow = "0 0 0 0px rgba(0, 0, 0, 0)";
+            }}
+            title="Create Request"
+            onClick={openModal}
+          >
+            +
+          </button>
           </div>
           {Object.keys(groupedContent).map((project) => (
             <div
@@ -228,6 +262,55 @@ function Projects({ email }) {
           ))}
         </>
       )}
+      {isModalOpen && (
+          <div
+            className="modal"
+            style={{
+              position: "fixed",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "90%",
+              maxWidth: "600px",
+              backgroundColor: "#FFF",
+              padding: "20px",
+              borderRadius: "8px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+              zIndex: 1000,
+            }}
+          >
+            <p style={{ color: "#555555", textAlign: 'left', fontSize: '150%', fontWeight: 'bold'  }}>Create Project</p>
+            <hr></hr>
+            <iframe
+              src="https://form.fillout.com/t/tFGjkW6DQYus"
+              title="Create Request Form"
+              style={{
+                width: "100%",
+                height: "400px",
+                border: "none",
+                // borderRadius: "4px",
+                // boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+              }}
+            ></iframe>
+           
+          </div>
+        )}
+        {isModalOpen && (
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0,0,0,0.5)",
+              zIndex: 999,
+            }}
+            onClick={closeModal}
+          />
+        )}
+
+
     </div>
   );
 }
