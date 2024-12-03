@@ -76,7 +76,7 @@ function Projects({ email }) {
   const closeModal = () => setIsModalOpen(false);
 
   const handleSubmit = () => {
-    console.log("Submitted Request:", { projects, requestDetails });
+    console.log("Submitted Project:", { projects, requestDetails });
     setProjects("");
     setRequestDetails("");
     closeModal();
@@ -126,7 +126,7 @@ function Projects({ email }) {
             onBlur={(e) => {
               e.target.style.boxShadow = "0 0 0 0px rgba(0, 0, 0, 0)";
             }}
-            title="Create Request"
+            title="Create Project"
             onClick={openModal}
           >
             +
@@ -272,9 +272,11 @@ function Projects({ email }) {
               transform: "translate(-50%, -50%)",
               width: "90%",
               maxWidth: "600px",
+              height: "90%", // Increase height
+              overflow: "hidden", // Prevent content overflow
               backgroundColor: "#FFF",
               padding: "20px",
-              borderRadius: "8px",
+              borderRadius: "5px",
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
               zIndex: 1000,
             }}
@@ -283,13 +285,12 @@ function Projects({ email }) {
             <hr></hr>
             <iframe
               src="https://form.fillout.com/t/tFGjkW6DQYus"
-              title="Create Request Form"
+              title="Create Project Form"
               style={{
                 width: "100%",
                 height: "400px",
                 border: "none",
-                // borderRadius: "4px",
-                // boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                height: "100%", 
               }}
             ></iframe>
            
