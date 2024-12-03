@@ -333,7 +333,7 @@ function Projects({ email }) {
             title="Create Project Form"
             style={{
               width: "100%",
-              height: "100%", 
+              height: "90%", 
               border: "none",
             }}
           ></iframe>
