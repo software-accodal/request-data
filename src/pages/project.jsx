@@ -263,54 +263,95 @@ function Projects({ email }) {
         </>
       )}
       {isModalOpen && (
-          <div
-            className="modal"
+        <div
+          className="modal"
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "90%",
+            maxWidth: "600px",
+            height: "90%", 
+            overflow: "hidden", 
+            backgroundColor: "#FFF",
+            padding: "20px",
+            borderRadius: "5px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+            zIndex: 1000,
+          }}
+        >
+          <button
+            onClick={closeModal}
             style={{
-              position: "fixed",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "90%",
-              maxWidth: "600px",
-              height: "90%", // Increase height
-              overflow: "hidden", // Prevent content overflow
-              backgroundColor: "#FFF",
-              padding: "20px",
-              borderRadius: "5px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-              zIndex: 1000,
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              backgroundColor: "transparent",
+              border: "none",
+              padding: "0",
+              cursor: "pointer",
+              outline: "none", 
+            }}
+            title="Close"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="24px"
+              height="24px"
+              fill="none"
+              stroke="#333"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{
+                transition: "stroke 0.3s ease",
+              }}
+              onMouseOver={(e) => (e.target.style.stroke = "red")}
+              onMouseOut={(e) => (e.target.style.stroke = "#333")}
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+
+          <p
+            style={{
+              color: "#555555",
+              textAlign: "left",
+              fontSize: "150%",
+              fontWeight: "bold",
             }}
           >
-            <p style={{ color: "#555555", textAlign: 'left', fontSize: '150%', fontWeight: 'bold'  }}>Create Project</p>
-            <hr></hr>
-            <iframe
-              src="https://form.fillout.com/t/tFGjkW6DQYus"
-              title="Create Project Form"
-              style={{
-                width: "100%",
-                height: "400px",
-                border: "none",
-                height: "100%", 
-              }}
-            ></iframe>
-           
-          </div>
-        )}
-        {isModalOpen && (
-          <div
+            Create New Project
+          </p>
+          <hr />
+          <iframe
+            src="https://form.fillout.com/t/tFGjkW6DQYus"
+            title="Create Project Form"
             style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
               width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(0,0,0,0.5)",
-              zIndex: 999,
+              height: "100%", 
+              border: "none",
             }}
-            onClick={closeModal}
-          />
-        )}
-
+          ></iframe>
+        </div>
+      )}
+      {isModalOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            zIndex: 999,
+          }}
+          onClick={closeModal}
+        />
+      )}
 
     </div>
   );
