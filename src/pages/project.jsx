@@ -108,29 +108,30 @@ function Projects({ email }) {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <h3 style={{ textAlign: 'left', marginBottom: '20px' }}>Projects</h3>
             <button
-            style={{
-              padding: "5px 10px",
-              fontSize: "16px",
-              cursor: "pointer",
-              borderRadius: "5px",
-              backgroundColor: "#007BFF",
-              color: "#FFF",
-              border: "none",
-              outline: "none",
-              boxShadow: "0 0 0 0px rgba(0, 0, 0, 0)",
-              transition: "box-shadow 0.2s ease-in-out",
-            }}
-            onFocus={(e) => {
-              e.target.style.boxShadow = "0 0 3px 2px rgba(0, 123, 255, 0.5)";
-            }}
-            onBlur={(e) => {
-              e.target.style.boxShadow = "0 0 0 0px rgba(0, 0, 0, 0)";
-            }}
-            title="Create Project"
-            onClick={openModal}
-          >
-            +
-          </button>
+                 style={{
+                  padding: "5px 10px",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                  borderRadius: "5px",
+                  backgroundColor: "#007BFF", 
+                  color: "#FFF", 
+                  border: "2px solid #007BFF", 
+                  outline: "none", 
+                  transition: "all 0.2s ease-in-out", 
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.backgroundColor = "transparent"; 
+                  e.target.style.color = "#007BFF"; 
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.backgroundColor = "#007BFF"; 
+                  e.target.style.color = "#FFF"; 
+                }}
+                title="Create Project"
+                onClick={openModal}
+              >
+                +
+            </button>
           </div>
           {Object.keys(groupedContent).map((project) => (
             <div
