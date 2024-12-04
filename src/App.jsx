@@ -69,9 +69,9 @@ function App() {
           setAllEmails(emailSet);
         })
         .catch((error) => console.error('Error fetching conversations:', error));
-    }, 1000); // 2-second delay
+    }, 500); // 
   
-    return () => clearTimeout(delayFetch); // Cleanup timeout on dependency change
+    return () => clearTimeout(delayFetch); 
   }, [missive, conversationIds]);
 
   // const handleRequestData = (hasData) => {
