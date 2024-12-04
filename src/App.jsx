@@ -23,7 +23,7 @@ function App() {
     missive.on(
       "change:conversations",
       (ids) => setConversationIds(ids || []),
-      { retroactive: true }
+      { retroactive: false }
     );
   }, [missive]);
 
