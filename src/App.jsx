@@ -14,12 +14,13 @@ function App() {
   const registered = useRef(false)
 
   useEffect(() => {
-    if (!missive || registered.current) {
+    if (missive || registered.current) {
+    return
+    }
     console.log("test1")
     registered.current = true
-      setMissive(window.Missive);
-    }
-  }, []);
+  setMissive(window.Missive);
+}, []);
 
   useEffect(() => {
     if (!missive) return;
