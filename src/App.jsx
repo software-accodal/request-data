@@ -10,6 +10,7 @@ function App() {
   const [conversations, setConversations] = useState([]);
   const [clientEmail, setClientEmail] = useState("");
   const [allEmails, setAllEmails] = useState(new Set());
+  const [currentFetchId, setCurrentFetchId] = useState(null);
 
   useEffect(() => {
     if (!missive) {
@@ -23,16 +24,21 @@ function App() {
     missive.on(
       "change:conversations",
       (ids) => setConversationIds(ids || []),
-      { retroactive: false }
+      { retroactive: true }
     );
   }, [missive]);
 
   useEffect(() => {
     if (!missive || conversationIds.length === 0) return;
 
+    setAllEmails(new Set());
+    const fetchId = Date.now(); // Unique ID for this fetch
+    setCurrentFetchId(fetchId);
+
     missive
       .fetchConversations(conversationIds)
       .then((fetchedConversations) => {
+        if (fetchId !== currentFetchId) return;
         setConversations(fetchedConversations);
 
         const emailSet = new Set();
@@ -62,7 +68,7 @@ function App() {
         setAllEmails(emailSet);
       })
       .catch((error) => console.error('Error fetching conversations:', error));
-  }, [missive, conversationIds]);
+  }, [missive, conversationIds, currentFetchId]);
 
   // const handleRequestData = (hasData) => {
   //   setHasRequests(hasData);
