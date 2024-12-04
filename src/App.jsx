@@ -15,6 +15,7 @@ function App() {
 
   useEffect(() => {
     if (!missive) {
+    console.log("test1")
       setMissive(window.Missive);
     }
   }, []);
