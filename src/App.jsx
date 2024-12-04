@@ -19,7 +19,7 @@ function App() {
 
   useEffect(() => {
     if (!missive) return;
-
+    console.log("missive")
     missive.on(
       "change:conversations",
       (ids) => setConversationIds(ids || []),
