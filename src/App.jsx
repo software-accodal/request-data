@@ -33,62 +33,62 @@ function App() {
     );
   }, [missive]);
 
-  // useEffect(() => {
-  //   if (!missive || conversationIds.length === 0) return;
+  useEffect(() => {
+    if (!missive || conversationIds.length === 0) return;
 
-  //   missive
-  //     .fetchConversations(conversationIds)
-  //     .then((fetchedConversations) => {
-  //       setConversations(fetchedConversations);
+    missive
+      .fetchConversations(conversationIds)
+      .then((fetchedConversations) => {
+        setConversations(fetchedConversations);
 
-  //       const emailSet = new Set();
-  //       fetchedConversations.forEach((conv) => {
-  //         conv.messages.forEach((message) => {
-  //           if (message.from_field?.address && !message.from_field.address.includes("@altiuscpa.com")) {
-  //             emailSet.add(message.from_field.address);
-  //           }
+        const emailSet = new Set();
+        fetchedConversations.forEach((conv) => {
+          conv.messages.forEach((message) => {
+            if (message.from_field?.address && !message.from_field.address.includes("@altiuscpa.com")) {
+              emailSet.add(message.from_field.address);
+            }
 
-  //           if (message.to_fields) {
-  //             message.to_fields.forEach((to) => {
-  //               if (to.address && !to.address.includes("@altiuscpa.com")) {
-  //                 emailSet.add(to.address);
-  //               }
-  //             });
-  //           }
+            if (message.to_fields) {
+              message.to_fields.forEach((to) => {
+                if (to.address && !to.address.includes("@altiuscpa.com")) {
+                  emailSet.add(to.address);
+                }
+              });
+            }
 
-  //           if (message.cc_fields) {
-  //             message.cc_fields.forEach((cc) => {
-  //               if (cc.address && !cc.address.includes("@altiuscpa.com")) {
-  //                 emailSet.add(cc.address);
-  //               }
-  //             });
-  //           }
-  //         });
-  //       });
-  //       setAllEmails(emailSet);
-  //     })
-  //     .catch((error) => console.error('Error fetching conversations:', error));
-  // }, [missive, conversationIds]);
+            if (message.cc_fields) {
+              message.cc_fields.forEach((cc) => {
+                if (cc.address && !cc.address.includes("@altiuscpa.com")) {
+                  emailSet.add(cc.address);
+                }
+              });
+            }
+          });
+        });
+        setAllEmails(emailSet);
+      })
+      .catch((error) => console.error('Error fetching conversations:', error));
+  }, [missive, conversationIds]);
 
   // const handleRequestData = (hasData) => {
   //   setHasRequests(hasData);
   // };
 
-  // useEffect(() => {
-  //   if (conversations.length > 0) {
-  //     const oldestMessage = conversations
-  //       .flatMap((conv) => conv.messages)
-  //       .reduce(
-  //         (oldest, current) =>
-  //           !oldest || current.delivered_at < oldest.delivered_at ? current : oldest,
-  //         null
-  //       );
+  useEffect(() => {
+    if (conversations.length > 0) {
+      const oldestMessage = conversations
+        .flatMap((conv) => conv.messages)
+        .reduce(
+          (oldest, current) =>
+            !oldest || current.delivered_at < oldest.delivered_at ? current : oldest,
+          null
+        );
 
-  //     if (oldestMessage) {
-  //       setClientEmail(oldestMessage.from_field?.address || "Unknown Email Address");
-  //     }
-  //   }
-  // }, [conversations]);
+      if (oldestMessage) {
+        setClientEmail(oldestMessage.from_field?.address || "Unknown Email Address");
+      }
+    }
+  }, [conversations]);
 
   // useEffect(()=>{
   //   setClientEmail("isonaguilar16@gmail.com" || "Unknown Email Address");
@@ -99,7 +99,7 @@ function App() {
   return (
     <div className="App" style={{ width: '100%', margin: '0 auto', padding: '0', color: '#000000' }}>
       asd
-      {/* {conversations.length > 0 && (
+      {conversations.length > 0 && (
         <div>
           <h2>All Emails in Conversations:</h2>
           <ul>
@@ -121,16 +121,16 @@ function App() {
             </div>
           ))}
         </div>
-      )} */}
+      )}
       
        
-      {/* <Router>
+      <Router>
             <Routes>
                 <Route path="/requests" element={<Requests emails={[...allEmails]} />} />
 
                 <Route path="/projects" element={<Projects emails={[...allEmails]} />} />
             </Routes>
-        </Router> */}
+        </Router>
       
     </div>
   );
