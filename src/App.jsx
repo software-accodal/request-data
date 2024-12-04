@@ -15,6 +15,7 @@ function App() {
 
   useEffect(() => {
     if (missive || registered.current) {
+      console.log("Registered")
     return
     }
     console.log("test1")
@@ -98,7 +99,6 @@ function App() {
 
   return (
     <div className="App" style={{ width: '100%', margin: '0 auto', padding: '0', color: '#000000' }}>
-      asd
       {conversations.length > 0 && (
         <div>
           <h2>All Emails in Conversations:</h2>
