@@ -32,6 +32,13 @@ function Requests({ emails }) {
       )
       .then((response) => {
         const data = response.data;
+        // Validate that data is an array
+        if (!Array.isArray(data)) {
+          console.error('Error: Expected an array but received:', data);
+          setAirtableRecords([]);
+          setGroupedContent({});
+          return;
+        }
         setAirtableRecords(data);
 
         const grouped = data.reduce((acc, record) => {
