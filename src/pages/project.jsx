@@ -11,7 +11,7 @@ function Projects({ emails }) {
 
   useEffect(() => {
     if (!emails || emails.length === 0) return;
-
+  
     setLoading(true);
     const formula = `OR(${emails.map((email) => `FIND('${email}', {Client Email} & "")`).join(', ')})`;
     console.log("Searching for emails:", emails);
@@ -36,45 +36,48 @@ function Projects({ emails }) {
           const dateB = new Date(b.fields['Created']);
           return dateB - dateA; // Newest first
         });
-    
-        setAirtableRecords(sortedData);
-
-        const grouped = sortedData.reduce((acc, record) => {
-          const project = record.fields['Project Name'] || 'Uncategorized';
-          const rfistatus = record.fields['RFI Status'];
-          const preparer = record.fields['Preparer Name'];
-          const reviewer1 = record.fields['1st Reviewer Name'];
-          const reviewer2 = record.fields['2nd Reviewer Name'];
-          const principal = record.fields['Principal Name'];
-          const rficlosedate = record.fields['RFI Closed Date'];
-          const created = record.fields['Created'] || '';
-
-          if (!acc[project]) {
-            acc[project] = { statuses: [], created, preparer, reviewer1, reviewer2, principal, rficlosedate };
-          }
-
-          if (rfistatus) {
-            acc[project].statuses.push(rfistatus);
-          }
-
-          return acc;
-        }, {});
-
-        setGroupedContent(grouped);
-
-        const initialState = Object.keys(grouped).reduce((acc, project) => {
-          acc[project] = false;
-          return acc;
-        }, {});
-        setExpandedProjects(initialState);
+  
+        setTimeout(() => { // Add a delay here
+          setAirtableRecords(sortedData);
+  
+          const grouped = sortedData.reduce((acc, record) => {
+            const project = record.fields['Project Name'] || 'Uncategorized';
+            const rfistatus = record.fields['RFI Status'];
+            const preparer = record.fields['Preparer Name'];
+            const reviewer1 = record.fields['1st Reviewer Name'];
+            const reviewer2 = record.fields['2nd Reviewer Name'];
+            const principal = record.fields['Principal Name'];
+            const rficlosedate = record.fields['RFI Closed Date'];
+            const created = record.fields['Created'] || '';
+  
+            if (!acc[project]) {
+              acc[project] = { statuses: [], created, preparer, reviewer1, reviewer2, principal, rficlosedate };
+            }
+  
+            if (rfistatus) {
+              acc[project].statuses.push(rfistatus);
+            }
+  
+            return acc;
+          }, {});
+  
+          setGroupedContent(grouped);
+  
+          const initialState = Object.keys(grouped).reduce((acc, project) => {
+            acc[project] = false;
+            return acc;
+          }, {});
+          setExpandedProjects(initialState);
+  
+          setLoading(false); // Stop loading after delay
+        }, 1000); // Delay for 1 second
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
-      })
-      .finally(() => {
-        setLoading(false);
+        setLoading(false); // Stop loading even on error
       });
   }, [emails, modalClosed]);
+  
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
