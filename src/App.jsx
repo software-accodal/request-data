@@ -38,22 +38,23 @@ function App() {
         const emailSet = new Set();
         fetchedConversations.forEach((conv) => {
           conv.messages.forEach((message) => {
-            // Add 'From' email
-            if (message.from_field?.address) {
+            if (message.from_field?.address && !message.from_field.address.includes("@altiuscpa.com")) {
               emailSet.add(message.from_field.address);
             }
 
-            // Add 'To' emails
             if (message.to_fields) {
               message.to_fields.forEach((to) => {
-                if (to.address) emailSet.add(to.address);
+                if (to.address && !to.address.includes("@altiuscpa.com")) {
+                  emailSet.add(to.address);
+                }
               });
             }
 
-            // Add 'CC' emails
             if (message.cc_fields) {
               message.cc_fields.forEach((cc) => {
-                if (cc.address) emailSet.add(cc.address);
+                if (cc.address && !cc.address.includes("@altiuscpa.com")) {
+                  emailSet.add(cc.address);
+                }
               });
             }
           });
