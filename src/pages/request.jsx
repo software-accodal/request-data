@@ -14,7 +14,8 @@ function Requests({ emails }) {
     if (!emails || emails.length === 0) return;
 
     setLoading(true);
-    const formula = `OR(${emails.map((email) => `FIND('${email}', {Client Email} & "")`).join(', ')})`;
+
+    const formula = `OR(${emails.map(email => `FIND('${email}', {Client Emails} & "")`).join(', ')})`;
     console.log("Searching for emails:", emails);
     axios
       .post(
@@ -32,13 +33,6 @@ function Requests({ emails }) {
       )
       .then((response) => {
         const data = response.data;
-        // Validate that data is an array
-        if (!Array.isArray(data)) {
-          console.error('Error: Expected an array but received:', data);
-          setAirtableRecords([]);
-          setGroupedContent({});
-          return;
-        }
         setAirtableRecords(data);
 
         const grouped = data.reduce((acc, record) => {
@@ -74,26 +68,24 @@ function Requests({ emails }) {
           return acc;
         }, {});
         setExpandedProjects(initialState);
-       
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       })
       .finally(() => {
-        setLoading(false); 
+        setLoading(false);
       });
-
   }, [emails]);
 
   const openModal = () => setIsModalOpen(true);
-      const closeModal = () => setIsModalOpen(false);
-    
-      const handleSubmit = () => {
-        console.log("Submitted Request:", { projects, requestDetails });
-        setProjects("");
-        setRequestDetails("");
-        closeModal();
-      };
+  const closeModal = () => setIsModalOpen(false);
+
+  const handleSubmit = () => {
+    console.log("Submitted Request:", { projects, requestDetails });
+    setProjects("");
+    setRequestDetails("");
+    closeModal();
+  };
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
