@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Requests from './pages/request.jsx';
 import Projects from './pages/project.jsx';
@@ -11,6 +11,8 @@ function App() {
   const [clientEmail, setClientEmail] = useState("");
   const [allEmails, setAllEmails] = useState(new Set());
 
+  const registered = useRef(false)
+
   useEffect(() => {
     if (!missive) {
       setMissive(window.Missive);
@@ -18,8 +20,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!missive) return;
+    if (!missive || registered.current) return;
+
     console.log("missive")
+    registered.current = true
     missive.on(
       "change:conversations",
       (ids) => setConversationIds(ids || []),
