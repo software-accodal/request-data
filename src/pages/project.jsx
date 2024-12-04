@@ -8,11 +8,19 @@ function Projects({ emails }) {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalClosed, setModalClosed] = useState(false); // New state variable
+  const [currentFetchId, setCurrentFetchId] = useState(null); // Track current fetch request
 
   useEffect(() => {
-    if (!emails || emails.length === 0) return;
+    if (!emails || emails.length === 0) {
+      setAirtableRecords([]); // Clear records when no emails are provided
+      setGroupedContent({});
+      return;
+    }
 
     setLoading(true);
+    const fetchId = Date.now(); // Unique identifier for this fetch
+    setCurrentFetchId(fetchId);
+
     const formula = `OR(${emails.map((email) => `FIND('${email}', {Client Email} & "")`).join(', ')})`;
     console.log("Searching for emails:", emails);
     axios
@@ -72,9 +80,9 @@ function Projects({ emails }) {
         console.error('Error fetching data:', error);
       })
       .finally(() => {
-        setLoading(false);
+        if (fetchId === currentFetchId) setLoading(false);
       });
-  }, [emails, modalClosed]);
+  }, [emails, modalClosed, currentFetchId]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
