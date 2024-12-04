@@ -35,39 +35,43 @@ function App() {
 
   useEffect(() => {
     if (!missive || conversationIds.length === 0) return;
-
-    missive
-      .fetchConversations(conversationIds)
-      .then((fetchedConversations) => {
-        setConversations(fetchedConversations);
-
-        const emailSet = new Set();
-        fetchedConversations.forEach((conv) => {
-          conv.messages.forEach((message) => {
-            if (message.from_field?.address && !message.from_field.address.includes("@altiuscpa.com")) {
-              emailSet.add(message.from_field.address);
-            }
-
-            if (message.to_fields) {
-              message.to_fields.forEach((to) => {
-                if (to.address && !to.address.includes("@altiuscpa.com")) {
-                  emailSet.add(to.address);
-                }
-              });
-            }
-
-            if (message.cc_fields) {
-              message.cc_fields.forEach((cc) => {
-                if (cc.address && !cc.address.includes("@altiuscpa.com")) {
-                  emailSet.add(cc.address);
-                }
-              });
-            }
+  
+    const delayFetch = setTimeout(() => {
+      missive
+        .fetchConversations(conversationIds)
+        .then((fetchedConversations) => {
+          setConversations(fetchedConversations);
+  
+          const emailSet = new Set();
+          fetchedConversations.forEach((conv) => {
+            conv.messages.forEach((message) => {
+              if (message.from_field?.address && !message.from_field.address.includes("@altiuscpa.com")) {
+                emailSet.add(message.from_field.address);
+              }
+  
+              if (message.to_fields) {
+                message.to_fields.forEach((to) => {
+                  if (to.address && !to.address.includes("@altiuscpa.com")) {
+                    emailSet.add(to.address);
+                  }
+                });
+              }
+  
+              if (message.cc_fields) {
+                message.cc_fields.forEach((cc) => {
+                  if (cc.address && !cc.address.includes("@altiuscpa.com")) {
+                    emailSet.add(cc.address);
+                  }
+                });
+              }
+            });
           });
-        });
-        setAllEmails(emailSet);
-      })
-      .catch((error) => console.error('Error fetching conversations:', error));
+          setAllEmails(emailSet);
+        })
+        .catch((error) => console.error('Error fetching conversations:', error));
+    }, 2000); // 2-second delay
+  
+    return () => clearTimeout(delayFetch); // Cleanup timeout on dependency change
   }, [missive, conversationIds]);
 
   // const handleRequestData = (hasData) => {
