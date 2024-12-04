@@ -11,26 +11,24 @@ function App() {
   const [clientEmail, setClientEmail] = useState("");
   const [allEmails, setAllEmails] = useState(new Set());
 
-  const registered = useRef(false)
+  const registered = useRef(false);
 
   useEffect(() => {
-    if (missive || registered.current) {
-      console.log("Registered")
-    return
-    }
-    console.log("test1")
-    registered.current = true
-  setMissive(window.Missive);
-}, []);
-
+    if (registered.current) return; // Ensures this runs only once
+  
+    console.log("initialRun");
+    registered.current = true;
+    setMissive(window.Missive);
+  }, []); // Only runs once on mount
+  
   useEffect(() => {
     if (!missive) return;
-
-    console.log("missive1")
+  
+    console.log("Missive");
     missive.on(
       "change:conversations",
       (ids) => setConversationIds(ids || []),
-      { retroactive: false }
+      { retroactive: true }
     );
   }, [missive]);
 
