@@ -9,7 +9,7 @@ function App() {
   const [conversationIds, setConversationIds] = useState([]);
   const [conversations, setConversations] = useState([]);
   const [clientEmail, setClientEmail] = useState("");
-
+  const [allEmails, setAllEmails] = useState(new Set());
 
   useEffect(() => {
     if (!missive) {
@@ -32,7 +32,34 @@ function App() {
 
     missive
       .fetchConversations(conversationIds)
-      .then((conversations) => setConversations(conversations))
+      .then((fetchedConversations) => {
+        setConversations(fetchedConversations);
+
+        const emailSet = new Set();
+        fetchedConversations.forEach((conv) => {
+          conv.messages.forEach((message) => {
+            // Add 'From' email
+            if (message.from_field?.address) {
+              emailSet.add(message.from_field.address);
+            }
+
+            // Add 'To' emails
+            if (message.to_fields) {
+              message.to_fields.forEach((to) => {
+                if (to.address) emailSet.add(to.address);
+              });
+            }
+
+            // Add 'CC' emails
+            if (message.cc_fields) {
+              message.cc_fields.forEach((cc) => {
+                if (cc.address) emailSet.add(cc.address);
+              });
+            }
+          });
+        });
+        setAllEmails(emailSet);
+      })
       .catch((error) => console.error('Error fetching conversations:', error));
   }, [missive, conversationIds]);
 
@@ -67,52 +94,34 @@ function App() {
       
       {conversations.length > 0 && (
         <div>
-          {/* <h2 style={{ marginBottom: '10px' }}>Conversation</h2> */}
-          {conversations.map((conv) => {
-            const oldestMessage = conv.messages.reduce(
-              (oldest, current) =>
-                !oldest || current.delivered_at < oldest.delivered_at ? current : oldest,
-              null
-            );
-
-            return (
-              <div
-                key={conv.id}
-                style={{
-                  marginBottom: '10px',
-                  padding: '5px',
-                  borderBottom: '1px solid #ddd',
-                  textAlign: 'left'
-                }}
-              >
-                {/* Display conversation subject */}
-                {/* <h3 style={{ margin: '10px 0' }}>Subject:</h3> */}
-                <p style={{ marginTop: '10px' }}>Subject:&nbsp;{conv.subject}</p>
-
-                {/* Display sender of the oldest email */}
-                <div style={{ marginTop: '10px' }}>
-                  {/* <h3 style={{ margin: '10px 0' }}>Sender:</h3> */}
-                  {oldestMessage ? (
-                    <p style={{ margin: '5px 0', color: '#333' }}>Sender:&nbsp;{oldestMessage.from_field?.address || 'Unknown Email Address'}
-                    </p>
-                  ) : (
-                    <p style={{ margin: '5px 0', color: '#999' }}>
-                      No messages available in this conversation.
-                    </p>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+          <h2>All Emails in Conversations:</h2>
+          <ul>
+            {[...allEmails].map((email, index) => (
+              <li key={index}>{email}</li>
+            ))}
+          </ul>
+          {conversations.map((conv) => (
+            <div
+              key={conv.id}
+              style={{
+                marginBottom: '10px',
+                padding: '5px',
+                borderBottom: '1px solid #ddd',
+                textAlign: 'left',
+              }}
+            >
+              <p>Subject: {conv.subject}</p>
+            </div>
+          ))}
         </div>
       )}
       
        
       <Router>
             <Routes>
-                <Route path="/requests" element={<Requests email={clientEmail} />} />
+                <Route path="/requests" element={<Requests email={[...allEmails]} />} />
 
-                <Route path="/projects" element={<Projects email={clientEmail} />} />
+                <Route path="/projects" element={<Projects email={[...allEmails]} />} />
             </Routes>
         </Router>
       

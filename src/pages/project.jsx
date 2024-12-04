@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function Projects({ email }) {
+function Projects([email]) {
   const [airtableRecords, setAirtableRecords] = useState([]);
   const [groupedContent, setGroupedContent] = useState({});
   const [expandedProjects, setExpandedProjects] = useState({});
