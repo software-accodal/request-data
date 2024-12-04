@@ -22,7 +22,7 @@ function App() {
   useEffect(() => {
     if (!missive || registered.current) return;
 
-    console.log("missive")
+    console.log("missive1")
     registered.current = true
     missive.on(
       "change:conversations",
