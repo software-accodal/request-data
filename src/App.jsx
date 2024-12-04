@@ -69,7 +69,7 @@ function App() {
           setAllEmails(emailSet);
         })
         .catch((error) => console.error('Error fetching conversations:', error));
-    }, 2000); // 2-second delay
+    }, 1000); // 2-second delay
   
     return () => clearTimeout(delayFetch); // Cleanup timeout on dependency change
   }, [missive, conversationIds]);
