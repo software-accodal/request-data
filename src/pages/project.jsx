@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function Projects([email]) {
+function Projects({ emails  }) {
   const [airtableRecords, setAirtableRecords] = useState([]);
   const [groupedContent, setGroupedContent] = useState({});
   const [expandedProjects, setExpandedProjects] = useState({});
@@ -10,11 +10,11 @@ function Projects([email]) {
   const [modalClosed, setModalClosed] = useState(false); // New state variable
 
   useEffect(() => {
-    if (!email) return;
+    if (!emails || emails.length === 0) return;
 
     setLoading(true);
-    const formula = `FIND('${email}', {Client Email} & "")`;
-    console.log(email)
+    const formula = `OR(${emails.map((email) => `FIND('${email}', {Client Email} & "")`).join(', ')})`;
+    console.log("Searching for emails:", emails);
     axios
       .post(
         `https://accodal-api-rc8y.onrender.com/api/airtable/get-by-formula`,
