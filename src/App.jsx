@@ -123,13 +123,7 @@ function App() {
       )}
       
        
-      <Router>
-            <Routes>
-                <Route path="/requests" element={<Requests emails={[...allEmails]} />} />
 
-                <Route path="/projects" element={<Projects emails={[...allEmails]} />} />
-            </Routes>
-        </Router>
       
     </div>
   );
