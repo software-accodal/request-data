@@ -14,17 +14,17 @@ function App() {
   const registered = useRef(false)
 
   useEffect(() => {
-    if (!missive) {
+    if (!missive || registered.current) {
     console.log("test1")
+    registered.current = true
       setMissive(window.Missive);
     }
   }, []);
 
   useEffect(() => {
-    if (!missive || registered.current) return;
+    if (!missive) return;
 
     console.log("missive1")
-    registered.current = true
     missive.on(
       "change:conversations",
       (ids) => setConversationIds(ids || []),
