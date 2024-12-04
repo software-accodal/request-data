@@ -14,7 +14,7 @@ function Projects({ email }) {
 
     setLoading(true);
     const formula = `FIND('${email}', {Client Email} & "")`;
-
+    console.log(email)
     axios
       .post(
         `https://accodal-api-rc8y.onrender.com/api/airtable/get-by-formula`,
