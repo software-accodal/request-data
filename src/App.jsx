@@ -40,7 +40,7 @@ function App() {
       .fetchConversations(conversationIds)
       .then((fetchedConversations) => {
         setConversations(fetchedConversations);
-        console.log(conversationIds)
+        console.log(fetchedConversations)
         const emailSet = new Set();
         fetchedConversations.forEach((conv) => {
           conv.messages.forEach((message) => {
