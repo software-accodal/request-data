@@ -68,6 +68,7 @@ function App() {
         setAllEmails(emailSet);
       })
       .catch((error) => console.error('Error fetching conversations:', error));
+      console.log(currentFetchId)
   }, [missive, conversationIds, currentFetchId]);
 
   // const handleRequestData = (hasData) => {
