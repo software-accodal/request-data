@@ -74,7 +74,7 @@ function Projects({ emails }) {
       .finally(() => {
         setLoading(false);
       });
-  }, [email, modalClosed]);
+  }, [emails, modalClosed]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
