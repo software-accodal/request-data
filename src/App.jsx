@@ -91,7 +91,7 @@ function App() {
   }, [conversations]);
 
   useEffect(()=>{
-    setAllEmails("isonaguilar16@gmail.com" || "Unknown Email Address");
+    setAllEmails("i" || "Unknown Email Address");
   })
 
 
