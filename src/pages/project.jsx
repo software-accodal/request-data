@@ -139,131 +139,25 @@ function Projects({ emails }) {
             </button>
           </div>
           {Object.keys(groupedContent).map((project) => (
-            <div
-              key={project}
-              style={{
-                width: '100%',
-                marginBottom: '10px',
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                borderRadius: '5px',
-                overflow: 'hidden',
-                boxSizing: 'border-box',
-              }}
-            >
-              <div
-                style={{
-                  cursor: 'pointer',
-                  background: '#ffffff',
-                  padding: '15px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-                onClick={() => toggleProject(project)}
-              >
-                <span style={{ fontSize: '1em', marginRight: '10px', flexShrink: 0, color: '#555555' }}>
-                  {expandedProjects[project] ? '▲' : '▼'}
+              <div key={project} className={`align-left box box-collapsable ${expandedProjects[project] ? 'box-collapsable--opened' : ''}`}>
+               <div className="box-header columns-middle"
+               onClick={() => toggleProject(project)}>
+                <span className="margin-right-small">
+                <i
+                    className='icon icon-menu-right'
+                    style={{ width: "6px", height: "10px", color: '#000000' }}
+                  >
+                    <svg name="menu-right"/>
+                  </i>
                 </span>
-                <p style={{ margin: 0, textAlign: 'left', flex: 1 }}>{project}</p>
-                <span style={{ fontSize: '0.9em', color: '#555', marginLeft: '15px' }}>
+                <span className="column-grow ellipsis">{project}</span>
+                <span className="text-e" style={{ fontSize: '0.9em', marginLeft: '15px' }}>
                   {formatDate(groupedContent[project].created)}
                 </span>
               </div>
-              {expandedProjects[project] && (
-                  <div style={{ padding: '15px', background: '#f9f9f9', display: 'flex', gap: '15px' }}>
-                    {/* First Column */}
-                    <div style={{ flex: '1', width: '50%', textAlign: 'left' }}>
-                      <p style={{ marginBottom: '5px', fontWeight: 'normal' }}>RFI Status</p>
-                      <span style={{
-                        display: 'inline-block',
-                        backgroundColor: '#e0f7fa',
-                        color: '#00796b',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.85em',
-                        fontWeight: 'normal',
-                        marginBottom: '10px'
-                      }}>
-                        {groupedContent[project].statuses.join(', ') || 'N/A'}
-                      </span>
-
-                      <p style={{ marginBottom: '5px', fontWeight: 'normal' }}>1st Reviewer</p>
-                      <span style={{
-                        display: 'inline-block',
-                        backgroundColor: '#e0f7fa',
-                        color: '#00796b',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.85em',
-                        fontWeight: 'normal',
-                        marginBottom: '10px'
-                      }}>
-                        {groupedContent[project].reviewer1 || 'N/A'}
-                      </span>
-
-                      <p style={{ marginBottom: '5px', fontWeight: 'normal' }}>Principal</p>
-                      <span style={{
-                        display: 'inline-block',
-                        backgroundColor: '#e0f7fa',
-                        color: '#00796b',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.85em',
-                        fontWeight: 'normal',
-                        marginBottom: '10px'
-                      }}>
-                        {groupedContent[project].principal || 'N/A'}
-                      </span>
-                    </div>
-
-                    {/* Second Column */}
-                    <div style={{ flex: '1', width: '50%', textAlign: 'left' }}>
-                      <p style={{ marginBottom: '5px', fontWeight: 'normal' }}>Preparer</p>
-                      <span style={{
-                        display: 'inline-block',
-                        backgroundColor: '#e0f7fa',
-                        color: '#00796b',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.85em',
-                        fontWeight: 'normal',
-                        marginBottom: '10px'
-                      }}>
-                        {groupedContent[project].preparer || 'N/A'}
-                      </span>
-
-                      <p style={{ marginBottom: '5px', fontWeight: 'normal' }}>2nd Reviewer</p>
-                      <span style={{
-                        display: 'inline-block',
-                        backgroundColor: '#e0f7fa',
-                        color: '#00796b',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.85em',
-                        fontWeight: 'normal',
-                        marginBottom: '10px'
-                      }}>
-                        {groupedContent[project].reviewer2 || 'N/A'}
-                      </span>
-
-                      <p style={{ marginBottom: '5px', fontWeight: 'normal' }}>RFI Closed Date</p>
-                      <span style={{
-                        display: 'inline-block',
-                        backgroundColor: '#e0f7fa',
-                        color: '#00796b',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.85em',
-                        fontWeight: 'normal',
-                        marginBottom: '10px'
-                      }}>
-                        {groupedContent[project].rficlosedate ? formatDate(groupedContent[project].rficlosedate) : 'N/A'}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-
+              <div class="box-content">
+                <div>Content</div>
+              </div>
             </div>
           ))}
         </>
