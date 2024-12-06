@@ -151,7 +151,7 @@ function Projects({ emails }) {
                 </span>
               </div>
               <div className="box-content">
-              <div style={{ padding: '15px', background: '#f9f9f9', display: 'flex', gap: '15px' }}>
+              <div style={{ padding: '15px', display: 'flex', gap: '15px' }}>
                     {/* First Column */}
                     <div style={{ flex: '1', width: '50%', textAlign: 'left' }}>
                       <p className='text-a' style={{ marginBottom: '5px', fontWeight: 'normal' }}>RFI Status</p>
