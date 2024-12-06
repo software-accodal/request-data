@@ -155,7 +155,7 @@ function Projects({ emails }) {
                   {formatDate(groupedContent[project].created)}
                 </span>
               </div>
-              <div class="box-content">
+              <div className="box-content">
                 <div>Content</div>
               </div>
             </div>
