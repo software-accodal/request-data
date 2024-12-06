@@ -105,15 +105,15 @@ function Projects({ emails }) {
   return (
     <div className='columns-vertical'>
       {loading ? (
-        <p className='align-center'>Loading projects...</p>
+        <p className='align-center text-a'>Loading projects...</p>
       ) : airtableRecords.length === 0 ? (
-        <p className='align-center' style={{ color: '#888', fontSize: '1em' }}>
+        <p className='align-center text-b' style={{ color: '#888', fontSize: '1em' }}>
           No projects associated with this email
         </p>
       ) : (
         <>
           <div className='columns-justify' style={{ alignItems: 'center' }}>
-            <h3 style={{ color: '#555555' }}>Projects</h3>
+            <h3 className='text-c'>Projects</h3>
             <button
             className='button'
                  style={{
@@ -152,8 +152,8 @@ function Projects({ emails }) {
                     </svg>
                   </i>
                 </span>
-                <span className="column-grow ellipsis">{project}</span>
-                <span className="text-b" style={{ fontSize: '0.9em', marginLeft: '15px' }}>
+                <span className="column-grow ellipsis text-a">{project}</span>
+                <span className="text-c" style={{ fontSize: '0.9em', marginLeft: '15px' }}>
                   {formatDate(groupedContent[project].created)}
                 </span>
               </div>
