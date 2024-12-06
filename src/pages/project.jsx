@@ -168,8 +168,8 @@ function Projects({ emails }) {
                         {groupedContent[project].statuses.join(', ') || 'N/A'}
                       </span>
 
-                      <p style={{ marginBottom: '5px', fontWeight: 'normal' }}>1st Reviewer</p>
-                      <span style={{
+                      <p className='text-a' style={{ marginBottom: '5px', fontWeight: 'normal' }}>1st Reviewer</p>
+                      <span className='text-a' style={{
                         display: 'inline-block',
                         backgroundColor: '#e0f7fa',
                         color: '#00796b',
@@ -182,8 +182,8 @@ function Projects({ emails }) {
                         {groupedContent[project].reviewer1 || 'N/A'}
                       </span>
 
-                      <p style={{ marginBottom: '5px', fontWeight: 'normal' }}>Principal</p>
-                      <span style={{
+                      <p className='text-a' style={{ marginBottom: '5px', fontWeight: 'normal' }}>Principal</p>
+                      <span className='text-a' style={{
                         display: 'inline-block',
                         backgroundColor: '#e0f7fa',
                         color: '#00796b',
@@ -199,8 +199,8 @@ function Projects({ emails }) {
 
                     {/* Second Column */}
                     <div style={{ flex: '1', width: '50%', textAlign: 'left' }}>
-                      <p style={{ marginBottom: '5px', fontWeight: 'normal' }}>Preparer</p>
-                      <span style={{
+                      <p className='text-a' style={{ marginBottom: '5px', fontWeight: 'normal' }}>Preparer</p>
+                      <span className='text-a' style={{
                         display: 'inline-block',
                         backgroundColor: '#e0f7fa',
                         color: '#00796b',
@@ -213,8 +213,8 @@ function Projects({ emails }) {
                         {groupedContent[project].preparer || 'N/A'}
                       </span>
 
-                      <p style={{ marginBottom: '5px', fontWeight: 'normal' }}>2nd Reviewer</p>
-                      <span style={{
+                      <p className='text-a' style={{ marginBottom: '5px', fontWeight: 'normal' }}>2nd Reviewer</p>
+                      <span className='text-a' style={{
                         display: 'inline-block',
                         backgroundColor: '#e0f7fa',
                         color: '#00796b',
@@ -227,8 +227,8 @@ function Projects({ emails }) {
                         {groupedContent[project].reviewer2 || 'N/A'}
                       </span>
 
-                      <p style={{ marginBottom: '5px', fontWeight: 'normal' }}>RFI Closed Date</p>
-                      <span style={{
+                      <p className='text-a' style={{ marginBottom: '5px', fontWeight: 'normal' }}>RFI Closed Date</p>
+                      <span className='text-a' style={{
                         display: 'inline-block',
                         backgroundColor: '#e0f7fa',
                         color: '#00796b',
