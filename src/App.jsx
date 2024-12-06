@@ -100,7 +100,7 @@ function App() {
     <div className="App" style={{ width: '100%', margin: '0 auto', padding: '0', color: '#000000' }}>
       {conversations.length > 0 && (
         <div>
-          <p className='text-xlarge'>All Emails in Conversations:</p>
+          <p className='text-xlarge text-a'>All Emails in Conversations:</p>
           <ul>
             {[...allEmails].map((email, index) => (
               <li key={index}>{email}</li>
