@@ -99,11 +99,11 @@ function App() {
   return (
     <div className="App" style={{ width: '100%', margin: '0 auto', padding: '0', color: '#000000' }}>
       {conversations.length > 0 && (
-        <div>
-          <p className='text-xlarge text-a'>All Emails in Conversations:</p>
+        <div className='columns'>
+          <p className='text-normal text-a align-left'>All Emails in Conversations:</p>
           <ul>
             {[...allEmails].map((email, index) => (
-              <li key={index}>{email}</li>
+              <li key={index} className='list-title text-a'>{email}</li>
             ))}
           </ul>
           {conversations.map((conv) => (
@@ -116,7 +116,7 @@ function App() {
                 textAlign: 'left',
               }}
             >
-              <p>Subject: {conv.subject}</p>
+              <p className='text-normal text-a'>Subject: {conv.subject}</p>
             </div>
           ))}
         </div>
