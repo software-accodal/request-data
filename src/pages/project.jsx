@@ -145,13 +145,15 @@ function Projects({ emails }) {
                 <span className="margin-right-small">
                 <i
                     className='icon icon-menu-right'
-                    style={{ width: "6px", height: "10px", color: '#000000' }}
+                    style={{ width: "6px", height: "10px" }}
                   >
-                    <svg name="menu-right"/>
+                    <svg style={{ width: "24px", height: "24px" }}>
+                      <use xlinkHref="#menu-right" />
+                    </svg>
                   </i>
                 </span>
                 <span className="column-grow ellipsis">{project}</span>
-                <span className="text-e" style={{ fontSize: '0.9em', marginLeft: '15px' }}>
+                <span className="text-b" style={{ fontSize: '0.9em', marginLeft: '15px' }}>
                   {formatDate(groupedContent[project].created)}
                 </span>
               </div>
