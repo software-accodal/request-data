@@ -11,20 +11,21 @@ function App() {
   const [clientEmail, setClientEmail] = useState("");
   const [allEmails, setAllEmails] = useState(new Set());
 
-  const registered = useRef(false);
+  const registered = useRef(false)
 
   useEffect(() => {
-    if (registered.current) return; // Ensures this runs only once
-  
-    console.log("initialRun");
-    registered.current = true;
-    setMissive(window.Missive);
-  }, []); // Only runs once on mount
-  
+    if (missive || registered.current) {
+    return
+    }
+    console.log("initialRun")
+    registered.current = true
+  setMissive(window.Missive);
+}, []);
+
   useEffect(() => {
     if (!missive) return;
-  
-    console.log("Missive");
+
+    console.log("missive")
     missive.on(
       "change:conversations",
       (ids) => setConversationIds(ids || []),
@@ -39,7 +40,7 @@ function App() {
       .fetchConversations(conversationIds)
       .then((fetchedConversations) => {
         setConversations(fetchedConversations);
-        console.log(fetchedConversations)
+
         const emailSet = new Set();
         fetchedConversations.forEach((conv) => {
           conv.messages.forEach((message) => {
@@ -89,9 +90,9 @@ function App() {
     }
   }, [conversations]);
 
-  // useEffect(()=>{
-  //   setClientEmail("isonaguilar16@gmail.com" || "Unknown Email Address");
-  // })
+  useEffect(()=>{
+    setAllEmails("isonaguilar16@gmail.com" || "Unknown Email Address");
+  })
 
 
 

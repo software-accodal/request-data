@@ -103,28 +103,26 @@ function Projects({ emails }) {
   };
 
   return (
-    <div>
+    <div className='columns-vertical'>
       {loading ? (
-        <p style={{ textAlign: 'center' }}>Loading projects...</p>
+        <p className='align-center'>Loading projects...</p>
       ) : airtableRecords.length === 0 ? (
-        <p style={{ textAlign: 'center', color: '#888', fontSize: '1em' }}>
+        <p className='align-center' style={{ color: '#888', fontSize: '1em' }}>
           No projects associated with this email
         </p>
       ) : (
         <>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <h3 style={{ textAlign: 'left', marginBottom: '20px', color: '#555555' }}>Projects</h3>
+          <div className='columns-justify' style={{ alignItems: 'center' }}>
+            <h3 style={{ color: '#555555' }}>Projects</h3>
             <button
+            className='button'
                  style={{
-                  padding: "5px 10px",
-                  fontSize: "16px",
                   cursor: "pointer",
-                  borderRadius: "5px",
+                  borderRadius: "10px",
                   backgroundColor: "#007BFF", 
                   color: "#FFF", 
                   border: "2px solid #007BFF", 
                   outline: "none", 
-                  transition: "all 0.2s ease-in-out", 
                 }}
                 onMouseOver={(e) => {
                   e.target.style.backgroundColor = "transparent"; 
