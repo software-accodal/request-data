@@ -103,7 +103,7 @@ function App() {
           <p className='text-normal text-a align-left'>All Emails in Conversations:</p>
           <ul>
             {[...allEmails].map((email, index) => (
-              <li key={index} className='list-title text-a'>{email}</li>
+              <li key={index} className='list-title text-a align-left'>{email}</li>
             ))}
           </ul>
           {conversations.map((conv) => (
