@@ -142,15 +142,8 @@ function Projects({ emails }) {
               <div key={project} className={`align-left box box-collapsable ${expandedProjects[project] ? 'box-collapsable--opened' : ''}`}>
                <div className="box-header columns-middle"
                onClick={() => toggleProject(project)}>
-                <span className="margin-right-small">
-                <i
-                    className='icon icon-menu-right'
-                    style={{ width: "6px", height: "10px" }}
-                  >
-                    <svg style={{ width: "24px", height: "24px" }}>
-                      <use xlinkHref="#menu-right" />
-                    </svg>
-                  </i>
+                <span className="text-d text-xlarge">
+                  {expandedProjects[project] ? '▾' : '▸'}
                 </span>
                 <span className="column-grow ellipsis text-a">{project}</span>
                 <span className="text-c" style={{ fontSize: '0.9em', marginLeft: '15px' }}>
