@@ -99,11 +99,11 @@ function App() {
   return (
     <div className="App" style={{ width: '100%', margin: '0 auto', padding: '0', color: '#000000' }}>
       {conversations.length > 0 && (
-        <div className='columns-vertical'>
+        <div>
           <p className='text-normal text-a align-left'>All Emails in Conversations:</p>
           <ul>
             {[...allEmails].map((email, index) => (
-              <li key={index} className='text-a'>{email}</li>
+              <li key={index} className='list-title text-a'>{email}</li>
             ))}
           </ul>
           {conversations.map((conv) => (
