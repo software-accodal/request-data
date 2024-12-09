@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Requests from './pages/request.jsx';
 import Projects from './pages/project.jsx';
 import './App.css';
+import Docs from './pages/docs.jsx';
 
 function App() {
   const [missive, setMissive] = useState();
@@ -128,6 +129,7 @@ function App() {
                 <Route path="/requests" element={<Requests emails={[...allEmails]} />} />
 
                 <Route path="/projects" element={<Projects emails={[...allEmails]} />} />
+                <Route path="/docs" element={<Docs />} />
             </Routes>
         </Router>
       
