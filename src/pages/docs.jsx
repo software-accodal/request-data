@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { RefreshCw } from 'lucide-react';
 import { docsCols } from '../constants/variables.js';
-import axios from '../axios.js';
+// import axios from '../axios.js';
 import _this from '../constants/global.js';
+import { data } from '../constants/appointments.js';
 
 export default function Docs() {
 
@@ -10,12 +10,12 @@ export default function Docs() {
     
     const loadData = async () => {
         try {
-            const { data } = await axios.get('/airtable?baseId=app2MprPYlwfIdCCd&tableId=tblPeLnoSRcNtno0o&viewId=viwuIm0sDHAJ3ywm8');
-            const mappedData = data.rows.map(x => {
+            const mappedData = data.map(x => {
                 return { ...x.fields, id: x.id };
             }).sort((a, b) => {
                 return new Date(b.Start) - new Date(a.Start)
             });
+            console.log('mappedData :>> ', mappedData);
             setAppointments(mappedData);
         } catch (error) {
             throw error;
@@ -59,7 +59,7 @@ export default function Docs() {
                                             {_this.formatDateTime(appointment.End)}
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
+                                    {/* <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="text-sm flex items-center">
                                             {appointment['Recurring Event'] ? 'Yes' : 'No'}
                                         </div>
@@ -71,7 +71,7 @@ export default function Docs() {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                                         {_this.formatDate(appointment.Created)}
-                                    </td>
+                                    </td> */}
                                 </tr>
                             ))}
                         </tbody>
