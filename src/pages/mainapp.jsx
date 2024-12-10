@@ -79,9 +79,9 @@ function MainApp({ missive }) {
     }
   }, [conversations]);
 
-  useEffect(() => {
-    setAllEmails("i" || "Unknown Email Address");
-  });
+  //   useEffect(() => {
+  //     setAllEmails("i" || "Unknown Email Address");
+  //   });
 
   return (
     <div
