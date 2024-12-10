@@ -8,7 +8,7 @@ function MainApp({ missive }) {
   const [conversationIds, setConversationIds] = useState([]);
   const [conversations, setConversations] = useState([]);
   const [clientEmail, setClientEmail] = useState("");
-  const [allEmails, setAllEmails] = useState(new Set());
+  const [allEmails, setAllEmails] = useState([]);
   const registered = useRef(false);
 
   useEffect(() => {
@@ -30,20 +30,20 @@ function MainApp({ missive }) {
       .then((fetchedConversations) => {
         setConversations(fetchedConversations);
         console.log("fetchedConversations>>", fetchedConversations);
-        const emailSet = new Set();
+        const emailSet = [];
         fetchedConversations.forEach((conv) => {
           conv.messages.forEach((message) => {
             if (
               message.from_field?.address &&
               !message.from_field.address.includes("@altiuscpa.com")
             ) {
-              emailSet.add(message.from_field.address);
+              emailSet.push(message.from_field.address);
             }
 
             if (message.to_fields) {
               message.to_fields.forEach((to) => {
                 if (to.address && !to.address.includes("@altiuscpa.com")) {
-                  emailSet.add(to.address);
+                  emailSet.push(to.address);
                 }
               });
             }
@@ -51,13 +51,13 @@ function MainApp({ missive }) {
             if (message.cc_fields) {
               message.cc_fields.forEach((cc) => {
                 if (cc.address && !cc.address.includes("@altiuscpa.com")) {
-                  emailSet.add(cc.address);
+                  emailSet.push(cc.address);
                 }
               });
             }
           });
         });
-        setAllEmails(emailSet);
+        setAllEmails(() => emailSet);
       })
       .catch((error) => console.error("Error fetching conversations:", error));
   }, [missive, conversationIds]);
