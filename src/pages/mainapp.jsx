@@ -48,13 +48,13 @@ function MainApp({ missive }) {
               });
             }
 
-            if (message.cc_fields) {
-              message.cc_fields.forEach((cc) => {
-                if (cc.address && !cc.address.includes("@altiuscpa.com")) {
-                  emailSet.push(cc.address);
-                }
-              });
-            }
+            // if (message.cc_fields) {
+            //   message.cc_fields.forEach((cc) => {
+            //     if (cc.address && !cc.address.includes("@altiuscpa.com")) {
+            //       emailSet.push(cc.address);
+            //     }
+            //   });
+            // }
           });
         });
         setAllEmails(() => emailSet);
