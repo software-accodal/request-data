@@ -10,7 +10,7 @@ function Projects({ emails }) {
   const [modalClosed, setModalClosed] = useState(false);
 
   useEffect(() => {
-    if (!emails || emails.length === 0) return;
+    if (!emails || emails.length === 0 || loading) return;
 
     setLoading(true);
     const formula = `OR(${emails
@@ -84,7 +84,7 @@ function Projects({ emails }) {
       .finally(() => {
         setLoading(false);
       });
-  }, [emails, modalClosed]);
+  }, [emails, modalClosed, loading]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
