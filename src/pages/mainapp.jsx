@@ -85,7 +85,6 @@ function MainApp({ missive }) {
   //   useEffect(() => {
   //     setAllEmails("i" || "Unknown Email Address");
   //   });
-  console.log(allEmails);
   return (
     <div
       className="App"
