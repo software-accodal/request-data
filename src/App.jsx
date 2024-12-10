@@ -1,28 +1,20 @@
 import { useState, useEffect } from "react";
 import MainApp from "./pages/mainapp.jsx";
+import { useInView } from "react-intersection-observer";
 import "./App.css";
 
 function App() {
-  const [isReady, setIsReady] = useState(false);
   const [missive, setMissive] = useState();
+  const { ref, inView } = useInView({});
 
   useEffect(() => {
-    console.log("before");
-    if (missive || !window.Missive) return;
-    console.log("after");
-
+    if (!inView || missive) return;
     setMissive(window.Missive);
-    window.Missive.on("main_action", () => {
-      setIsReady(true);
-      console.log("main action");
-    });
   });
 
-  if (!isReady || !missive) {
-    return null;
-  }
-
-  return <MainApp missive={missive} />;
+  return (
+    <div ref={ref}>{missive && inView && <MainApp missive={missive} />}</div>
+  );
 }
 
 export default App;
