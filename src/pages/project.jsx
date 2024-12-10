@@ -14,7 +14,7 @@ function Projects({ emails }) {
 
     setLoading(true);
     const formula = `OR(${emails.map((email) => `FIND('${email}', {Client Email} & "")`).join(', ')})`;
-    console.log("Searching for emails:", emails);
+    // console.log("Searching for emails:", emails);
     axios
       .post(
         `https://accodal-api-rc8y.onrender.com/api/airtable/get-by-formula`,
