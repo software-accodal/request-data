@@ -29,7 +29,7 @@ function MainApp({ missive }) {
       .fetchConversations(conversationIds)
       .then((fetchedConversations) => {
         setConversations(fetchedConversations);
-
+        console.log("fetchedConversations>>", fetchedConversations);
         const emailSet = new Set();
         fetchedConversations.forEach((conv) => {
           conv.messages.forEach((message) => {
