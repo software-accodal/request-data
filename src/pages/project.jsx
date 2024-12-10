@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function Projects({ emails }) {
   const [airtableRecords, setAirtableRecords] = useState([]);
@@ -7,50 +7,60 @@ function Projects({ emails }) {
   const [expandedProjects, setExpandedProjects] = useState({});
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalClosed, setModalClosed] = useState(false); 
+  const [modalClosed, setModalClosed] = useState(false);
 
   useEffect(() => {
     if (!emails || emails.length === 0) return;
 
     setLoading(true);
-    const formula = `OR(${emails.map((email) => `FIND('${email}', {Client Email} & "")`).join(', ')})`;
-    // console.log("Searching for emails:", emails);
+    const formula = `OR(${emails
+      .map((email) => `FIND('${email}', {Client Email} & "")`)
+      .join(", ")})`;
+    console.log("Searching for emails:", emails);
     axios
       .post(
         `https://accodal-api-rc8y.onrender.com/api/airtable/get-by-formula`,
         {
-          appId: 'app2MprPYlwfIdCCd',
-          tableId: 'tblA1DUSjEa3OD517',
+          appId: "app2MprPYlwfIdCCd",
+          tableId: "tblA1DUSjEa3OD517",
           formula,
         },
         {
           headers: {
-            token: 's3cretKey',
+            token: "s3cretKey",
           },
         }
       )
       .then((response) => {
         const data = response.data;
         const sortedData = data.sort((a, b) => {
-          const dateA = new Date(a.fields['Created']);
-          const dateB = new Date(b.fields['Created']);
-          return dateB - dateA; 
+          const dateA = new Date(a.fields["Created"]);
+          const dateB = new Date(b.fields["Created"]);
+          return dateB - dateA;
         });
-    
+
         setAirtableRecords(sortedData);
 
         const grouped = sortedData.reduce((acc, record) => {
-          const project = record.fields['Project Name'] || 'Uncategorized';
-          const rfistatus = record.fields['RFI Status'];
-          const preparer = record.fields['Preparer Name'];
-          const reviewer1 = record.fields['1st Reviewer Name'];
-          const reviewer2 = record.fields['2nd Reviewer Name'];
-          const principal = record.fields['Principal Name'];
-          const rficlosedate = record.fields['RFI Closed Date'];
-          const created = record.fields['Created'] || '';
+          const project = record.fields["Project Name"] || "Uncategorized";
+          const rfistatus = record.fields["RFI Status"];
+          const preparer = record.fields["Preparer Name"];
+          const reviewer1 = record.fields["1st Reviewer Name"];
+          const reviewer2 = record.fields["2nd Reviewer Name"];
+          const principal = record.fields["Principal Name"];
+          const rficlosedate = record.fields["RFI Closed Date"];
+          const created = record.fields["Created"] || "";
 
           if (!acc[project]) {
-            acc[project] = { statuses: [], created, preparer, reviewer1, reviewer2, principal, rficlosedate };
+            acc[project] = {
+              statuses: [],
+              created,
+              preparer,
+              reviewer1,
+              reviewer2,
+              principal,
+              rficlosedate,
+            };
           }
 
           if (rfistatus) {
@@ -69,7 +79,7 @@ function Projects({ emails }) {
         setExpandedProjects(initialState);
       })
       .catch((error) => {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       })
       .finally(() => {
         setLoading(false);
@@ -97,151 +107,215 @@ function Projects({ emails }) {
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return '';
-    const options = { year: 'numeric', month: 'short', day: '2-digit' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
+    if (!dateString) return "";
+    const options = { year: "numeric", month: "short", day: "2-digit" };
+    return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
   return (
-    <div className='columns-vertical'>
+    <div className="columns-vertical">
       {loading ? (
-        <p className='align-center text-a'>Loading projects...</p>
+        <p className="align-center text-a">Loading projects...</p>
       ) : airtableRecords.length === 0 ? (
-        <p className='align-center text-b' style={{ color: '#888', fontSize: '1em' }}>
+        <p
+          className="align-center text-b"
+          style={{ color: "#888", fontSize: "1em" }}
+        >
           No projects associated with this email
         </p>
       ) : (
         <>
-          <div className='columns-justify' style={{ alignItems: 'center' }}>
-            <h3 className='text-c'>Projects</h3>
+          <div className="columns-justify" style={{ alignItems: "center" }}>
+            <h3 className="text-c">Projects</h3>
             <button
-            className='button'
-                 style={{
-                  cursor: "pointer",
-                  borderRadius: "10px",
-                  backgroundColor: "#007BFF", 
-                  color: "#FFF", 
-                  border: "2px solid #007BFF", 
-                  outline: "none", 
-                }}
-                onMouseOver={(e) => {
-                  e.target.style.backgroundColor = "transparent"; 
-                  e.target.style.color = "#007BFF"; 
-                }}
-                onMouseOut={(e) => {
-                  e.target.style.backgroundColor = "#007BFF"; 
-                  e.target.style.color = "#FFF"; 
-                }}
-                title="Create Project"
-                onClick={openModal}
-              >
-                +
+              className="button"
+              style={{
+                cursor: "pointer",
+                borderRadius: "10px",
+                backgroundColor: "#007BFF",
+                color: "#FFF",
+                border: "2px solid #007BFF",
+                outline: "none",
+              }}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = "transparent";
+                e.target.style.color = "#007BFF";
+              }}
+              onMouseOut={(e) => {
+                e.target.style.backgroundColor = "#007BFF";
+                e.target.style.color = "#FFF";
+              }}
+              title="Create Project"
+              onClick={openModal}
+            >
+              +
             </button>
           </div>
           {Object.keys(groupedContent).map((project) => (
-              <div key={project} className={`align-left box box-collapsable ${expandedProjects[project] ? 'box-collapsable--opened' : ''}`}>
-               <div className="box-header columns-middle"
-               onClick={() => toggleProject(project)} title={project}>
+            <div
+              key={project}
+              className={`align-left box box-collapsable ${
+                expandedProjects[project] ? "box-collapsable--opened" : ""
+              }`}
+            >
+              <div
+                className="box-header columns-middle"
+                onClick={() => toggleProject(project)}
+                title={project}
+              >
                 <span className="text-d text-xlarge">
-                  {expandedProjects[project] ? '▾' : '▸'}
+                  {expandedProjects[project] ? "▾" : "▸"}
                 </span>
                 <span className="column-grow ellipsis text-a">{project}</span>
-                <span className="text-c" style={{ fontSize: '0.9em', marginLeft: '15px' }}>
+                <span
+                  className="text-c"
+                  style={{ fontSize: "0.9em", marginLeft: "15px" }}
+                >
                   {formatDate(groupedContent[project].created)}
                 </span>
               </div>
               <div className="box-content">
-              <div style={{ padding: '15px', display: 'flex', gap: '15px' }}>
-                    {/* First Column */}
-                    <div style={{ flex: '1', width: '50%', textAlign: 'left' }}>
-                      <p className='text-a' style={{ marginBottom: '5px', fontWeight: 'normal' }}>RFI Status</p>
-                      <span className='text-a' style={{
-                        display: 'inline-block',
-                        backgroundColor: '#e0f7fa',
-                        color: '#00796b',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.85em',
-                        fontWeight: 'normal',
-                        marginBottom: '10px'
-                      }}>
-                        {groupedContent[project].statuses.join(', ') || 'N/A'}
-                      </span>
+                <div style={{ padding: "15px", display: "flex", gap: "15px" }}>
+                  {/* First Column */}
+                  <div style={{ flex: "1", width: "50%", textAlign: "left" }}>
+                    <p
+                      className="text-a"
+                      style={{ marginBottom: "5px", fontWeight: "normal" }}
+                    >
+                      RFI Status
+                    </p>
+                    <span
+                      className="text-a"
+                      style={{
+                        display: "inline-block",
+                        backgroundColor: "#e0f7fa",
+                        color: "#00796b",
+                        padding: "4px 10px",
+                        borderRadius: "12px",
+                        fontSize: "0.85em",
+                        fontWeight: "normal",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      {groupedContent[project].statuses.join(", ") || "N/A"}
+                    </span>
 
-                      <p className='text-a' style={{ marginBottom: '5px', fontWeight: 'normal' }}>1st Reviewer</p>
-                      <span className='text-a' style={{
-                        display: 'inline-block',
-                        backgroundColor: '#e0f7fa',
-                        color: '#00796b',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.85em',
-                        fontWeight: 'normal',
-                        marginBottom: '10px'
-                      }}>
-                        {groupedContent[project].reviewer1 || 'N/A'}
-                      </span>
+                    <p
+                      className="text-a"
+                      style={{ marginBottom: "5px", fontWeight: "normal" }}
+                    >
+                      1st Reviewer
+                    </p>
+                    <span
+                      className="text-a"
+                      style={{
+                        display: "inline-block",
+                        backgroundColor: "#e0f7fa",
+                        color: "#00796b",
+                        padding: "4px 10px",
+                        borderRadius: "12px",
+                        fontSize: "0.85em",
+                        fontWeight: "normal",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      {groupedContent[project].reviewer1 || "N/A"}
+                    </span>
 
-                      <p className='text-a' style={{ marginBottom: '5px', fontWeight: 'normal' }}>Principal</p>
-                      <span className='text-a' style={{
-                        display: 'inline-block',
-                        backgroundColor: '#e0f7fa',
-                        color: '#00796b',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.85em',
-                        fontWeight: 'normal',
-                        marginBottom: '10px'
-                      }}>
-                        {groupedContent[project].principal || 'N/A'}
-                      </span>
-                    </div>
-
-                    {/* Second Column */}
-                    <div style={{ flex: '1', width: '50%', textAlign: 'left' }}>
-                      <p className='text-a' style={{ marginBottom: '5px', fontWeight: 'normal' }}>Preparer</p>
-                      <span className='text-a' style={{
-                        display: 'inline-block',
-                        backgroundColor: '#e0f7fa',
-                        color: '#00796b',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.85em',
-                        fontWeight: 'normal',
-                        marginBottom: '10px'
-                      }}>
-                        {groupedContent[project].preparer || 'N/A'}
-                      </span>
-
-                      <p className='text-a' style={{ marginBottom: '5px', fontWeight: 'normal' }}>2nd Reviewer</p>
-                      <span className='text-a' style={{
-                        display: 'inline-block',
-                        backgroundColor: '#e0f7fa',
-                        color: '#00796b',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.85em',
-                        fontWeight: 'normal',
-                        marginBottom: '10px'
-                      }}>
-                        {groupedContent[project].reviewer2 || 'N/A'}
-                      </span>
-
-                      <p className='text-a' style={{ marginBottom: '5px', fontWeight: 'normal' }}>RFI Closed Date</p>
-                      <span className='text-a' style={{
-                        display: 'inline-block',
-                        backgroundColor: '#e0f7fa',
-                        color: '#00796b',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.85em',
-                        fontWeight: 'normal',
-                        marginBottom: '10px'
-                      }}>
-                        {groupedContent[project].rficlosedate ? formatDate(groupedContent[project].rficlosedate) : 'N/A'}
-                      </span>
-                    </div>
+                    <p
+                      className="text-a"
+                      style={{ marginBottom: "5px", fontWeight: "normal" }}
+                    >
+                      Principal
+                    </p>
+                    <span
+                      className="text-a"
+                      style={{
+                        display: "inline-block",
+                        backgroundColor: "#e0f7fa",
+                        color: "#00796b",
+                        padding: "4px 10px",
+                        borderRadius: "12px",
+                        fontSize: "0.85em",
+                        fontWeight: "normal",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      {groupedContent[project].principal || "N/A"}
+                    </span>
                   </div>
+
+                  {/* Second Column */}
+                  <div style={{ flex: "1", width: "50%", textAlign: "left" }}>
+                    <p
+                      className="text-a"
+                      style={{ marginBottom: "5px", fontWeight: "normal" }}
+                    >
+                      Preparer
+                    </p>
+                    <span
+                      className="text-a"
+                      style={{
+                        display: "inline-block",
+                        backgroundColor: "#e0f7fa",
+                        color: "#00796b",
+                        padding: "4px 10px",
+                        borderRadius: "12px",
+                        fontSize: "0.85em",
+                        fontWeight: "normal",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      {groupedContent[project].preparer || "N/A"}
+                    </span>
+
+                    <p
+                      className="text-a"
+                      style={{ marginBottom: "5px", fontWeight: "normal" }}
+                    >
+                      2nd Reviewer
+                    </p>
+                    <span
+                      className="text-a"
+                      style={{
+                        display: "inline-block",
+                        backgroundColor: "#e0f7fa",
+                        color: "#00796b",
+                        padding: "4px 10px",
+                        borderRadius: "12px",
+                        fontSize: "0.85em",
+                        fontWeight: "normal",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      {groupedContent[project].reviewer2 || "N/A"}
+                    </span>
+
+                    <p
+                      className="text-a"
+                      style={{ marginBottom: "5px", fontWeight: "normal" }}
+                    >
+                      RFI Closed Date
+                    </p>
+                    <span
+                      className="text-a"
+                      style={{
+                        display: "inline-block",
+                        backgroundColor: "#e0f7fa",
+                        color: "#00796b",
+                        padding: "4px 10px",
+                        borderRadius: "12px",
+                        fontSize: "0.85em",
+                        fontWeight: "normal",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      {groupedContent[project].rficlosedate
+                        ? formatDate(groupedContent[project].rficlosedate)
+                        : "N/A"}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
@@ -257,8 +331,8 @@ function Projects({ emails }) {
             transform: "translate(-50%, -50%)",
             width: "90%",
             maxWidth: "600px",
-            height: "90%", 
-            overflow: "hidden", 
+            height: "90%",
+            overflow: "hidden",
             backgroundColor: "#FFF",
             padding: "20px",
             borderRadius: "5px",
@@ -276,7 +350,7 @@ function Projects({ emails }) {
               border: "none",
               padding: "0",
               cursor: "pointer",
-              outline: "none", 
+              outline: "none",
             }}
             title="Close"
           >
@@ -317,7 +391,7 @@ function Projects({ emails }) {
             title="Create Project Form"
             style={{
               width: "100%",
-              height: "90%", 
+              height: "90%",
               border: "none",
             }}
           ></iframe>
@@ -337,7 +411,6 @@ function Projects({ emails }) {
           onClick={closeModal}
         />
       )}
-
     </div>
   );
 }
