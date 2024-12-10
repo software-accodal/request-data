@@ -7,10 +7,15 @@ function App() {
   const [missive, setMissive] = useState();
 
   useEffect(() => {
-    if (missive) return;
+    console.log("before");
+    if (missive || !window.Missive) return;
+    console.log("after");
 
     setMissive(window.Missive);
-    window.Missive.on("main_action", () => setIsReady(true));
+    window.Missive.on("main_action", () => {
+      setIsReady(true);
+      console.log("main action");
+    });
   });
 
   if (!isReady || !missive) {
