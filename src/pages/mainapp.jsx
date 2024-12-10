@@ -48,39 +48,23 @@ function MainApp({ missive }) {
               });
             }
 
-            // if (message.cc_fields) {
-            //   message.cc_fields.forEach((cc) => {
-            //     if (cc.address && !cc.address.includes("@altiuscpa.com")) {
-            //       emailSet.push(cc.address);
-            //     }
-            //   });
-            // }
+            if (message.cc_fields) {
+              message.cc_fields.forEach((cc) => {
+                if (cc.address && !cc.address.includes("@altiuscpa.com")) {
+                  emailSet.push(cc.address);
+                }
+              });
+            }
           });
         });
-        setAllEmails(() => emailSet);
+        if (process.env.NODE_ENV === "production") {
+          setAllEmails(() => emailSet);
+        } else if (process.env.NODE_ENV === "stage") {
+          setAllEmails("i");
+        }
       })
       .catch((error) => console.error("Error fetching conversations:", error));
   }, [missive, conversationIds]);
-
-  useEffect(() => {
-    if (conversations.length > 0) {
-      const oldestMessage = conversations
-        .flatMap((conv) => conv.messages)
-        .reduce(
-          (oldest, current) =>
-            !oldest || current.delivered_at < oldest.delivered_at
-              ? current
-              : oldest,
-          null
-        );
-
-      if (oldestMessage) {
-        setClientEmail(
-          oldestMessage.from_field?.address || "Unknown Email Address"
-        );
-      }
-    }
-  }, [conversations]);
 
   //   useEffect(() => {
   //     setAllEmails("i" || "Unknown Email Address");

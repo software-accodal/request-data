@@ -8,6 +8,7 @@ function App() {
   const { ref, inView } = useInView({});
 
   useEffect(() => {
+    console.log(missive);
     if (!inView || missive) return;
     console.log("initialRun");
     setMissive(window.Missive);
