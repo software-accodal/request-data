@@ -23,13 +23,12 @@ function MainApp({ missive }) {
 
   useEffect(() => {
     if (!missive || conversationIds.length === 0) return;
-    console.log(conversationIds);
 
     missive
       .fetchConversations(conversationIds)
       .then((fetchedConversations) => {
         setConversations(fetchedConversations);
-        console.log("fetchedConversations>>", fetchedConversations);
+
         const emailSet = [];
         fetchedConversations.forEach((conv) => {
           conv.messages.forEach((message) => {
