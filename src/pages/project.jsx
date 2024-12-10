@@ -6,13 +6,14 @@ function Projects({ emails }) {
   const [groupedContent, setGroupedContent] = useState({});
   const [expandedProjects, setExpandedProjects] = useState({});
   const [loading, setLoading] = useState(false);
+  const loadingRef = useRef(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalClosed, setModalClosed] = useState(false);
 
   useEffect(() => {
-    if (!emails || emails.length === 0 || loading) return;
+    if (!emails || emails.length === 0 || loadingRef.current) return;
 
-    setLoading(true);
+    loadingRef.current = true;
     const formula = `OR(${emails
       .map((email) => `FIND('${email}', {Client Email} & "")`)
       .join(", ")})`;
@@ -82,9 +83,9 @@ function Projects({ emails }) {
         console.error("Error fetching data:", error);
       })
       .finally(() => {
-        setLoading(false);
+        loadingRef.current = false;
       });
-  }, [emails, modalClosed, loading]);
+  }, [emails, modalClosed]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
