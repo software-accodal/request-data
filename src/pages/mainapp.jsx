@@ -23,8 +23,8 @@ function MainApp({ missive }) {
     if (!missive || conversationIds.length === 0) return;
 
     missive
-      .fetchConversations(conversationIds)
-      .then((fetchedConversations) => {
+      .fetchConversations(conversationIds)`
+      .then((fetchedConversations) => {`
         setConversations(fetchedConversations);
 
         const emailSet = new Set();
