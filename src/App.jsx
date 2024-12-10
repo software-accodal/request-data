@@ -18,6 +18,7 @@ function App() {
     if (missive || registered.current) {
     return
     }
+    console.log(process.env.NODE_ENV)
     console.log("initialRun")
     registered.current = true
   setMissive(window.Missive);
@@ -91,9 +92,9 @@ function App() {
     }
   }, [conversations]);
 
-  // useEffect(()=>{
-  //   setAllEmails("i" || "Unknown Email Address");
-  // })
+  useEffect(()=>{
+    setAllEmails("i" || "Unknown Email Address");
+  })
 
 
 
