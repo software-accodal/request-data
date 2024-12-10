@@ -9,6 +9,7 @@ function App() {
 
   useEffect(() => {
     if (!inView || missive) return;
+    console.log("initialRun");
     setMissive(window.Missive);
   });
 
