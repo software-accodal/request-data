@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { FilloutStandardEmbed } from "@fillout/react";
@@ -12,6 +12,7 @@ function Projects({ emails }) {
   const [expandedProjects, setExpandedProjects] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalClosed, setModalClosed] = useState(false);
+  const timeoutRef = useRef(null);
   const formula = useMemo(() => {
     if (!emails || emails?.length === 0) return undefined;
 
@@ -95,11 +96,23 @@ function Projects({ emails }) {
   const closeModal = () => {
     setIsModalOpen(false);
     setModalClosed((prev) => !prev);
-    const timer = setTimeout(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
       refetch();
+      timeoutRef.current = null;
     }, 3000);
-    clearTimeout(timer);
   };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const toggleProject = (project) => {
     setExpandedProjects((prevState) => ({
