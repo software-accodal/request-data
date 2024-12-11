@@ -7,16 +7,16 @@ const TABLE_ID = "tblA1DUSjEa3OD517";
 
 function Projects({ emails }) {
   const [expandedProjects, setExpandedProjects] = useState({});
-  const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalClosed, setModalClosed] = useState(false);
   const formula = useMemo(() => {
-    if (!emails || emails.length === 0) return undefined;
+    if (!emails || emails?.length === 0) return undefined;
 
     return `OR(${emails
       .map((email) => `FIND('${email}', {Client Email} & "")`)
       .join(", ")})`;
   }, [emails]);
+  console.log("emails>> ", emails);
   const { data: airtableData, isPending } = useQuery({
     enabled: !!formula,
     queryKey: ["project_emails", formula, APP_ID, TABLE_ID],
@@ -24,8 +24,8 @@ function Projects({ emails }) {
       const res = await axios.post(
         `https://accodal-api-rc8y.onrender.com/api/airtable/get-by-formula`,
         {
-          appId: "app2MprPYlwfIdCCd",
-          tableId: "tblA1DUSjEa3OD517",
+          appId: APP_ID,
+          tableId: TABLE_ID,
           formula,
         },
         {
@@ -35,7 +35,7 @@ function Projects({ emails }) {
         }
       );
 
-      const data = response.data;
+      const data = res.data;
       const sortedData = data.sort((a, b) => {
         const dateA = new Date(a.fields["Created"]);
         const dateB = new Date(b.fields["Created"]);
@@ -77,11 +77,11 @@ function Projects({ emails }) {
       }, {});
 
       setExpandedProjects(initialState);
-
+      console.log({ sortedData, grouped });
       return { sortedData, grouped };
     },
   });
-  const { sortedData: airtableRecords, grouped: groupedContent } =
+  const { sortedData: airtableRecords = [], grouped: groupedContent = {} } =
     airtableData ?? {};
 
   const openModal = () => setIsModalOpen(true);
@@ -114,7 +114,7 @@ function Projects({ emails }) {
 
   return (
     <div className="columns-vertical">
-      {loading ? (
+      {isPending ? (
         <p className="align-center text-a">Loading projects...</p>
       ) : airtableRecords.length === 0 ? (
         <p
