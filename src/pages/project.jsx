@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { FilloutStandardEmbed } from "@fillout/react";
 import ProjectLoading from "../components/project/projectLoading";
 import ProjectList from "../components/project/projectList";
 
@@ -101,11 +100,11 @@ function Projects({ emails }) {
 
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
-      setIsSaving(false);
     }
 
     timeoutRef.current = setTimeout(() => {
       refetch();
+      setIsSaving(false);
       timeoutRef.current = null;
     }, 3000);
   };
@@ -129,7 +128,7 @@ function Projects({ emails }) {
 
   return (
     <div className="columns-vertical">
-      {isFetching && isSaving && <ProjectLoading />}{" "}
+      {isFetching && <ProjectLoading />} {isSaving && <ProjectLoading />}
       <ProjectList
         airtableRecords={airtableRecords}
         groupedContent={groupedContent}
