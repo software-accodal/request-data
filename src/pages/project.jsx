@@ -119,6 +119,7 @@ function Projects({ emails }) {
       <ProjectList
         airtableRecords={airtableRecords}
         groupedContent={groupedContent}
+        isFetching={isFetching}
       />
       {isModalOpen && (
         <div
