@@ -23,7 +23,8 @@ const getByFormula = async (formula) => {
   );
   const data = res.data;
   console.log(formula, data);
-  if (!data) return undefined;
+  if (data.sortedData.length === 0 && Object.keys(data.grouped).length === 0)
+    return null;
   const sortedData = data.sort((a, b) => {
     const dateA = new Date(a.fields["Created"]);
     const dateB = new Date(b.fields["Created"]);
