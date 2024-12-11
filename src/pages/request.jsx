@@ -178,6 +178,7 @@ function Requests({ emails }) {
                   <div
                     className="box-header columns-middle"
                     onClick={() => toggleProject(project)}
+                    title={project}
                   >
                     <span className="text-d text-xlarge">
                       {expandedProjects[project].expanded ? "▾" : "▸"}
@@ -207,6 +208,7 @@ function Requests({ emails }) {
                               onClick={() =>
                                 toggleReference(project, reference)
                               }
+                              title={reference}
                             >
                               <span className="text-d text-xlarge">
                                 {expandedProjects[project].references[reference]
@@ -235,11 +237,14 @@ function Requests({ emails }) {
                                   paddingLeft: "15px",
                                   paddingTop: "5px",
                                   paddingBottom: "5px",
-                                  borderLeft: "2px solid #ddd",
                                 }}
                               >
                                 {questions.map((question, index) => (
-                                  <p key={index} style={{ margin: "5px 0" }}>
+                                  <p
+                                    key={index}
+                                    className="text-a"
+                                    style={{ margin: "5px 0" }}
+                                  >
                                     {question}
                                   </p>
                                 ))}
