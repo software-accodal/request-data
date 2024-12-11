@@ -23,7 +23,7 @@ const getByFormula = async (formula) => {
   );
   const data = res.data;
   console.log(formula, data);
-  if (!data?.length) return null;
+  // if (!data) return null;
   const sortedData = data.sort((a, b) => {
     const dateA = new Date(a.fields["Created"]);
     const dateB = new Date(b.fields["Created"]);
