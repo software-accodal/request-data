@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { FilloutStandardEmbed } from "@fillout/react";
 
 const APP_ID = "app2MprPYlwfIdCCd";
 const TABLE_ID = "tblA1DUSjEa3OD517";
@@ -17,7 +18,11 @@ function Projects({ emails }) {
       .join(", ")})`;
   }, [emails]);
   console.log("emails>> ", emails);
-  const { data: airtableData, isPending } = useQuery({
+  const {
+    data: airtableData,
+    isPending,
+    refetch,
+  } = useQuery({
     enabled: !!formula,
     queryKey: ["project_emails", formula, APP_ID, TABLE_ID],
     queryFn: async () => {
@@ -88,13 +93,7 @@ function Projects({ emails }) {
   const closeModal = () => {
     setIsModalOpen(false);
     setModalClosed((prev) => !prev);
-  };
-
-  const handleSubmit = () => {
-    console.log("Submitted Project:", { projects, requestDetails });
-    setProjects("");
-    setRequestDetails("");
-    closeModal();
+    refetch();
   };
 
   const toggleProject = (project) => {
@@ -388,7 +387,17 @@ function Projects({ emails }) {
             Create New Project
           </p>
           <hr />
-          <iframe
+          <div
+            title="Create Project Form"
+            style={{
+              width: "100%",
+              height: "90%",
+              border: "none",
+            }}
+          >
+            <FilloutStandardEmbed filloutId="tFGjkW6DQYus" />
+          </div>
+          {/* <iframe
             src="https://form.fillout.com/t/tFGjkW6DQYus"
             title="Create Project Form"
             style={{
@@ -396,7 +405,7 @@ function Projects({ emails }) {
               height: "90%",
               border: "none",
             }}
-          ></iframe>
+          ></iframe> */}
         </div>
       )}
       {isModalOpen && (
