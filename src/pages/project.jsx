@@ -20,7 +20,7 @@ function Projects({ emails }) {
   console.log("emails>> ", emails);
   const {
     data: airtableData,
-    isPending,
+    isFetching,
     refetch,
   } = useQuery({
     enabled: !!formula,
@@ -113,9 +113,8 @@ function Projects({ emails }) {
 
   return (
     <div className="columns-vertical">
-      {isPending ? (
-        <p className="align-center text-a">Loading projects...</p>
-      ) : airtableRecords.length === 0 ? (
+      {isFetching && <p className="align-center text-a">Loading projects...</p>}{" "}
+      {airtableRecords.length === 0 ? (
         <p
           className="align-center text-b"
           style={{ color: "#888", fontSize: "1em" }}
