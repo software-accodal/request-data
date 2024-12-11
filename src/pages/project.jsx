@@ -106,7 +106,7 @@ function Projects({ emails }) {
       refetch();
       setIsSaving(false);
       timeoutRef.current = null;
-    }, 3000);
+    }, 5000);
   };
 
   useEffect(() => {
