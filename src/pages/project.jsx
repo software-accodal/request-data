@@ -112,7 +112,7 @@ function Projects({ emails }) {
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
-  console.log(airtableRecords);
+  console.log("airtableRecords>>", airtableRecords);
 
   return (
     <div className="columns-vertical">

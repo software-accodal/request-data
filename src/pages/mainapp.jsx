@@ -7,7 +7,6 @@ import Docs from "./docs.jsx";
 function MainApp({ missive }) {
   const [conversationIds, setConversationIds] = useState([]);
   const [conversations, setConversations] = useState([]);
-  const [clientEmail, setClientEmail] = useState("");
   const [allEmails, setAllEmails] = useState([]);
   const registered = useRef(false);
 
@@ -56,18 +55,18 @@ function MainApp({ missive }) {
             }
           });
         });
-        if (process.env.NODE_ENV === "production") {
-          setAllEmails(() => emailSet);
-        } else if (process.env.NODE_ENV === "stage") {
-          setAllEmails("i");
-        }
+        console.log(process.env.NODE_ENV);
+        setAllEmails(() => emailSet);
       })
       .catch((error) => console.error("Error fetching conversations:", error));
   }, [missive, conversationIds]);
 
-  //   useEffect(() => {
-  //     setAllEmails("i" || "Unknown Email Address");
-  //   });
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      setAllEmails("isonaguilar16@gmail.com");
+    }
+  });
+
   return (
     <div
       className="App"
