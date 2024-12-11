@@ -12,6 +12,7 @@ function Projects({ emails }) {
   const [expandedProjects, setExpandedProjects] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalClosed, setModalClosed] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const timeoutRef = useRef(null);
   const formula = useMemo(() => {
     if (!emails || emails?.length === 0) return undefined;
@@ -94,10 +95,13 @@ function Projects({ emails }) {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
+    setIsSaving(true);
     setIsModalOpen(false);
     setModalClosed((prev) => !prev);
+
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
+      setIsSaving(false);
     }
 
     timeoutRef.current = setTimeout(() => {
@@ -125,7 +129,7 @@ function Projects({ emails }) {
 
   return (
     <div className="columns-vertical">
-      {isFetching && <ProjectLoading />}{" "}
+      {isFetching && isSaving && <ProjectLoading />}{" "}
       <ProjectList
         airtableRecords={airtableRecords}
         groupedContent={groupedContent}
