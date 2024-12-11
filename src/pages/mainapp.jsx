@@ -115,7 +115,14 @@ function MainApp({ missive }) {
 
           <Route
             path="/projects"
-            element={<Projects emails={[...allEmails]} />}
+            element={
+              <Projects
+                emails={[...allEmails]}
+                subject={
+                  conversations.length > 0 ? conversations[0].subject : ""
+                }
+              />
+            }
           />
           <Route path="/docs" element={<Docs />} />
         </Routes>

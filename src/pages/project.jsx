@@ -7,90 +7,132 @@ import ProjectList from "../components/project/projectList";
 const APP_ID = "app2MprPYlwfIdCCd";
 const TABLE_ID = "tblA1DUSjEa3OD517";
 
-function Projects({ emails }) {
+const getByFormula = async (formula) => {
+  const res = await axios.post(
+    `https://accodal-api-rc8y.onrender.com/api/airtable/get-by-formula`,
+    {
+      appId: APP_ID,
+      tableId: TABLE_ID,
+      formula,
+    },
+    {
+      headers: {
+        token: "s3cretKey",
+      },
+    }
+  );
+  const data = res.data;
+  console.log(formula, data);
+  const sortedData = data.sort((a, b) => {
+    const dateA = new Date(a.fields["Created"]);
+    const dateB = new Date(b.fields["Created"]);
+    return dateB - dateA;
+  });
+
+  const grouped = sortedData.reduce((acc, record) => {
+    const project = record.fields["Project Name"] || "Uncategorized";
+    const rfistatus = record.fields["RFI Status"];
+    const preparer = record.fields["Preparer Name"];
+    const reviewer1 = record.fields["1st Reviewer Name"];
+    const reviewer2 = record.fields["2nd Reviewer Name"];
+    const principal = record.fields["Principal Name"];
+    const rficlosedate = record.fields["RFI Closed Date"];
+    const created = record.fields["Created"] || "";
+
+    if (!acc[project]) {
+      acc[project] = {
+        statuses: [],
+        created,
+        preparer,
+        reviewer1,
+        reviewer2,
+        principal,
+        rficlosedate,
+      };
+    }
+
+    if (rfistatus) {
+      acc[project].statuses.push(rfistatus);
+    }
+
+    return acc;
+  }, {});
+
+  return { sortedData, grouped };
+};
+
+function Projects({ emails, subject }) {
   const [expandedProjects, setExpandedProjects] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalClosed, setModalClosed] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const timeoutRef = useRef(null);
-  const formula = useMemo(() => {
+  const formula1 = useMemo(() => {
+    if (!subject?.trim()) return undefined;
+
+    return `FIND('${subject}', {Project Name})`;
+  }, [subject]);
+
+  const formula2 = useMemo(() => {
     if (!emails || emails?.length === 0) return undefined;
 
     return `OR(${emails
       .map((email) => `FIND('${email}', {Client Email} & "")`)
       .join(", ")})`;
   }, [emails]);
+
+  const checkInitialState = (grouped) => {
+    const initialState = Object.keys(grouped).reduce((acc, project) => {
+      acc[project] = false;
+      return acc;
+    }, {});
+    setExpandedProjects(initialState);
+  };
+
   console.log("emails>> ", emails);
+  console.log("subject>> ", subject);
   const {
-    data: airtableData,
-    isFetching,
-    refetch,
+    data: airtableDataSubject,
+    isFetching: isFetchingSubject,
+    isFetched: isFetchedSubject,
+    refetched: refetchedSubject,
   } = useQuery({
-    enabled: !!formula,
-    queryKey: ["project_emails", formula, APP_ID, TABLE_ID],
+    retry: false,
+    enabled: !!formula1,
+    queryKey: ["project_subjects", formula1, APP_ID, TABLE_ID],
     queryFn: async () => {
-      const res = await axios.post(
-        `https://accodal-api-rc8y.onrender.com/api/airtable/get-by-formula`,
-        {
-          appId: APP_ID,
-          tableId: TABLE_ID,
-          formula,
-        },
-        {
-          headers: {
-            token: "s3cretKey",
-          },
-        }
-      );
-      const data = res.data;
-      const sortedData = data.sort((a, b) => {
-        const dateA = new Date(a.fields["Created"]);
-        const dateB = new Date(b.fields["Created"]);
-        return dateB - dateA;
-      });
-
-      console.log("data", data);
-      const grouped = sortedData.reduce((acc, record) => {
-        const project = record.fields["Project Name"] || "Uncategorized";
-        const rfistatus = record.fields["RFI Status"];
-        const preparer = record.fields["Preparer Name"];
-        const reviewer1 = record.fields["1st Reviewer Name"];
-        const reviewer2 = record.fields["2nd Reviewer Name"];
-        const principal = record.fields["Principal Name"];
-        const rficlosedate = record.fields["RFI Closed Date"];
-        const created = record.fields["Created"] || "";
-
-        if (!acc[project]) {
-          acc[project] = {
-            statuses: [],
-            created,
-            preparer,
-            reviewer1,
-            reviewer2,
-            principal,
-            rficlosedate,
-          };
-        }
-
-        if (rfistatus) {
-          acc[project].statuses.push(rfistatus);
-        }
-
-        return acc;
-      }, {});
-
-      const initialState = Object.keys(grouped).reduce((acc, project) => {
-        acc[project] = false;
-        return acc;
-      }, {});
-
-      setExpandedProjects(initialState);
-      console.log({ sortedData, grouped });
-      return { sortedData, grouped };
+      const res = await getByFormula(formula1);
+      checkInitialState(res?.grouped);
+      return res;
     },
   });
+
+  const {
+    data: airtableDataEmail,
+    isFetching: isFetchingEmail,
+    isFetched: isFetchedEmail,
+    refetched: refetchedEmail,
+  } = useQuery({
+    retry: false,
+    enabled:
+      (isFetchedSubject || !isFetchingSubject) &&
+      !airtableDataSubject &&
+      !!formula2,
+    queryKey: ["project_emails", formula2, APP_ID, TABLE_ID],
+    queryFn: async () => {
+      const res = await getByFormula(formula2);
+      checkInitialState(res?.grouped);
+      return res;
+    },
+  });
+  console.log(
+    airtableDataEmail,
+    isFetchedSubject && !airtableDataSubject && !!formula2
+  );
+  const finalData = (airtableDataSubject || airtableDataEmail) ?? {};
+
   const { sortedData: airtableRecords = [], grouped: groupedContent = {} } =
-    airtableData ?? {};
+    finalData ?? {};
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
@@ -103,7 +145,8 @@ function Projects({ emails }) {
     }
 
     timeoutRef.current = setTimeout(() => {
-      refetch();
+      refetchedEmail();
+      refetchedSubject();
       setIsSaving(false);
       timeoutRef.current = null;
     }, 5000);
@@ -124,15 +167,15 @@ function Projects({ emails }) {
     }));
   };
 
-  console.log("airtableRecords>>", airtableRecords);
-
   return (
     <div className="columns-vertical">
-      {isFetching && <ProjectLoading />} {isSaving && <ProjectLoading />}
+      {(isFetchingSubject || isFetchingEmail) && <ProjectLoading />}{" "}
+      {isSaving && <ProjectLoading />}
       <ProjectList
         airtableRecords={airtableRecords}
         groupedContent={groupedContent}
-        isFetching={isFetching}
+        isFetchingSubject={isFetchingSubject}
+        isFetchingEmail={isFetchingEmail}
         expandedProjects={expandedProjects}
         openModal={openModal}
         toggleProject={toggleProject}
