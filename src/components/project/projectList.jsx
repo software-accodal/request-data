@@ -1,7 +1,19 @@
 import React from "react";
 import ProjectLoading from "./projectLoading";
 
-const ProjectList = ({ isFetching, airtableRecords, groupedContent }) => {
+const ProjectList = ({
+  isFetching,
+  airtableRecords,
+  groupedContent,
+  openModal,
+  expandedProjects,
+  toggleProject,
+}) => {
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const options = { year: "numeric", month: "short", day: "2-digit" };
+    return new Date(dateString).toLocaleDateString("en-US", options);
+  };
   if (airtableRecords.length === 0) {
     if (isFetching) return null;
     return (
