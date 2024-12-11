@@ -63,7 +63,7 @@ function MainApp({ missive }) {
 
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
-      setAllEmails("isonaguilar16@gmail.com");
+      setAllEmails("i");
     }
   });
 

@@ -126,26 +126,18 @@ function Requests({ emails }) {
   return (
     <div>
       {loading ? (
-        <p style={{ textAlign: "center" }}>Loading requests...</p>
+        <p className="align-center text-a">Loading requests...</p>
       ) : airtableRecords.length === 0 ? (
-        <p style={{ textAlign: "center", color: "#888", fontSize: "1em" }}>
+        <p
+          className="align-center text-b"
+          style={{ color: "#888", fontSize: "1em" }}
+        >
           No requests associated to this email
         </p>
       ) : (
         <>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <h3
-              className="text-a"
-              style={{ textAlign: "left", marginBottom: "20px" }}
-            >
-              Requests
-            </h3>
+          <div className="columns-justify" style={{ alignItems: "center" }}>
+            <h3 className="text-c">Requests</h3>
             {/* <button
             style={{
               padding: "5px 10px",

@@ -130,7 +130,6 @@ function Projects({ emails }) {
           <div className="columns-justify" style={{ alignItems: "center" }}>
             <h3 className="text-c">Projects</h3>
             <button
-              className="button"
               style={{
                 cursor: "pointer",
                 borderRadius: "10px",
@@ -138,6 +137,9 @@ function Projects({ emails }) {
                 color: "#FFF",
                 border: "2px solid #007BFF",
                 outline: "none",
+                marginTop: "15px",
+                marginBottom: "15px",
+                padding: "5px 10px",
               }}
               onMouseOver={(e) => {
                 e.target.style.backgroundColor = "transparent";
