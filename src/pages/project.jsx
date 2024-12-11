@@ -34,7 +34,6 @@ function Projects({ emails }) {
           },
         }
       );
-
       const data = res.data;
       const sortedData = data.sort((a, b) => {
         const dateA = new Date(a.fields["Created"]);
@@ -42,6 +41,7 @@ function Projects({ emails }) {
         return dateB - dateA;
       });
 
+      console.log("data", data);
       const grouped = sortedData.reduce((acc, record) => {
         const project = record.fields["Project Name"] || "Uncategorized";
         const rfistatus = record.fields["RFI Status"];
