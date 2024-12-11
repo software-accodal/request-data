@@ -70,7 +70,7 @@ function Projects({ emails, subject }) {
   const formula1 = useMemo(() => {
     if (!subject?.trim()) return undefined;
 
-    return `FIND('${subject}', {Project Name})`;
+    return `({Project Name} = '${subject}')`;
   }, [subject]);
 
   const formula2 = useMemo(() => {
