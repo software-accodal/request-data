@@ -1,24 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+
+const APP_ID = "app2MprPYlwfIdCCd";
+const TABLE_ID = "tblA1DUSjEa3OD517";
 
 function Projects({ emails }) {
-  const [airtableRecords, setAirtableRecords] = useState([]);
-  const [groupedContent, setGroupedContent] = useState({});
   const [expandedProjects, setExpandedProjects] = useState({});
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalClosed, setModalClosed] = useState(false);
+  const formula = useMemo(() => {
+    if (!emails || emails.length === 0) return undefined;
 
-  useEffect(() => {
-    if (!emails || emails.length === 0) return;
-
-    setLoading(true);
-    const formula = `OR(${emails
+    return `OR(${emails
       .map((email) => `FIND('${email}', {Client Email} & "")`)
       .join(", ")})`;
-    console.log("Searching for emails:", emails);
-    axios
-      .post(
+  }, [emails]);
+  const { data: airtableData, isPending } = useQuery({
+    enabled: !!formula,
+    queryKey: ["project_emails", formula, APP_ID, TABLE_ID],
+    queryFn: async () => {
+      const res = await axios.post(
         `https://accodal-api-rc8y.onrender.com/api/airtable/get-by-formula`,
         {
           appId: "app2MprPYlwfIdCCd",
@@ -30,61 +33,56 @@ function Projects({ emails }) {
             token: "s3cretKey",
           },
         }
-      )
-      .then((response) => {
-        const data = response.data;
-        const sortedData = data.sort((a, b) => {
-          const dateA = new Date(a.fields["Created"]);
-          const dateB = new Date(b.fields["Created"]);
-          return dateB - dateA;
-        });
+      );
 
-        setAirtableRecords(sortedData);
-
-        const grouped = sortedData.reduce((acc, record) => {
-          const project = record.fields["Project Name"] || "Uncategorized";
-          const rfistatus = record.fields["RFI Status"];
-          const preparer = record.fields["Preparer Name"];
-          const reviewer1 = record.fields["1st Reviewer Name"];
-          const reviewer2 = record.fields["2nd Reviewer Name"];
-          const principal = record.fields["Principal Name"];
-          const rficlosedate = record.fields["RFI Closed Date"];
-          const created = record.fields["Created"] || "";
-
-          if (!acc[project]) {
-            acc[project] = {
-              statuses: [],
-              created,
-              preparer,
-              reviewer1,
-              reviewer2,
-              principal,
-              rficlosedate,
-            };
-          }
-
-          if (rfistatus) {
-            acc[project].statuses.push(rfistatus);
-          }
-
-          return acc;
-        }, {});
-
-        setGroupedContent(grouped);
-
-        const initialState = Object.keys(grouped).reduce((acc, project) => {
-          acc[project] = false;
-          return acc;
-        }, {});
-        setExpandedProjects(initialState);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      })
-      .finally(() => {
-        setLoading(false);
+      const data = response.data;
+      const sortedData = data.sort((a, b) => {
+        const dateA = new Date(a.fields["Created"]);
+        const dateB = new Date(b.fields["Created"]);
+        return dateB - dateA;
       });
-  }, [emails, modalClosed]);
+
+      const grouped = sortedData.reduce((acc, record) => {
+        const project = record.fields["Project Name"] || "Uncategorized";
+        const rfistatus = record.fields["RFI Status"];
+        const preparer = record.fields["Preparer Name"];
+        const reviewer1 = record.fields["1st Reviewer Name"];
+        const reviewer2 = record.fields["2nd Reviewer Name"];
+        const principal = record.fields["Principal Name"];
+        const rficlosedate = record.fields["RFI Closed Date"];
+        const created = record.fields["Created"] || "";
+
+        if (!acc[project]) {
+          acc[project] = {
+            statuses: [],
+            created,
+            preparer,
+            reviewer1,
+            reviewer2,
+            principal,
+            rficlosedate,
+          };
+        }
+
+        if (rfistatus) {
+          acc[project].statuses.push(rfistatus);
+        }
+
+        return acc;
+      }, {});
+
+      const initialState = Object.keys(grouped).reduce((acc, project) => {
+        acc[project] = false;
+        return acc;
+      }, {});
+
+      setExpandedProjects(initialState);
+
+      return { sortedData, grouped };
+    },
+  });
+  const { sortedData: airtableRecords, grouped: groupedContent } =
+    airtableData ?? {};
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {

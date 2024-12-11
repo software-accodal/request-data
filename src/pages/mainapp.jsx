@@ -8,6 +8,7 @@ function MainApp({ missive }) {
   const [conversationIds, setConversationIds] = useState([]);
   const [conversations, setConversations] = useState([]);
   const [allEmails, setAllEmails] = useState([]);
+
   const registered = useRef(false);
 
   useEffect(() => {
