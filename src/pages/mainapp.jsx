@@ -29,20 +29,20 @@ function MainApp({ missive }) {
       .then((fetchedConversations) => {
         setConversations(fetchedConversations);
 
-        const emailSet = [];
+        const emailSet = new Set();
         fetchedConversations.forEach((conv) => {
           conv.messages.forEach((message) => {
             if (
               message.from_field?.address &&
               !message.from_field.address.includes("@altiuscpa.com")
             ) {
-              emailSet.push(message.from_field.address);
+              emailSet.add(message.from_field.address);
             }
 
             if (message.to_fields) {
               message.to_fields.forEach((to) => {
                 if (to.address && !to.address.includes("@altiuscpa.com")) {
-                  emailSet.push(to.address);
+                  emailSet.add(to.address);
                 }
               });
             }
@@ -50,14 +50,14 @@ function MainApp({ missive }) {
             if (message.cc_fields) {
               message.cc_fields.forEach((cc) => {
                 if (cc.address && !cc.address.includes("@altiuscpa.com")) {
-                  emailSet.push(cc.address);
+                  emailSet.add(cc.address);
                 }
               });
             }
           });
         });
         console.log(process.env.NODE_ENV);
-        setAllEmails(() => emailSet);
+        setAllEmails(emailSet);
       })
       .catch((error) => console.error("Error fetching conversations:", error));
   }, [missive, conversationIds]);
