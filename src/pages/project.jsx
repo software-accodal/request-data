@@ -23,8 +23,7 @@ const getByFormula = async (formula) => {
   );
   const data = res.data;
   console.log(formula, data);
-  if (data.sortedData.length === 0 && Object.keys(data.grouped).length === 0)
-    return null;
+  if (!data?.length) return null;
   const sortedData = data.sort((a, b) => {
     const dateA = new Date(a.fields["Created"]);
     const dateB = new Date(b.fields["Created"]);
@@ -129,7 +128,9 @@ function Projects({ emails, subject }) {
   });
   console.log(
     airtableDataEmail,
-    (isFetchedSubject || !formula1) && !airtableDataSubject && !!formula2,
+    (isFetchedSubject || !formula1) &&
+      !airtableDataSubject?.length &&
+      !!formula2,
     airtableDataSubject
   );
   const finalData = (airtableDataSubject || airtableDataEmail) ?? {};

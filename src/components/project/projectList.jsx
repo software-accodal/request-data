@@ -10,8 +10,6 @@ const ProjectList = ({
   expandedProjects,
   toggleProject,
 }) => {
-  console.log("airtableRecords>>", airtableRecords);
-
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const options = { year: "numeric", month: "short", day: "2-digit" };
