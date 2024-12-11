@@ -125,8 +125,8 @@ function Projects({ emails, subject }) {
   });
   console.log(
     airtableDataEmail,
-    isFetchedSubject && !airtableDataSubject && !!formula2,
-    airtableDataEmail
+    (isFetchedSubject || !formula1) && !airtableDataSubject && !!formula2,
+    airtableDataSubject
   );
   const finalData = (airtableDataSubject || airtableDataEmail) ?? {};
 
