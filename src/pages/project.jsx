@@ -23,6 +23,7 @@ const getByFormula = async (formula) => {
   );
   const data = res.data;
   console.log(formula, data);
+  if (!data) return null;
   const sortedData = data.sort((a, b) => {
     const dateA = new Date(a.fields["Created"]);
     const dateB = new Date(b.fields["Created"]);
@@ -115,7 +116,9 @@ function Projects({ emails, subject }) {
   } = useQuery({
     retry: false,
     enabled:
-      (isFetchedSubject || !formula1) && !airtableDataSubject && !!formula2,
+      (isFetchedSubject || !formula1) &&
+      !airtableDataSubject?.length &&
+      !!formula2,
     queryKey: ["project_emails", formula2, APP_ID, TABLE_ID],
     queryFn: async () => {
       const res = await getByFormula(formula2);
