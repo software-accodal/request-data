@@ -95,7 +95,10 @@ function Projects({ emails }) {
   const closeModal = () => {
     setIsModalOpen(false);
     setModalClosed((prev) => !prev);
-    refetch();
+    const timer = setTimeout(() => {
+      refetch();
+    }, 3000);
+    clearTimeout(timer);
   };
 
   const toggleProject = (project) => {
@@ -187,21 +190,21 @@ function Projects({ emails }) {
             title="Create Project Form"
             style={{
               width: "100%",
-              height: "90%",
+              height: "100%",
               border: "none",
             }}
           >
-            <FilloutStandardEmbed filloutId="tFGjkW6DQYus" />
+            {/* <FilloutStandardEmbed filloutId="tFGjkW6DQYus" /> */}
+            <iframe
+              src="https://form.fillout.com/t/tFGjkW6DQYus"
+              title="Create Project Form"
+              style={{
+                width: "100%",
+                height: "95%",
+                border: "none",
+              }}
+            ></iframe>
           </div>
-          {/* <iframe
-            src="https://form.fillout.com/t/tFGjkW6DQYus"
-            title="Create Project Form"
-            style={{
-              width: "100%",
-              height: "90%",
-              border: "none",
-            }}
-          ></iframe> */}
         </div>
       )}
       {isModalOpen && (
