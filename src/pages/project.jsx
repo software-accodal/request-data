@@ -115,7 +115,7 @@ function Projects({ emails, subject }) {
   } = useQuery({
     retry: false,
     enabled:
-      (!isFetchedSubject || !formula1) && !airtableDataSubject && !!formula2,
+      (isFetchedSubject || !formula1) && !airtableDataSubject && !!formula2,
     queryKey: ["project_emails", formula2, APP_ID, TABLE_ID],
     queryFn: async () => {
       const res = await getByFormula(formula2);
@@ -125,7 +125,8 @@ function Projects({ emails, subject }) {
   });
   console.log(
     airtableDataEmail,
-    isFetchedSubject && !airtableDataSubject && !!formula2
+    isFetchedSubject && !airtableDataSubject && !!formula2,
+    airtableDataEmail
   );
   const finalData = (airtableDataSubject || airtableDataEmail) ?? {};
 
