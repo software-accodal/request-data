@@ -1,8 +1,9 @@
 import React from "react";
 import ProjectLoading from "./projectLoading";
 
-const ProjectList = ({ airtableRecords, groupedContent }) => {
-  if (airtableRecords.length === 0)
+const ProjectList = ({ isFetching, airtableRecords, groupedContent }) => {
+  if (airtableRecords.length === 0) {
+    if (isFetching) return null;
     return (
       <p
         className="align-center text-b"
@@ -11,6 +12,7 @@ const ProjectList = ({ airtableRecords, groupedContent }) => {
         No projects associated with this email
       </p>
     );
+  }
 
   return (
     <>
