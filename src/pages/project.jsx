@@ -38,12 +38,14 @@ const getByFormula = async (formula) => {
     const reviewer2 = record.fields["2nd Reviewer Name"];
     const principal = record.fields["Principal Name"];
     const rficlosedate = record.fields["RFI Closed Date"];
+    const workflowLink = record.fields["Workflow Project Link"];
     const created = record.fields["Created"] || "";
 
     if (!acc[project]) {
       acc[project] = {
         statuses: [],
         created,
+        workflowLink,
         preparer,
         reviewer1,
         reviewer2,

@@ -15,6 +15,7 @@ const ProjectList = ({
     const options = { year: "numeric", month: "short", day: "2-digit" };
     return new Date(dateString).toLocaleDateString("en-US", options);
   };
+
   if (airtableRecords.length === 0) {
     if (isFetchingSubject || isFetchingEmail) return null;
     return (
@@ -31,6 +32,7 @@ const ProjectList = ({
     <>
       <div className="columns-justify" style={{ alignItems: "center" }}>
         <h3 className="text-c">Projects</h3>
+
         <button
           style={{
             cursor: "pointer",
@@ -64,6 +66,27 @@ const ProjectList = ({
             expandedProjects[project] ? "box-collapsable--opened" : ""
           }`}
         >
+          <a
+            href={groupedContent[project].workflowLink}
+            rel="noopener noreferrer"
+            title="Open in new tab"
+            style={{
+              zIndex: "99999",
+              position: "absolute",
+              right: "16px",
+              top: "20px",
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log("clicked");
+            }}
+          >
+            <img
+              src="https://www.svgrepo.com/show/450126/external-link.svg"
+              alt="External Link"
+              style={{ width: "16px", height: "16px", cursor: "pointer" }}
+            />
+          </a>
           <div
             className="box-header columns-middle"
             onClick={() => toggleProject(project)}
@@ -75,10 +98,11 @@ const ProjectList = ({
             <span className="column-grow ellipsis text-a">{project}</span>
             <span
               className="text-c"
-              style={{ fontSize: "0.9em", marginLeft: "15px" }}
-            >
-              {formatDate(groupedContent[project].created)}
-            </span>
+              style={{
+                fontSize: "1em",
+                marginLeft: "15px",
+              }}
+            ></span>
           </div>
           <div className="box-content">
             <div style={{ padding: "15px", display: "flex", gap: "15px" }}>
