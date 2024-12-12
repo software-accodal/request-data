@@ -74,7 +74,7 @@ const ProjectList = ({
               top: "20px",
               cursor: "pointer",
             }}
-            title="Open in new tab"
+            title="Open in workflow"
             onClick={(e) => {
               e.stopPropagation();
               window.open(groupedContent[project].workflowLink, "_blank");
