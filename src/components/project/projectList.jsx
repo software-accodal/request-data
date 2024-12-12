@@ -68,7 +68,7 @@ const ProjectList = ({
         >
           <a
             href={groupedContent[project].workflowLink}
-            target="_parent"
+            target="_self"
             rel="noopener noreferrer"
             title="Open in new tab"
             style={{
