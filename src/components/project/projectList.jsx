@@ -82,7 +82,7 @@ const ProjectList = ({
           >
             <img
               src="https://www.svgrepo.com/show/450126/external-link.svg"
-              alt="External Link"
+              alt="Workflow Link"
               style={{ width: "16px", height: "16px" }}
             />
           </div>
@@ -180,6 +180,29 @@ const ProjectList = ({
                   className="text-a"
                   style={{ marginBottom: "5px", fontWeight: "normal" }}
                 >
+                  RFI Closed Date
+                </p>
+                <span
+                  className="text-a"
+                  style={{
+                    display: "inline-block",
+                    backgroundColor: "#e0f7fa",
+                    color: "#00796b",
+                    padding: "4px 10px",
+                    borderRadius: "12px",
+                    fontSize: "0.85em",
+                    fontWeight: "normal",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {groupedContent[project].rficlosedate
+                    ? formatDate(groupedContent[project].rficlosedate)
+                    : "N/A"}
+                </span>
+                <p
+                  className="text-a"
+                  style={{ marginBottom: "5px", fontWeight: "normal" }}
+                >
                   Preparer
                 </p>
                 <span
@@ -218,30 +241,6 @@ const ProjectList = ({
                   }}
                 >
                   {groupedContent[project].reviewer2 || "N/A"}
-                </span>
-
-                <p
-                  className="text-a"
-                  style={{ marginBottom: "5px", fontWeight: "normal" }}
-                >
-                  RFI Closed Date
-                </p>
-                <span
-                  className="text-a"
-                  style={{
-                    display: "inline-block",
-                    backgroundColor: "#e0f7fa",
-                    color: "#00796b",
-                    padding: "4px 10px",
-                    borderRadius: "12px",
-                    fontSize: "0.85em",
-                    fontWeight: "normal",
-                    marginBottom: "10px",
-                  }}
-                >
-                  {groupedContent[project].rficlosedate
-                    ? formatDate(groupedContent[project].rficlosedate)
-                    : "N/A"}
                 </span>
               </div>
             </div>
