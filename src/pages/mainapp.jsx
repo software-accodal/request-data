@@ -79,7 +79,11 @@ function MainApp({ missive }) {
       }}
     >
       {conversations.length > 0 && (
-        <div>
+        <div
+          style={{
+            marginBottom: "15px",
+          }}
+        >
           <p className="text-normal text-a align-left">
             All Emails in Conversations:
           </p>

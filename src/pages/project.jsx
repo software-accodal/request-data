@@ -98,7 +98,7 @@ function Projects({ emails, subject }) {
     data: airtableDataSubject,
     isFetching: isFetchingSubject,
     isFetched: isFetchedSubject,
-    refetched: refetchedSubject,
+    refetch: refetchedSubject,
   } = useQuery({
     retry: false,
     enabled: !!formula1,
@@ -114,7 +114,7 @@ function Projects({ emails, subject }) {
     data: airtableDataEmail,
     isFetching: isFetchingEmail,
     isFetched: isFetchedEmail,
-    refetched: refetchedEmail,
+    refetch: refetchedEmail,
   } = useQuery({
     retry: false,
     enabled:
@@ -146,25 +146,20 @@ function Projects({ emails, subject }) {
     setIsModalOpen(false);
     setModalClosed((prev) => !prev);
 
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+    setTimeout(() => {
+      if (formula1) {
+        setIsSaving(false);
+        refetchedSubject();
+      }
+    }, 5000);
 
-    timeoutRef.current = setTimeout(() => {
-      refetchedEmail();
-      refetchedSubject();
-      setIsSaving(false);
-      timeoutRef.current = null;
+    setTimeout(() => {
+      if (formula2) {
+        setIsSaving(false);
+        refetchedEmail();
+      }
     }, 5000);
   };
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
 
   const toggleProject = (project) => {
     setExpandedProjects((prevState) => ({

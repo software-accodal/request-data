@@ -68,7 +68,6 @@ const ProjectList = ({
         >
           <div
             style={{
-              zIndex: "99999",
               position: "absolute",
               right: "16px",
               top: "20px",
