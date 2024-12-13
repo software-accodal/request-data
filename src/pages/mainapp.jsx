@@ -104,7 +104,8 @@ function MainApp({ missive }) {
               key={conv.id}
               style={{
                 marginBottom: "10px",
-                padding: "5px",
+                paddingTop: "10px",
+                paddingBottom: "10px",
                 borderBottom: "1px solid #ddd",
                 textAlign: "left",
               }}
