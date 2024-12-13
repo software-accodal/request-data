@@ -84,7 +84,12 @@ function MainApp({ missive }) {
             marginBottom: "15px",
           }}
         >
-          <p className="text-normal text-a align-left">
+          <p
+            className="text-normal text-a align-left"
+            style={{
+              marginBottom: "15px",
+            }}
+          >
             All Emails in Conversations:
           </p>
           <ul>
