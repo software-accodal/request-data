@@ -1,5 +1,4 @@
 import React from "react";
-import ProjectLoading from "./projectLoading";
 
 const ProjectList = ({
   isFetchingSubject,
@@ -202,28 +201,6 @@ const ProjectList = ({
                   className="text-a"
                   style={{ marginBottom: "5px", fontWeight: "normal" }}
                 >
-                  Preparer
-                </p>
-                <span
-                  className="text-a"
-                  style={{
-                    display: "inline-block",
-                    backgroundColor: "#e0f7fa",
-                    color: "#00796b",
-                    padding: "4px 10px",
-                    borderRadius: "12px",
-                    fontSize: "0.85em",
-                    fontWeight: "normal",
-                    marginBottom: "10px",
-                  }}
-                >
-                  {groupedContent[project].preparer || "N/A"}
-                </span>
-
-                <p
-                  className="text-a"
-                  style={{ marginBottom: "5px", fontWeight: "normal" }}
-                >
                   2nd Reviewer
                 </p>
                 <span
@@ -240,6 +217,27 @@ const ProjectList = ({
                   }}
                 >
                   {groupedContent[project].reviewer2 || "N/A"}
+                </span>
+                <p
+                  className="text-a"
+                  style={{ marginBottom: "5px", fontWeight: "normal" }}
+                >
+                  Preparer
+                </p>
+                <span
+                  className="text-a"
+                  style={{
+                    display: "inline-block",
+                    backgroundColor: "#e0f7fa",
+                    color: "#00796b",
+                    padding: "4px 10px",
+                    borderRadius: "12px",
+                    fontSize: "0.85em",
+                    fontWeight: "normal",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {groupedContent[project].preparer || "N/A"}
                 </span>
               </div>
             </div>

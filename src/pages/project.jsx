@@ -170,8 +170,7 @@ function Projects({ emails, subject }) {
 
   return (
     <div className="columns-vertical">
-      {(isFetchingSubject || isFetchingEmail) && <ProjectLoading />}{" "}
-      {isSaving && <ProjectLoading />}
+      {(isFetchingSubject || isFetchingEmail || isSaving) && <ProjectLoading />}{" "}
       <ProjectList
         airtableRecords={airtableRecords}
         groupedContent={groupedContent}
