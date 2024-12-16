@@ -22,7 +22,7 @@ const getByFormula = async (formula) => {
     }
   );
   const data = res.data;
-  console.log(formula, data);
+  // console.log(formula, data);
   if (!data?.length) return null;
   const sortedData = data.sort((a, b) => {
     const dateA = new Date(a.fields["Created"]);
@@ -134,13 +134,13 @@ function Projects({ emails, subject }) {
       return res;
     },
   });
-  console.log(
-    airtableDataEmail,
-    (isFetchedSubject || !formula1) &&
-      !airtableDataSubject?.length &&
-      !!formula2,
-    airtableDataSubject
-  );
+  // console.log(
+  //   airtableDataEmail,
+  //   (isFetchedSubject || !formula1) &&
+  //     !airtableDataSubject?.length &&
+  //     !!formula2,
+  //   airtableDataSubject
+  // );
   const finalData = (airtableDataSubject || airtableDataEmail) ?? {};
 
   const { sortedData: airtableRecords = [], grouped: groupedContent = {} } =
