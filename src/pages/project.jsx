@@ -73,15 +73,21 @@ function Projects({ emails, subject }) {
   const formula1 = useMemo(() => {
     if (!subject?.trim()) return undefined;
 
-    return `({Project Name} = '${subject}')`;
+    return `AND(
+      {Project Name} = '${subject}', 
+      NOT({Status} = "Void")
+    )`;
   }, [subject]);
 
   const formula2 = useMemo(() => {
     if (!emails || emails?.length === 0) return undefined;
 
-    return `OR(${emails
-      .map((email) => `FIND('${email}', {Client Email} & "")`)
-      .join(", ")})`;
+    return `AND(
+      NOT({Status} = "Void"), 
+      OR(${emails
+        .map((email) => `FIND('${email}', {Client Email} & "")`)
+        .join(", ")})
+    )`;
   }, [emails]);
 
   const checkInitialState = (grouped) => {
