@@ -19,7 +19,10 @@ const NewRequestModal = () => {
           textAlign: "left",
         }}
       >
-        <h2 className="text-large" style={{ marginBottom: "15px" }}>
+        <h2
+          className="text-large"
+          style={{ marginBottom: "15px", marginTop: "10px" }}
+        >
           Create New Request
         </h2>
         <hr></hr>
@@ -27,6 +30,7 @@ const NewRequestModal = () => {
         <div style={{ marginBottom: "10px", marginTop: "10px" }}>
           <label
             htmlFor="client"
+            className="text-b"
             style={{ display: "block", marginBottom: "5px" }}
           >
             Client <span style={{ color: "red" }}>*</span>
@@ -74,6 +78,7 @@ const NewRequestModal = () => {
         {/* Projects Dropdown */}
         <div style={{ marginBottom: "10px" }}>
           <label
+            className="text-b"
             htmlFor="projects"
             style={{ display: "block", marginBottom: "5px" }}
           >
@@ -102,6 +107,7 @@ const NewRequestModal = () => {
         {/* Request Details Textarea */}
         <div style={{ marginBottom: "10px" }}>
           <label
+            className="text-b"
             htmlFor="requestDetails"
             style={{ display: "block", marginBottom: "5px" }}
           >

@@ -34,6 +34,7 @@ const RequestModal = ({ groupedContent, closeModal }) => {
         {/* Client Dropdown */}
         <div style={{ marginBottom: "10px", marginTop: "10px" }}>
           <label
+            className="text-b"
             htmlFor="client"
             style={{ display: "block", marginBottom: "5px" }}
           >
@@ -81,6 +82,7 @@ const RequestModal = ({ groupedContent, closeModal }) => {
         {/* Projects Dropdown */}
         <div style={{ marginBottom: "10px" }}>
           <label
+            className="text-b"
             htmlFor="projects"
             style={{ display: "block", marginBottom: "5px" }}
           >
@@ -111,6 +113,7 @@ const RequestModal = ({ groupedContent, closeModal }) => {
         {/* Request Details Textarea */}
         <div style={{ marginBottom: "10px" }}>
           <label
+            className="text-b"
             htmlFor="requestDetails"
             style={{ display: "block", marginBottom: "5px" }}
           >
