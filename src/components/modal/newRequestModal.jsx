@@ -119,7 +119,7 @@ const NewRequestModal = () => {
             onChange={(e) => setRequestDetails(e.target.value)}
             style={{
               width: "100%",
-              height: "100px",
+              height: "200px",
               padding: "8px",
               borderRadius: "4px",
               border: "1px solid #ccc",
