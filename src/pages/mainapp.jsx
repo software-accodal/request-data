@@ -84,37 +84,45 @@ function MainApp({ missive }) {
         color: "#000000",
       }}
     >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end", // Optional, ensures alignment to the right
+          gap: "8px",
+        }}
+      >
+        <label className="text-a">New conversation</label>
+        <Switch
+          onChange={(e) => {
+            console.log(isToggled);
+            handleToggle(e);
+          }}
+          checked={!isToggled}
+          onColor={"#007BFF"}
+          uncheckedIcon={false}
+          checkedIcon={false}
+          handleDiameter={25}
+          boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+          activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+          height={20}
+          width={48}
+        />
+      </div>
       {conversations.length > 0 && (
         <div
           style={{
             marginBottom: "15px",
           }}
         >
-          <span
+          <p
             className="text-normal text-a align-left"
             style={{
               marginTop: "20px",
             }}
           >
             All Emails in Conversations:
-          </span>
-          <div style={{ textAlign: "right" }}>
-            <Switch
-              onChange={(e) => {
-                console.log(isToggled);
-                handleToggle(e);
-              }}
-              checked={!isToggled}
-              onColor={"#007BFF"}
-              uncheckedIcon={false}
-              checkedIcon={false}
-              handleDiameter={25}
-              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-              height={20}
-              width={48}
-            />
-          </div>
+          </p>
           <ul>
             {[...allEmails].map((email, index) => (
               <li key={index} className="list-title text-a align-left">
