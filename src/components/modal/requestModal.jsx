@@ -93,6 +93,7 @@ const RequestModal = ({ groupedContent, closeModal }) => {
               padding: "8px",
               borderRadius: "4px",
               border: "1px solid #ccc",
+              outline: "none",
             }}
           >
             <option value="" disabled>

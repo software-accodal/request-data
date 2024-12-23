@@ -4,9 +4,54 @@ import Requests from "./request.jsx";
 import Projects from "./project.jsx";
 import Docs from "./docs.jsx";
 import Switch from "react-switch";
+import NewRequestModal from "../components/modal/newRequestModal.jsx";
 
 function AppContent({ conversations, allEmails, isToggled, handleToggle }) {
   const location = useLocation();
+  console.log("toggle", isToggled);
+
+  // When isToggled is true, only show the modal and hide the rest
+  if (isToggled) {
+    return (
+      <div
+        className="App"
+        style={{
+          width: "100%",
+          margin: "0 auto",
+          padding: "0",
+          color: "#000000",
+        }}
+      >
+        {location.pathname === "/requests" && (
+          <div
+            id="switchToggle"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              gap: "8px",
+              marginTop: "10px",
+            }}
+          >
+            <label className="text-a">New conversation</label>
+            <Switch
+              onChange={(e) => handleToggle(e)}
+              checked={isToggled}
+              onColor={"#007BFF"}
+              uncheckedIcon={false}
+              checkedIcon={false}
+              handleDiameter={25}
+              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+              height={20}
+              width={48}
+            />
+          </div>
+        )}
+        <NewRequestModal />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -32,7 +77,7 @@ function AppContent({ conversations, allEmails, isToggled, handleToggle }) {
           <label className="text-a">New conversation</label>
           <Switch
             onChange={(e) => handleToggle(e)}
-            checked={!isToggled}
+            checked={isToggled}
             onColor={"#007BFF"}
             uncheckedIcon={false}
             checkedIcon={false}
@@ -85,14 +130,18 @@ function AppContent({ conversations, allEmails, isToggled, handleToggle }) {
       <Routes>
         <Route
           path="/requests"
-          element={<Requests emails={[...allEmails]} displayToggle={true} />}
+          element={
+            <Requests
+              emails={[...allEmails]}
+              subject={conversations.length > 0 ? conversations[0].subject : ""}
+            />
+          }
         />
         <Route
           path="/projects"
           element={
             <Projects
               emails={[...allEmails]}
-              displayToggle={true}
               subject={conversations.length > 0 ? conversations[0].subject : ""}
             />
           }

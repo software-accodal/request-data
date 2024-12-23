@@ -6,12 +6,11 @@ function MainApp({ missive }) {
   const [conversationIds, setConversationIds] = useState([]);
   const [conversations, setConversations] = useState([]);
   const [allEmails, setAllEmails] = useState([]);
-  const [isToggled, setIsToggled] = useState(true);
+  const [isToggled, setIsToggled] = useState(false);
 
   const handleToggle = () => {
     setIsToggled(!isToggled);
   };
-
   const registered = useRef(false);
 
   useEffect(() => {
