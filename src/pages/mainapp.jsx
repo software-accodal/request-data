@@ -90,14 +90,14 @@ function MainApp({ missive }) {
             marginBottom: "15px",
           }}
         >
-          <p
+          <span
             className="text-normal text-a align-left"
             style={{
               marginTop: "20px",
             }}
           >
             All Emails in Conversations:
-          </p>
+          </span>
           <div style={{ textAlign: "right" }}>
             <Switch
               onChange={(e) => {
