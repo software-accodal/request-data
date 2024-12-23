@@ -27,15 +27,17 @@ const RequestModal = ({ groupedContent, closeModal }) => {
           textAlign: "left",
         }}
       >
-        <h4 style={{ marginBottom: "15px" }}>Create Request</h4>
-
+        <h2 className="text-large" style={{ marginBottom: "15px" }}>
+          Create New Request
+        </h2>
+        <hr></hr>
         {/* Client Dropdown */}
-        <div style={{ marginBottom: "10px" }}>
+        <div style={{ marginBottom: "10px", marginTop: "10px" }}>
           <label
             htmlFor="client"
             style={{ display: "block", marginBottom: "5px" }}
           >
-            Client
+            Client <span style={{ color: "red" }}>*</span>
           </label>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             {/* Pill-Style Selection */}
@@ -112,7 +114,7 @@ const RequestModal = ({ groupedContent, closeModal }) => {
             htmlFor="requestDetails"
             style={{ display: "block", marginBottom: "5px" }}
           >
-            Request Details
+            Request Details <span style={{ color: "red" }}>*</span>
           </label>
           <textarea
             id="requestDetails"

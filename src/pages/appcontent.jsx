@@ -10,7 +10,6 @@ function AppContent({ conversations, allEmails, isToggled, handleToggle }) {
   const location = useLocation();
   console.log("toggle", isToggled);
 
-  // When isToggled is true, only show the modal and hide the rest
   if (isToggled) {
     return (
       <div
@@ -40,11 +39,11 @@ function AppContent({ conversations, allEmails, isToggled, handleToggle }) {
               onColor={"#007BFF"}
               uncheckedIcon={false}
               checkedIcon={false}
-              handleDiameter={25}
+              handleDiameter={20}
               boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
               activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-              height={20}
-              width={48}
+              height={15}
+              width={40}
             />
           </div>
         )}
@@ -81,11 +80,11 @@ function AppContent({ conversations, allEmails, isToggled, handleToggle }) {
             onColor={"#007BFF"}
             uncheckedIcon={false}
             checkedIcon={false}
-            handleDiameter={25}
+            handleDiameter={20}
             boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
             activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-            height={20}
-            width={48}
+            height={15}
+            width={40}
           />
         </div>
       )}
