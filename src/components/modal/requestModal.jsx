@@ -25,7 +25,7 @@ const RequestModal = ({ groupedContent, closeModal }) => {
         className="modal"
         style={{
           textAlign: "left",
-          height: "63%",
+          height: "67%",
         }}
       >
         <h2 className="text-large" style={{ marginBottom: "15px" }}>
