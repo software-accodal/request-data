@@ -88,8 +88,9 @@ function MainApp({ missive }) {
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "flex-end", // Optional, ensures alignment to the right
+          justifyContent: "flex-end",
           gap: "8px",
+          marginTop: "10px",
         }}
       >
         <label className="text-a">New conversation</label>
@@ -118,7 +119,7 @@ function MainApp({ missive }) {
           <p
             className="text-normal text-a align-left"
             style={{
-              marginTop: "20px",
+              marginTop: "10px",
             }}
           >
             All Emails in Conversations:
