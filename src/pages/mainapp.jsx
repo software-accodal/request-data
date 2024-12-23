@@ -84,23 +84,6 @@ function MainApp({ missive }) {
         color: "#000000",
       }}
     >
-      <div style={{ textAlign: "right" }}>
-        <Switch
-          onChange={(e) => {
-            console.log(isToggled);
-            handleToggle(e);
-          }}
-          checked={!isToggled}
-          onColor={"#007BFF"}
-          uncheckedIcon={false}
-          checkedIcon={false}
-          handleDiameter={25}
-          boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-          activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-          height={20}
-          width={48}
-        />
-      </div>
       {conversations.length > 0 && (
         <div
           style={{
@@ -115,6 +98,23 @@ function MainApp({ missive }) {
           >
             All Emails in Conversations:
           </p>
+          <div style={{ textAlign: "right" }}>
+            <Switch
+              onChange={(e) => {
+                console.log(isToggled);
+                handleToggle(e);
+              }}
+              checked={!isToggled}
+              onColor={"#007BFF"}
+              uncheckedIcon={false}
+              checkedIcon={false}
+              handleDiameter={25}
+              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+              height={20}
+              width={48}
+            />
+          </div>
           <ul>
             {[...allEmails].map((email, index) => (
               <li key={index} className="list-title text-a align-left">
