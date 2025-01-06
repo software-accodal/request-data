@@ -88,23 +88,23 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
       return;
     }
 
-    missive.createConversation({ select: true });
+    missive
+      .createConversation({ select: true })
+      .then((response) => {
+        console.log("Conversation created successfully:", response);
+
+        setClient("");
+        setClientEmail("");
+        setProjects("");
+        setTextInputs([]);
+        setClientProjects([]);
+      })
+      .catch((error) => {
+        console.error("Error creating conversation:", error);
+        alert("Failed to create conversation. Please try again.");
+      });
 
     console.log(missive.createConversation({ select: true }));
-
-    // .then((response) => {
-    //   console.log("Conversation created successfully:", response);
-
-    //   setClient("");
-    //   setClientEmail("");
-    //   setProjects("");
-    //   setTextInputs([]);
-    //   setClientProjects([]);
-    // })
-    // .catch((error) => {
-    //   console.error("Error creating conversation:", error);
-    //   alert("Failed to create conversation. Please try again.");
-    // });
   };
 
   return (
