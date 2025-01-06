@@ -87,40 +87,28 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
       return;
     }
 
-    // // missive.createConversation({ select: true });
-    // missive.compose({
-    //   deliver: false,
-    //   mailto: {
-    //     subject: "New Request",
-    //     to_fields: [{ address: "isonaguilar16@gmail.com" }],
-    //     body: textInputs.join("\n"),
-    //   },
+    // missive.createConversation({ select: true });
+    missive.compose({
+      deliver: false,
+      mailto: {
+        subject: "New Request",
+        to_fields: [{ address: "isonaguilar16@gmail.com" }],
+        body: textInputs.join("\n"),
+      },
+    });
+    // .then((response) => {
+    //   console.log("Conversation created successfully:", response);
+
+    //   setClient("");
+    //   setClientEmail("");
+    //   setProjects("");
+    //   setTextInputs([]);
+    //   setClientProjects([]);
+    // })
+    // .catch((error) => {
+    //   console.error("Error creating conversation:", error);
+    //   alert("Failed to create conversation. Please try again.");
     // });
-    // // .then((response) => {
-    // //   console.log("Conversation created successfully:", response);
-
-    // //   setClient("");
-    // //   setClientEmail("");
-    // //   setProjects("");
-    // //   setTextInputs([]);
-    // //   setClientProjects([]);
-    // // })
-    // // .catch((error) => {
-    // //   console.error("Error creating conversation:", error);
-    // //   alert("Failed to create conversation. Please try again.");
-    // // });
-
-    console.log(
-      "createConvo",
-      missive.compose({
-        deliver: false,
-        mailto: {
-          subject: "New Request",
-          to_fields: [{ address: "isonaguilar16@gmail.com" }],
-          body: textInputs.join("\n"),
-        },
-      })
-    );
   };
 
   return (
