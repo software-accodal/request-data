@@ -80,6 +80,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
   const handleDeleteTextInput = (index) => {
     setTextInputs((prevInputs) => prevInputs.filter((_, i) => i !== index));
   };
+  console.log("modal", missive);
 
   // Submit
   const handleSubmit = () => {
@@ -109,11 +110,9 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
       .then((response) => {
         console.log("Conversation created successfully:", response);
 
-        // Reset form fields after successful submission
         setClient("");
         setClientEmail("");
         setProjects("");
-        setRequestDetails("");
         setTextInputs([]);
         setClientProjects([]);
       })
