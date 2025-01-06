@@ -89,6 +89,14 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
     }
 
     missive.createConversation({ select: true });
+    missive.compose({
+      deliver: false,
+      mailto: {
+        subject: "New Request",
+        to_fields: [clientEmail],
+        body: textInputs.join("\n"),
+      },
+    });
     // .then((response) => {
     //   console.log("Conversation created successfully:", response);
 
