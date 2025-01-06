@@ -6,7 +6,13 @@ import Docs from "./docs.jsx";
 import Switch from "react-switch";
 import NewRequestModal from "../components/modal/newRequestModal.jsx";
 
-function AppContent({ conversations, allEmails, isToggled, handleToggle }) {
+function AppContent({
+  conversations,
+  allEmails,
+  isToggled,
+  handleToggle,
+  missive,
+}) {
   const location = useLocation();
   const [clientRecords, setClientRecords] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -86,8 +92,11 @@ function AppContent({ conversations, allEmails, isToggled, handleToggle }) {
             />
           </div>
         )}
-        {/* Pass the entire array (clientRecords) and loading state to the modal */}
-        <NewRequestModal clientRecords={clientRecords} isLoading={isLoading} />
+        <NewRequestModal
+          clientRecords={clientRecords}
+          isLoading={isLoading}
+          missive={missive}
+        />
       </div>
     );
   }

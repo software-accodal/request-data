@@ -1,15 +1,15 @@
 import { useState } from "react";
 
-const NewRequestModal = ({ clientRecords, isLoading }) => {
+const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
   const [projects, setProjects] = useState("");
   const [client, setClient] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
   const [requestDetails, setRequestDetails] = useState("");
   const [textInputs, setTextInputs] = useState([]);
 
   const [clientProjects, setClientProjects] = useState([]);
   const [isProjectsLoading, setIsProjectsLoading] = useState(false);
 
-  // Helper function to fetch a single project
   const fetchProjectById = async (projectId) => {
     try {
       const response = await fetch(
@@ -40,6 +40,7 @@ const NewRequestModal = ({ clientRecords, isLoading }) => {
 
     setClientProjects([]);
     setProjects("");
+    setClientEmail("");
 
     const selectedClientObj = clientRecords.find(
       (record) => record.name === selectedClientName
@@ -48,6 +49,8 @@ const NewRequestModal = ({ clientRecords, isLoading }) => {
     if (!selectedClientObj) {
       return;
     }
+
+    setClientEmail(selectedClientObj.email[0]);
 
     if (selectedClientObj.project_ids?.length > 0) {
       try {
@@ -80,22 +83,47 @@ const NewRequestModal = ({ clientRecords, isLoading }) => {
 
   // Submit
   const handleSubmit = () => {
-    console.log("Submitted Request:", {
-      client,
-      projects,
-      requestDetails,
-      textInputs,
-      // selectedClientObj,
-      // selectedProjectObj,
-    });
+    if (!client || !clientEmail) {
+      alert("Please select a client and ensure an email is available.");
+      return;
+    }
 
-    setClient("");
-    setProjects("");
-    setRequestDetails("");
-    setTextInputs([]);
-    setClientProjects([]);
+    // Prepare conversation details
+    const conversationDetails = {
+      subject: `New Request`,
+      to: [clientEmail],
+      body: `
+        <p><strong>Project:</strong> ${projects || "No project selected"}</p>
+        <p><strong>Request Details:</strong></p>
+        <ul>
+          ${textInputs.map((detail) => `<li>${detail}</li>`).join("")}
+        </ul>
+      `,
+      // Optional: Customize additional properties
+      draft: true, // Keeps the conversation as a draft in Missive
+    };
+
+    // Call Missive's createConversation API
+    missive
+      .createConversation()
+      .setSubject("New Request")
+      .then((response) => {
+        console.log("Conversation created successfully:", response);
+
+        // Reset form fields after successful submission
+        setClient("");
+        setClientEmail("");
+        setProjects("");
+        setRequestDetails("");
+        setTextInputs([]);
+        setClientProjects([]);
+      })
+      .catch((error) => {
+        console.error("Error creating conversation:", error);
+        alert("Failed to create conversation. Please try again.");
+      });
   };
-  console.log("requests", textInputs);
+
   return (
     <>
       <div style={{ textAlign: "left" }}>

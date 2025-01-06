@@ -75,6 +75,7 @@ function MainApp({ missive }) {
         allEmails={allEmails}
         isToggled={isToggled}
         handleToggle={handleToggle}
+        missive={missive}
       />
     </Router>
   );
