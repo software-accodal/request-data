@@ -105,8 +105,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
 
     // Call Missive's createConversation API
     missive
-      .createConversation()
-      .setSubject("New Request")
+      .createConversation({ select: true })
       .then((response) => {
         console.log("Conversation created successfully:", response);
 
