@@ -35,7 +35,6 @@ function Requests({ emails }) {
       .then((response) => {
         const data = response.data;
         setAirtableRecords(data);
-        console.log(data);
         const grouped = data.reduce((acc, record) => {
           const project = record.fields["Project Name"]?.[0] || "Uncategorized";
           const finalReference = record.fields["Final Reference"];

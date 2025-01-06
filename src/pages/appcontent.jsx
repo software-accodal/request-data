@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Requests from "./request.jsx";
 import Projects from "./project.jsx";
@@ -8,7 +8,46 @@ import NewRequestModal from "../components/modal/newRequestModal.jsx";
 
 function AppContent({ conversations, allEmails, isToggled, handleToggle }) {
   const location = useLocation();
-  console.log("toggle", isToggled);
+  const [clientRecords, setClientRecords] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch client records (Name, Email, Project Ids, etc.) on mount
+  useEffect(() => {
+    fetch(
+      "https://accodal-api-rc8y.onrender.com/api/airtable?baseId=app2MprPYlwfIdCCd&tableId=tblI5GpQV56aJJIn6&viewId=viwMNYFZDUb7TNgjy",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          token: "s3cretKey",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.rows) {
+          // Map each record to a more detailed object
+          const records = data.rows.map((record) => {
+            const fields = record.fields ?? {};
+            return {
+              name: fields.Name ?? "",
+              email: fields.Email ?? "",
+              project_ids: fields.Projects || [], // or whatever the actual key is
+            };
+          });
+
+          // Sort by name (A–Z)
+          records.sort((a, b) => a.name.localeCompare(b.name));
+
+          setClientRecords(records);
+        }
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching client names:", error);
+        setIsLoading(false);
+      });
+  }, []);
 
   if (isToggled) {
     return (
@@ -47,7 +86,8 @@ function AppContent({ conversations, allEmails, isToggled, handleToggle }) {
             />
           </div>
         )}
-        <NewRequestModal />
+        {/* Pass the entire array (clientRecords) and loading state to the modal */}
+        <NewRequestModal clientRecords={clientRecords} isLoading={isLoading} />
       </div>
     );
   }
@@ -88,17 +128,12 @@ function AppContent({ conversations, allEmails, isToggled, handleToggle }) {
           />
         </div>
       )}
+
       {conversations.length > 0 && (
-        <div
-          style={{
-            marginBottom: "15px",
-          }}
-        >
+        <div style={{ marginBottom: "15px" }}>
           <p
             className="text-normal text-a align-left"
-            style={{
-              marginTop: "10px",
-            }}
+            style={{ marginTop: "10px" }}
           >
             All Emails in Conversations:
           </p>
