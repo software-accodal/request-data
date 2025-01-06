@@ -85,41 +85,26 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
   // Submit
   const handleSubmit = () => {
     if (!client || !clientEmail) {
-      alert("Please select a client and ensure an email is available.");
       return;
     }
 
-    // Prepare conversation details
-    const conversationDetails = {
-      subject: `New Request`,
-      to: [clientEmail],
-      body: `
-        <p><strong>Project:</strong> ${projects || "No project selected"}</p>
-        <p><strong>Request Details:</strong></p>
-        <ul>
-          ${textInputs.map((detail) => `<li>${detail}</li>`).join("")}
-        </ul>
-      `,
-      // Optional: Customize additional properties
-      draft: true, // Keeps the conversation as a draft in Missive
-    };
+    missive.createConversation({ select: true });
 
-    // Call Missive's createConversation API
-    missive
-      .createConversation({ select: true })
-      .then((response) => {
-        console.log("Conversation created successfully:", response);
+    console.log(missive.createConversation({ select: true }));
 
-        setClient("");
-        setClientEmail("");
-        setProjects("");
-        setTextInputs([]);
-        setClientProjects([]);
-      })
-      .catch((error) => {
-        console.error("Error creating conversation:", error);
-        alert("Failed to create conversation. Please try again.");
-      });
+    // .then((response) => {
+    //   console.log("Conversation created successfully:", response);
+
+    //   setClient("");
+    //   setClientEmail("");
+    //   setProjects("");
+    //   setTextInputs([]);
+    //   setClientProjects([]);
+    // })
+    // .catch((error) => {
+    //   console.error("Error creating conversation:", error);
+    //   alert("Failed to create conversation. Please try again.");
+    // });
   };
 
   return (
