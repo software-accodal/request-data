@@ -88,7 +88,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
     }
 
     missive.createConversation({ select: true });
-    missive.compose({
+    missive.composeInConversation({
       deliver: false,
       mailto: {
         subject: "New Request",
