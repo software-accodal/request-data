@@ -104,7 +104,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
         alert("Failed to create conversation. Please try again.");
       });
 
-    console.log(missive.createConversation({ select: true }));
+    console.log("createConvo", missive.createConversation({ select: true }));
   };
 
   return (
