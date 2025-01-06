@@ -87,7 +87,6 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
       return;
     }
 
-    // missive.createConversation({ select: true });
     missive.compose({
       deliver: false,
       mailto: {
