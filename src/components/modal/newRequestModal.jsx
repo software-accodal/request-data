@@ -95,19 +95,6 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
         body: textInputs.join("\n"),
       },
     });
-    // .then((response) => {
-    //   console.log("Conversation created successfully:", response);
-
-    //   setClient("");
-    //   setClientEmail("");
-    //   setProjects("");
-    //   setTextInputs([]);
-    //   setClientProjects([]);
-    // })
-    // .catch((error) => {
-    //   console.error("Error creating conversation:", error);
-    //   alert("Failed to create conversation. Please try again.");
-    // });
   };
 
   return (
