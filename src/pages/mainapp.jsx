@@ -13,8 +13,6 @@ function MainApp({ missive }) {
   };
   const registered = useRef(false);
 
-  console.log("mainapp", missive);
-
   useEffect(() => {
     if (!missive || registered.current) return;
 

@@ -80,7 +80,6 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
   const handleDeleteTextInput = (index) => {
     setTextInputs((prevInputs) => prevInputs.filter((_, i) => i !== index));
   };
-  console.log("modal", missive);
 
   // Submit
   const handleSubmit = () => {
@@ -93,7 +92,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
       deliver: false,
       mailto: {
         subject: "New Request",
-        to_fields: [clientEmail],
+        to_fields: [{ address: "isonaguilar16@gmail.com" }],
         body: textInputs.join("\n"),
       },
     });
