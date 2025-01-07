@@ -4,9 +4,10 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
   const [projects, setProjects] = useState("");
   const [client, setClient] = useState("");
   const [clientEmail, setClientEmail] = useState("");
-  const [requestDetails, setRequestDetails] = useState("");
+  const [clientRecordID, setClientRecordID] = useState("");
   const [textInputs, setTextInputs] = useState([]);
-
+  const [periodEnd, setPeriodEnd] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [clientProjects, setClientProjects] = useState([]);
   const [isProjectsLoading, setIsProjectsLoading] = useState(false);
 
@@ -24,9 +25,11 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
       );
       const data = await response.json();
       const projectName = data.fields?.["Project Name"] || "Untitled Project";
+      const periodEnd = data.fields?.["Period End"] || "Untitled Project";
       return {
         id: projectId,
         name: projectName,
+        periodEnd: periodEnd,
       };
     } catch (error) {
       console.error(`Error fetching project ${projectId}:`, error);
@@ -51,6 +54,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
     }
 
     setClientEmail(selectedClientObj.email[0]);
+    setClientRecordID(selectedClientObj.clientRecordID);
 
     if (selectedClientObj.project_ids?.length > 0) {
       try {
@@ -64,6 +68,21 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
       } finally {
         setIsProjectsLoading(false);
       }
+    }
+  };
+
+  const handleProjectChange = (e) => {
+    const selectedProjectId = e.target.value;
+    setProjects(selectedProjectId);
+
+    // Find the selected project's details to update Period End
+    const selectedProject = clientProjects.find(
+      (project) => project.id === selectedProjectId
+    );
+    if (selectedProject) {
+      setPeriodEnd(selectedProject.periodEnd);
+    } else {
+      setPeriodEnd("");
     }
   };
 
@@ -81,20 +100,109 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
     setTextInputs((prevInputs) => prevInputs.filter((_, i) => i !== index));
   };
 
-  // Submit
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!client || !clientEmail) {
       return;
     }
 
-    missive.compose({
-      deliver: false,
-      mailto: {
-        subject: "New Request",
-        to_fields: [{ address: "isonaguilar16@gmail.com" }],
-        body: textInputs.join("\n"),
-      },
-    });
+    setIsSubmitting(true);
+
+    const toFields = clientEmail.split(",").map((email) => ({
+      address: email.trim(),
+    }));
+
+    try {
+      const updatedRecordArray = await Promise.all(
+        textInputs.map(async (textInput) => {
+          const formattedPeriodEnd = periodEnd.includes("-")
+            ? periodEnd.split("-").slice(0, 2).reverse().join(" - ")
+            : "";
+
+          const requestBody = {
+            request: textInput,
+            periodEnd: formattedPeriodEnd,
+          };
+
+          let customReference = "N/A";
+          try {
+            const response = await fetch(
+              "https://accodal-api-rc8y.onrender.com/api/openai/generate-reference",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  token: "s3cretKey",
+                },
+                body: JSON.stringify(requestBody),
+              }
+            );
+
+            if (response.ok) {
+              const data = await response.json();
+              customReference = periodEnd ? data?.trim() : data.split(" - ")[0];
+            } else {
+              console.error(
+                "Error generating reference:",
+                await response.text()
+              );
+            }
+          } catch (error) {
+            console.error("Error generating reference:", error);
+          }
+
+          return {
+            fields: {
+              Question: textInput,
+              "Clients (Entity & Individual)": [clientRecordID],
+              Project: [projects],
+              Status: "Outstanding",
+              "Custom Reference": customReference,
+            },
+          };
+        })
+      );
+
+      console.log("Updated Record Array:", updatedRecordArray);
+
+      const response = await fetch(
+        "https://accodal-api-rc8y.onrender.com/api/airtable/create/app2MprPYlwfIdCCd/tblIbpqFg0KuNxOD4",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            token: "s3cretKey",
+          },
+          body: JSON.stringify(updatedRecordArray),
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.text();
+        console.error("Error creating records:", error);
+      } else {
+        console.log("Records created successfully!");
+      }
+
+      missive.compose({
+        deliver: false,
+        mailto: {
+          subject: "New Request",
+          to_fields: toFields,
+          body: JSON.stringify(updatedRecordArray, null, 2),
+        },
+      });
+
+      setClient("");
+      setProjects("");
+      setClientRecordID("");
+      setClientEmail("");
+      setTextInputs([]);
+      setClientProjects([]);
+    } catch (error) {
+      console.error("Error processing request details:", error);
+    } finally {
+      setIsSubmitting(false); // Set loading state to false
+    }
   };
 
   return (
@@ -108,7 +216,6 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
         </h2>
         <hr />
 
-        {/* Client Input (Normal) */}
         <div style={{ marginBottom: "10px", marginTop: "10px" }}>
           <label
             htmlFor="client"
@@ -137,15 +244,11 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
           />
           <datalist id="clientNames">
             {clientRecords.map((clientObj, index) => (
-              <option key={index} value={clientObj.name}>
-                {/* Could show the email or other fields in the option label */}
-                {/* {`${clientObj.name} (${clientObj.email})`} */}
-              </option>
+              <option key={index} value={clientObj.name} />
             ))}
           </datalist>
         </div>
 
-        {/* Projects Dropdown: Show projects for the selected client */}
         <div style={{ marginBottom: "10px" }}>
           <label
             className="text-b"
@@ -157,7 +260,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
           <select
             id="projects"
             value={projects}
-            onChange={(e) => setProjects(e.target.value)}
+            onChange={handleProjectChange}
             style={{
               width: "100%",
               padding: "8px",
@@ -167,12 +270,10 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
             }}
             disabled={isProjectsLoading || clientProjects.length === 0}
           >
-            {/* If user hasn't selected a client or if the fetch is ongoing */}
             <option value="" disabled style={{ color: "#ccc" }}>
               {isProjectsLoading ? "Loading projects..." : "Select a project"}
             </option>
 
-            {/* Render fetched projects */}
             {clientProjects.map((proj) => (
               <option key={proj.id} value={proj.id}>
                 {proj.name}
@@ -181,7 +282,6 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
           </select>
         </div>
 
-        {/* Add Request Details */}
         <div style={{ marginBottom: "10px", marginTop: "20px" }}>
           <button
             onClick={handleAddTextInput}
@@ -237,7 +337,6 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
           ))}
         </div>
 
-        {/* Action Buttons */}
         <div
           style={{
             display: "flex",
@@ -250,16 +349,17 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
             style={{
               width: "100px",
               height: "35px",
-              backgroundColor: "#007BFF",
-              color: "#FFF",
+              backgroundColor: isSubmitting ? "#ccc" : "#007BFF",
+              color: isSubmitting ? "#666" : "#FFF",
               border: "none",
               borderRadius: "4px",
-              cursor: "pointer",
+              cursor: isSubmitting ? "not-allowed" : "pointer",
               marginTop: "10px",
               marginBottom: "10px",
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
             }}
             onClick={handleSubmit}
+            disabled={isSubmitting}
           >
             Submit
           </button>

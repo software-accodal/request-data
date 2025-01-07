@@ -37,8 +37,9 @@ function AppContent({
             const fields = record.fields ?? {};
             return {
               name: fields.Name ?? "",
+              clientRecordID: fields["Client Record ID"] ?? "",
               email: fields.Email ?? "",
-              project_ids: fields.Projects || [], // or whatever the actual key is
+              project_ids: fields.Projects || [],
             };
           });
 
