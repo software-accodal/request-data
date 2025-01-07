@@ -105,104 +105,95 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
       return;
     }
 
-    // setIsSubmitting(true);
+    setIsSubmitting(true);
 
     const toFields = clientEmail.map((email) => ({ address: email }));
 
-    // try {
-    //   const updatedRecordArray = await Promise.all(
-    //     textInputs.map(async (textInput) => {
-    //       const formattedPeriodEnd = periodEnd.includes("-")
-    //         ? periodEnd.split("-").slice(0, 2).reverse().join(" - ")
-    //         : "";
+    try {
+      const updatedRecordArray = await Promise.all(
+        textInputs.map(async (textInput) => {
+          const formattedPeriodEnd = periodEnd.includes("-")
+            ? periodEnd.split("-").slice(0, 2).reverse().join(" - ")
+            : "";
 
-    //       const requestBody = {
-    //         request: textInput,
-    //         periodEnd: formattedPeriodEnd,
-    //       };
+          const requestBody = {
+            request: textInput,
+            periodEnd: formattedPeriodEnd,
+          };
 
-    //       let customReference = "N/A";
-    //       try {
-    //         const response = await fetch(
-    //           "https://accodal-api-rc8y.onrender.com/api/openai/generate-reference",
-    //           {
-    //             method: "POST",
-    //             headers: {
-    //               "Content-Type": "application/json",
-    //               token: "s3cretKey",
-    //             },
-    //             body: JSON.stringify(requestBody),
-    //           }
-    //         );
+          let customReference = "N/A";
+          try {
+            const response = await fetch(
+              "https://accodal-api-rc8y.onrender.com/api/openai/generate-reference",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  token: "s3cretKey",
+                },
+                body: JSON.stringify(requestBody),
+              }
+            );
 
-    //         if (response.ok) {
-    //           const data = await response.json();
-    //           customReference = periodEnd ? data?.trim() : data.split(" - ")[0];
-    //         } else {
-    //           console.error(
-    //             "Error generating reference:",
-    //             await response.text()
-    //           );
-    //         }
-    //       } catch (error) {
-    //         console.error("Error generating reference:", error);
-    //       }
+            if (response.ok) {
+              const data = await response.json();
+              customReference = periodEnd ? data?.trim() : data.split(" - ")[0];
+            } else {
+              console.error(
+                "Error generating reference:",
+                await response.text()
+              );
+            }
+          } catch (error) {
+            console.error("Error generating reference:", error);
+          }
 
-    //       return {
-    //         fields: {
-    //           Question: textInput,
-    //           "Clients (Entity & Individual)": [clientRecordID],
-    //           Project: [projects],
-    //           Status: "Outstanding",
-    //           "Custom Reference": customReference,
-    //         },
-    //       };
-    //     })
-    //   );
+          return {
+            fields: {
+              Question: textInput,
+              "Clients (Entity & Individual)": [clientRecordID],
+              Project: [projects],
+              Status: "Outstanding",
+              "Custom Reference": customReference,
+            },
+          };
+        })
+      );
 
-    //   console.log("Updated Record Array:", updatedRecordArray);
+      console.log("Updated Record Array:", updatedRecordArray);
 
-    //   const response = await fetch(
-    //     "https://accodal-api-rc8y.onrender.com/api/airtable/create/app2MprPYlwfIdCCd/tblIbpqFg0KuNxOD4",
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         token: "s3cretKey",
-    //       },
-    //       body: JSON.stringify(updatedRecordArray),
-    //     }
-    //   );
+      const response = await fetch(
+        "https://accodal-api-rc8y.onrender.com/api/airtable/create/app2MprPYlwfIdCCd/tblIbpqFg0KuNxOD4",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            token: "s3cretKey",
+          },
+          body: JSON.stringify(updatedRecordArray),
+        }
+      );
 
-    //   if (!response.ok) {
-    //     const error = await response.text();
-    //     console.error("Error creating records:", error);
-    //   } else {
-    //     console.log("Records created successfully!");
-    //   }
-    missive.createConversation({ select: true });
-    missive.addLabels(["ed15b444-2425-4c65-9a72-cf9a31ea3f0a"]);
-    missive.reopen();
-    missive.composeInConversation({
-      deliver: false,
-      mailto: {
-        subject: "New Request",
-        to_fields: toFields,
-        body: "TEST ONLY",
-      },
-    });
+      if (!response.ok) {
+        const error = await response.text();
+        console.error("Error creating records:", error);
+      } else {
+        console.log("Records created successfully!");
+      }
+      missive.createConversation({ select: true });
+      missive.addLabels(["ed15b444-2425-4c65-9a72-cf9a31ea3f0a"]);
 
-    setClient("");
-    setProjects("");
-    setClientRecordID("");
-    setClientEmail("");
-    setTextInputs([]);
-    setClientProjects([]);
-    // } catch (error) {
-    //   console.error("Error processing request details:", error);
-    // } finally {
-    //   setIsSubmitting(false); // Set loading state to false
-    // }
+      setClient("");
+      setProjects("");
+      setClientRecordID("");
+      setClientEmail("");
+      setTextInputs([]);
+      setClientProjects([]);
+    } catch (error) {
+      console.error("Error processing request details:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
