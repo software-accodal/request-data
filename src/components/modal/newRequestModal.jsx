@@ -182,14 +182,14 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
     //   }
     missive.createConversation({ select: true });
     missive.addLabels(["ed15b444-2425-4c65-9a72-cf9a31ea3f0a"]);
-    // missive.composeInConversation({
-    //   deliver: true,
-    //   mailto: {
-    //     subject: "New Request",
-    //     to_fields: toFields,
-    //     body: JSON.stringify(updatedRecordArray, null, 2),
-    //   },
-    // });
+    missive.composeInConversation({
+      deliver: false,
+      mailto: {
+        subject: "New Request",
+        to_fields: toFields,
+        body: "TEST ONLY",
+      },
+    });
 
     setClient("");
     setProjects("");
