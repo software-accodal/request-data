@@ -182,6 +182,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
     //   }
     missive.createConversation({ select: true });
     missive.addLabels(["ed15b444-2425-4c65-9a72-cf9a31ea3f0a"]);
+    missive.reopen();
     missive.composeInConversation({
       deliver: false,
       mailto: {
