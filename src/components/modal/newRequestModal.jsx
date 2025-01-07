@@ -53,7 +53,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
       return;
     }
 
-    setClientEmail(selectedClientObj.email[0]);
+    setClientEmail(selectedClientObj.email);
     console.log("Client Email:", selectedClientObj.email);
     setClientRecordID(selectedClientObj.clientRecordID);
 
@@ -76,7 +76,6 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
     const selectedProjectId = e.target.value;
     setProjects(selectedProjectId);
 
-    // Find the selected project's details to update Period End
     const selectedProject = clientProjects.find(
       (project) => project.id === selectedProjectId
     );
@@ -108,9 +107,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
 
     setIsSubmitting(true);
 
-    const toFields = clientEmail.split(",").map((email) => ({
-      address: email.trim(),
-    }));
+    const toFields = clientEmail.map((email) => ({ address: email }));
 
     try {
       const updatedRecordArray = await Promise.all(
