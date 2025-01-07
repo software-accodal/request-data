@@ -182,7 +182,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
       }
 
       missive.compose({
-        deliver: false,
+        deliver: true,
         mailto: {
           subject: "New Request",
           to_fields: toFields,
