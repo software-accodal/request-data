@@ -178,7 +178,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
         const error = await response.text();
         console.error("Error creating records:", error);
       } else {
-        console.log("Records created successfully!");
+        console.log("Records created successfully!", response);
       }
       missive.createConversation({ select: true });
       missive.addLabels(["ed15b444-2425-4c65-9a72-cf9a31ea3f0a"]);
