@@ -54,6 +54,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
     }
 
     setClientEmail(selectedClientObj.email[0]);
+    console.log("Client Email:", selectedClientObj.email);
     setClientRecordID(selectedClientObj.clientRecordID);
 
     if (selectedClientObj.project_ids?.length > 0) {
