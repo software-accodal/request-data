@@ -180,8 +180,17 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
       } else {
         console.log("Records created successfully!", response);
       }
+
       missive.createConversation({ select: true });
       missive.addLabels(["ed15b444-2425-4c65-9a72-cf9a31ea3f0a"]);
+      missive.composeInConversation({
+        deliver: true,
+        mailto: {
+          subject: "New Request",
+          to_fields: toFields,
+          body: JSON.stringify("TEST", null, 2),
+        },
+      });
 
       setClient("");
       setProjects("");
