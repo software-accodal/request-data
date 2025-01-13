@@ -33,8 +33,6 @@ const RequestList = ({
     );
   }
 
-  console.log("groupedContent>> ", groupedContent);
-
   return (
     <>
       <div className="columns-justify" style={{ alignItems: "center" }}>

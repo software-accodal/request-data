@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const RequestModal = ({ groupedContent, closeModal }) => {
+  console.log("groupedContent>> ", groupedContent);
+
   const clientNames = Array.from(
     new Set(
       Object.values(groupedContent).flatMap((item) => item?.clientName || [])
@@ -9,10 +11,25 @@ const RequestModal = ({ groupedContent, closeModal }) => {
 
   const [projects, setProjects] = useState("");
   const [client, setClient] = useState(clientNames[0] || "");
+  const [clientRecordID, setClientRecordID] = useState("");
   const [requestDetails, setRequestDetails] = useState("");
 
+  useEffect(() => {
+    const matchedClient = Object.values(groupedContent).find(
+      (item) => item.clientName && item.clientName.includes(client)
+    );
+    setClientRecordID(matchedClient?.clientRecordID?.[0] || "");
+  }, [client, groupedContent]);
+
+  console.log("clientRecordID>> ", clientRecordID);
+
   const handleSubmit = () => {
-    console.log("Submitted Request:", { projects, client, requestDetails });
+    console.log("Submitted Request:", {
+      projects,
+      client,
+      requestDetails,
+      clientRecordID,
+    });
     setProjects("");
     setClient("");
     setRequestDetails("");
