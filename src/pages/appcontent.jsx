@@ -166,6 +166,7 @@ function AppContent({
               }}
             >
               <p className="text-normal text-a">Subject: {conv.subject}</p>
+              <p className="text-normal text-a">id: {conv.id}</p>
             </div>
           ))}
         </div>
@@ -178,6 +179,9 @@ function AppContent({
             <Requests
               emails={[...allEmails]}
               subject={conversations.length > 0 ? conversations[0].subject : ""}
+              conversationID={
+                conversations.length > 0 ? conversations[0].id : ""
+              }
               clientRecords={clientRecords}
             />
           }
