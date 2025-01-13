@@ -219,12 +219,12 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
   return (
     <>
       <div style={{ textAlign: "left" }}>
-        <h2
-          className="text-large"
-          style={{ marginBottom: "15px", marginTop: "10px" }}
-        >
+        <h2 className="text-large" style={{ marginTop: "10px" }}>
           Create New Request
         </h2>
+        <p className="text-d text-small" style={{ marginBottom: "10px" }}>
+          <i>New conversation will be created...</i>
+        </p>
         <hr />
 
         <div style={{ marginBottom: "10px", marginTop: "10px" }}>

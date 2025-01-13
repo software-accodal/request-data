@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const RequestModal = ({ groupedContent, closeModal }) => {
+const RequestModal = ({
+  groupedContent,
+  closeModal,
+  conversationID,
+  subject,
+}) => {
   const clientNames = Array.from(
     new Set(
       Object.values(groupedContent).flatMap((item) => item?.clientName || [])
@@ -175,6 +180,7 @@ const RequestModal = ({ groupedContent, closeModal }) => {
               Project: [projects],
               Status: "Outstanding",
               "Custom Reference": customReference,
+              "Missive conversation ID": conversationID,
             },
           };
         })
@@ -222,9 +228,10 @@ const RequestModal = ({ groupedContent, closeModal }) => {
           textAlign: "left",
         }}
       >
-        <h2 className="text-large" style={{ marginBottom: "15px" }}>
-          Create New Request
-        </h2>
+        <h2 className="text-large">Create New Request</h2>
+        <p className="text-d text-small" style={{ marginBottom: "10px" }}>
+          <i>Subject: {subject}</i>
+        </p>
         <hr></hr>
         {/* Client Dropdown */}
         <div style={{ marginBottom: "10px", marginTop: "10px" }}>

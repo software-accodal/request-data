@@ -3,7 +3,7 @@ import axios from "axios";
 import RequestLoading from "../components/request/requestLoading";
 import RequestList from "../components/request/requestList";
 
-function Requests({ emails }) {
+function Requests({ emails, conversationID, subject }) {
   const [airtableRecords, setAirtableRecords] = useState([]);
   const [groupedContent, setGroupedContent] = useState({});
   const [expandedProjects, setExpandedProjects] = useState({});
@@ -124,6 +124,8 @@ function Requests({ emails }) {
         toggleProject={toggleProject}
         toggleReference={toggleReference}
         loading={loading}
+        conversationID={conversationID}
+        subject={subject}
       />
     </div>
   );

@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import RequestModal from "../modal/requestModal";
 
 const RequestList = ({
-  isFetchingSubject,
-  isFetchingEmail,
   airtableRecords,
   groupedContent,
   expandedProjects,
   toggleProject,
   toggleReference,
   loading,
+  conversationID,
+  subject,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
@@ -160,6 +160,8 @@ const RequestList = ({
           }}
           groupedContent={groupedContent}
           airtableRecords={airtableRecords}
+          conversationID={conversationID}
+          subject={subject}
         />
       )}
       {isModalOpen && (
