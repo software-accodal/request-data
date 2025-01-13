@@ -39,6 +39,7 @@ function Requests({ emails }) {
           const project = record.fields["Project Name"]?.[0] || "Uncategorized";
           const finalReference = record.fields["Final Reference"];
           const clientName = record.fields["Client Name"];
+          const clientEmail = record.fields["Client Emails"];
           const clientRecordID = record.fields["Client Record ID"];
           const question = record.fields["Question"];
           const status = record.fields["Status"];
@@ -50,6 +51,7 @@ function Requests({ emails }) {
               created,
               clientName,
               clientRecordID,
+              clientEmail,
             };
           }
 

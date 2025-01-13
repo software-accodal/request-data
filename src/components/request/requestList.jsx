@@ -15,6 +15,11 @@ const RequestList = ({
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  const resetModalState = () => {
+    // This function will be called inside the RequestModal to reset its state
+    console.log("Resetting modal state...");
+  };
+
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const options = { year: "numeric", month: "short", day: "2-digit" };
@@ -149,8 +154,12 @@ const RequestList = ({
       {isModalOpen && (
         <RequestModal
           isModalOpen={isModalOpen}
-          closeModal={closeModal}
+          closeModal={() => {
+            closeModal();
+            resetModalState();
+          }}
           groupedContent={groupedContent}
+          airtableRecords={airtableRecords}
         />
       )}
       {isModalOpen && (

@@ -26,14 +26,16 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
       const data = await response.json();
       const projectName = data.fields?.["Project Name"] || "Untitled Project";
       const periodEnd = data.fields?.["Period End"] || "Untitled Project";
+      const status = data.fields?.["Status"] || "Unknown"; // Ensure 'Status' field is retrieved
       return {
         id: projectId,
         name: projectName,
         periodEnd: periodEnd,
+        status: status, // Include status in the project object
       };
     } catch (error) {
       console.error(`Error fetching project ${projectId}:`, error);
-      return { id: projectId, name: "Error Loading" };
+      return { id: projectId, name: "Error Loading", status: "Error" };
     }
   };
 
@@ -41,6 +43,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
     const selectedClientName = e.target.value;
     setClient(selectedClientName);
 
+    // Reset related state
     setClientProjects([]);
     setProjects("");
     setClientEmail("");
@@ -48,6 +51,7 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
     const selectedClientObj = clientRecords.find(
       (record) => record.name === selectedClientName
     );
+    console.log("Selected Client:", selectedClientObj);
 
     if (!selectedClientObj) {
       return;
@@ -60,10 +64,18 @@ const NewRequestModal = ({ clientRecords, isLoading, missive }) => {
     if (selectedClientObj.project_ids?.length > 0) {
       try {
         setIsProjectsLoading(true);
+
+        // Fetch project details and filter by status
         const projectDetails = await Promise.all(
           selectedClientObj.project_ids.map((id) => fetchProjectById(id))
         );
-        setClientProjects(projectDetails);
+
+        // Filter out projects with status "Void"
+        const filteredProjects = projectDetails.filter(
+          (project) => project.status !== "Void"
+        );
+
+        setClientProjects(filteredProjects);
       } catch (error) {
         console.error("Error fetching projects:", error);
       } finally {

@@ -178,6 +178,7 @@ function AppContent({
             <Requests
               emails={[...allEmails]}
               subject={conversations.length > 0 ? conversations[0].subject : ""}
+              clientRecords={clientRecords}
             />
           }
         />
