@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import Requests from "./request.jsx";
-import Projects from "./project.jsx";
+import Requests from "../components/request/request.jsx";
+import Projects from "../components/project/project.jsx";
 import Docs from "./docs.jsx";
 import Switch from "react-switch";
 import NewRequestModal from "../components/modal/newRequestModal.jsx";

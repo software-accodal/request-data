@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import ProjectLoading from "../components/project/projectLoading";
-import ProjectList from "../components/project/projectList";
+import ProjectLoading from "./projectLoading.jsx";
+import ProjectList from "./projectList.jsx";
 
 const APP_ID = "app2MprPYlwfIdCCd";
 const TABLE_ID = "tblA1DUSjEa3OD517";

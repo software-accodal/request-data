@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import RequestLoading from "../components/request/requestLoading";
-import RequestList from "../components/request/requestList";
+import RequestLoading from "./requestLoading";
+import RequestList from "./requestList";
 
 function Requests({ emails, conversationID, subject }) {
   const [airtableRecords, setAirtableRecords] = useState([]);
